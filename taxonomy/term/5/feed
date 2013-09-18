@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - ds</title>
+ <link>http://drupaldork.com/category/tags/ds</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Display Suite in Drupal 7</title>
+ <link>http://drupaldork.com/2011/04/display-suite-drupal-7</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;
+    &lt;a href=&quot;http://drupal.org/project/ds&quot;&gt;Display Suite&lt;/a&gt; for Drupal 7 included a lot of updates. The big ones are the inclusion of the previously-separate &lt;a href=&quot;http://drupal.org/project/nd&quot;&gt;Node Displays&lt;/a&gt; and &lt;a href=&quot;http://drupal.org/project/vd&quot;&gt;Views Displays&lt;/a&gt; modules, and support for more region layouts (the D6 version had a single pre-defined layout).&lt;/p&gt;
+&lt;p&gt;
+    The feature that&#039;s making my life easy today, though, is a little thing: positioning the node post date separately from the node author. This was an option in D6 too, and I knew the module could still do it, but could not for the life of me figure out how. On the Manage Dislpay tab for my content type, my only options were the node body and taxonomy fields.&lt;/p&gt;
+&lt;p&gt;
+    So, for your reference and mine: Display Suite fields only become available once you choose a layout under &quot;Layout for [node type] in default&quot; on the Manage Display tab.&lt;/p&gt;
+&lt;p&gt;
+    I have a feeling I&#039;ll forget this step in the future, but hopefully I&#039;ll remember to look here for the solution!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 19 Apr 2011 01:18:42 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">18 at http://drupaldork.com</guid>
+</item>
+<item>
+ <title>Adding A Field Formatter to Display Suite</title>
+ <link>http://drupaldork.com/content/adding-field-formatter-display-suite</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;(Originally posted on &lt;a href=&quot;http://www.brockboland.com/2010/08/adding-field-formatter-display-suite&quot;&gt;BrockBoland.com&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;On one of my current projects, I&#039;m using &lt;a href=&quot;http://drupal.org/project/ds&quot;&gt;Display Suite&lt;/a&gt; to layout various node displays. This is only the second time I&#039;ve used DS and I haven&#039;t needed to get too deep into it, but so far, I&#039;m finding it to be a lot quicker than coding different versions of &lt;code&gt;node.tpl.php&lt;/code&gt; - and it allows the site admins who will maintain the site to modify things without getting into the code, something I &lt;a href=&quot;http://www.brockboland.com/2010/07/coded-vs-configurable-and-too-many-options&quot;&gt;talked about last week&lt;/a&gt;. &lt;a href=&quot;http://drupal.org/project/panels&quot;&gt;Panels&lt;/a&gt; is another very popular option for things like this, but the one time I used it, I wasn&#039;t too impressed; for whatever reason, it just didn&#039;t click for me.&lt;/p&gt;
+&lt;p&gt;But anyway: we&#039;re talking Display Suite, not Panels. Without getting into it too much, Display Suite gives admins a simple, drag-and-drop interface to place fields into different regions of the output. When I say &quot;regions,&quot; I&#039;m talking simple: header and footer, with the center section part broken into left, right, and middle. I&#039;ve run into a few cases already where this limited set of regions hasn&#039;t been enough for me, but if there&#039;s a good way to define more regions without hacking the module, I haven&#039;t found it yet. Even so, this module has allowed me to quickly throw together some common layouts without having to write much CSS. It&#039;s been espeically helpful on my own site: I don&#039;t have any design I&#039;m working toward, and Display Suite makes the layout look good enough for me. This isn&#039;t usualy the case on client sites, but it&#039;s still been helpful.&lt;/p&gt;
+&lt;p&gt;This week, I was working on the landing page for a client&#039;s site. The page shows a brief highlight of some of the latest blog posts: just the title, category, and post date, with a thumbnail image on the left. They wanted to show the category name followed by &quot;Blog »&quot;, above the title of the post. I used the &lt;a href=&quot;http://drupal.org/project/nd&quot;&gt;Node Displays&lt;/a&gt; module to add a new build mode for blog posts on the landing page, and added the thumbnail image, blog category, title, and post date fields into the left and right regions. I did have to tweak the CSS just a little bit to make the left and right regions the correct width (and eliminate the middle region), but it was pretty simple. Here&#039;s an example of the final result:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://www.brockboland.com/sites/brockboland.com/files/screenshots/Heal_the_Bay-20100801-123808.jpg&quot; alt=&quot;Screenshot&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;(&lt;a href=&quot;http://www.flickr.com/photos/weesen/3255908138/&quot;&gt;Fish image source&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;In this case, the category is &quot;Aquarium,&quot; so it says &quot;Aquarium Blog »&quot; above the post. This links to the taxonomy term page for the Aquarium term. The Node Displays module comes with several formatters for taxonomy terms - terms separated by space or comma, linked or not - but not for my specific need. Thankfully, Display Suite offers &lt;code&gt;hook_ds_fields_alter()&lt;/code&gt;, which allows a module developer to modify the fields made available by other modules. In this case, I wanted to modify the taxonomy term fields made available by the Node Displays module. I had to use &lt;code&gt;dpm()&lt;/code&gt; from the &lt;a href=&quot;http://drupal.org/project/devel&quot;&gt;Devel&lt;/a&gt; module (as always, a lifesaver) to figure out what values were available where, so I knew what to change and how.&lt;/p&gt;
+&lt;p&gt;Ultimately, I wrote three functions in my module:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Implemented &lt;code&gt;hook_ds_fields_alter()&lt;/code&gt; to add my formatter to the list of formatters available for the Blog Category taxonomy term field.&lt;/li&gt;
+&lt;li&gt;Implemted &lt;code&gt;hook_theme()&lt;/code&gt; to register the theme function that would modify the value of the taxonomy term for ouput.&lt;/li&gt;
+&lt;li&gt;The theme function that actually modified the taxonomy term&lt;/li&gt;
+&lt;/ul&gt;&lt;pre&gt;&lt;code class=&quot;codeblock&quot;&gt;
+define(&#039;BLOG_CATEGORY_VOCAB_ID&#039;, 1);
+
+/**
+ * Implementation of hook_ds_fields_alter(), from the Display Suite module
+ * Add another formatter to the Blog Category taxonomy term field
+ */
+function mymodule_ds_fields_alter(&amp;amp;$fields) {
+  // For this site, I only wanted this formatter to be available for the Blog Category vocabulary (term_1, 
+  // in this case). I could have made it available for all vocabularies by making this a look and adding 
+  // the formatter for all of them
+  $fields[&#039;terms_&#039; . BLOG_CATEGORY_VOCAB_ID][&#039;properties&#039;][&#039;formatters&#039;][&#039;mymodule_blog_category&#039;] = &#039;Front Page category&#039;;
+}
+
+
+/**
+ * Implementation of hook_theme().
+ * Register the theme formatter as a theme function
+ */
+function mymodule_theme() {
+  return array(&#039;mymodule_blog_category&#039; =&amp;gt; array(&#039;function&#039; =&amp;gt; &#039;mymodule_blog_category&#039;, &#039;arguments&#039; =&amp;gt; array(&#039;node&#039; =&amp;gt; null)));
+}
+
+
+/**
+ * Format the given field. $field includes an &#039;object&#039; index that contains the current node
+ */
+function mymodule_blog_category($field) {
+  $content = &#039;&#039;;
+
+  // Only continue if the node has taxonomy terms applied
+  if (isset($field[&#039;object&#039;]-&amp;gt;taxonomy) &amp;amp;&amp;amp; !empty($field[&#039;object&#039;]-&amp;gt;taxonomy)) {
+    // Determine the vocab ID for this field (not really necessary here, since this module 
+    // is only intended to be used with BLOG_CATEGORY_VOCAB_ID)
+	// $field[&#039;key&#039;] will have a value like terms_1 or terms_4, so this pulls the number off the end
+    $vid = end(explode(&#039;_&#039;, $field[&#039;key&#039;]));
+
+    // Since terms are not grouped by vocabulary, we need to loop over all of them and find the one(s) 
+    // for the vocab in question
+    foreach ($field[&#039;object&#039;]-&amp;gt;taxonomy as $tid =&amp;gt; $term) {
+      if ($term-&amp;gt;vid == $vid) {
+        // Add &quot;Blog »&quot; to the term, and link to the term page
+        $content = l($term-&amp;gt;name . &#039; Blog »&#039;, &#039;taxonomy/term/&#039;. $term-&amp;gt;tid);
+        // There could conceivably be more than one term for this vocabulary, but there isn&#039;t under 
+        // the current site config, and we only want to display a single term under this format anyway
+        break;
+      }
+    }
+  }
+  return $content;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 01 Aug 2010 17:08:43 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">4 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/content/adding-field-formatter-display-suite#comments</comments>
+</item>
+</channel>
+</rss>

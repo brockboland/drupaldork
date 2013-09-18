@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Drupal 6</title>
+ <link>http://drupaldork.com/drupal_version/drupal-6</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>D6: Garland Theme for Batch Processing</title>
+ <link>http://drupaldork.com/2012/03/d6-garland-theme-batch-processing</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;There&#039;s a &lt;a href=&quot;http://drupal.org/node/539022&quot;&gt;long-running bug in the Drupal issue queue&lt;/a&gt; about a bug that I had to work around this week: when using the &lt;a href=&quot;http://drupal.org/node/180528&quot;&gt;Batch API&lt;/a&gt;, your site theme will only be used for the first page. As the page reloads to show the progress of the job, the ugly, default Garland theme is used (well, that&#039;s not entirely true: it&#039;s actually Minnelli, but looks like Garland).&lt;/p&gt;
+&lt;p&gt;In most cases, this isn&#039;t a big deal: during a site install or when running update.php, it doesn&#039;t really matter what theme the admins see. In one client&#039;s case, though, we&#039;re using the Batch API to show progress of a multi-part donation that may take some time to process. In that case, you don&#039;t want regular site visitors seeing Minnelli: it&#039;s a jarring transition away from the site theme, and to anyone who isn&#039;t a seasoned Drupal user, it probably looks like something broke.&lt;/p&gt;
+&lt;p&gt;It took me a bit to find the solution to this problem. The issue I mentioned above is now being fixed for Drupal 8, but the menu system has changed enough that the patches posted there don&#039;t work with the older version of Drupal that I&#039;m working with. After some digging, I found the solution: you need to override your maintenance theme.&lt;/p&gt;
+&lt;ol&gt;&lt;li&gt;Override the &lt;code&gt;maintenance_theme&lt;/code&gt; variable in &lt;code&gt;settings.php&lt;/code&gt;. Any variable that&#039;s retrieved using &lt;a href=&quot;http://api.drupal.org/api/drupal/includes%21bootstrap.inc/function/variable_get/6&quot;&gt;&lt;code&gt;variable_get()&lt;/code&gt;&lt;/a&gt; can be completely overridden by setting it in the &lt;code&gt;$conf&lt;/code&gt;array. In this case, you just need to add one line to &lt;code&gt;settings.php&lt;/code&gt;:
+&lt;p&gt;    &lt;code&gt;$conf[&#039;maintenance_theme&#039;] = &#039;my_site_theme&#039;;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;  Naturally, you&#039;ll need to replace &lt;code&gt;my_site_theme&lt;/code&gt; with the name of your site theme.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Copy &lt;code&gt;maintenance-page.tpl.php&lt;/code&gt; into your theme directory. Go into the &lt;code&gt;modules/system&lt;/code&gt; directory at the Drupal root, find &lt;code&gt;maintenance-page.tpl.php&lt;/code&gt;, and copy it into your theme directory—the one that matches the name you set for &lt;code&gt;$conf[&#039;maintenance_theme&#039;]&lt;/code&gt;, that is.&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;Your site theme will now be used for every step in batch processing. It&#039;s important to also note that this theme will also be used if you actually do put the site in maintenance mode, since that&#039;s what you&#039;re overriding. Minnelli will still be used for update.php, though.&lt;/p&gt;
+&lt;p&gt;I&#039;m not entirely certain that the second step is necessary, since a quick test shows that the batch process still used the site theme even when I removed &lt;code&gt;maintenance-page.tpl.php&lt;/code&gt; from the theme directory. It may only be needed for actual maintenance mode, but the comments in &lt;code&gt;settings.php&lt;/code&gt; say to copy it, so I copied it.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Fri, 30 Mar 2012 23:25:51 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">42 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/03/d6-garland-theme-batch-processing#comments</comments>
+</item>
+</channel>
+</rss>

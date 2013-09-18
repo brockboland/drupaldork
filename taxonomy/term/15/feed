@@ -1,0 +1,459 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - How-To</title>
+ <link>http://drupaldork.com/category/how</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Trigger a javascript event when an autocomplete field changes</title>
+ <link>http://drupaldork.com/2013/01/trigger-javascript-event-when-autocomplete-field-changes</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Related to my &lt;a href=&quot;http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs&quot;&gt;fieldset summary problem&lt;/a&gt;: autocomplete fields do not trigger the &lt;code&gt;change&lt;/code&gt; event in Javascript, for some reason. I wound up stealing part of a patch I found somewhere (I would link to it if I could find it in my browser history) in order to override the autocomplete prototype function and trigger a new &lt;code&gt;autocompleteSelect&lt;/code&gt; event when the user chooses an item in an autocomplete field. Just drop this function into a Javascript file in your module or theme:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(function ($) {
+/**
+ * Puts the currently highlighted suggestion into the autocomplete field.
+ * Overridden from misc/autocomplete.js to add an event trigger on autocomplete
+ */
+if (Drupal.jsAC) {
+  Drupal.jsAC.prototype.select = function (node) {
+    this.input.value = $(node).data(&#039;autocompleteValue&#039;);
+    // Custom: add an event trigger
+    $(this.input).trigger(&#039;autocompleteSelect&#039;, [node]);
+  };
+}
+})(jQuery);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note that this goes inside the &lt;code&gt;(function ($) {})(jQuery);&lt;/code&gt; block that appears in most Drupal Javascript files. If you&#039;re pasting into an existing file that already has them, you can omit the first and last line, and paste the function in between them.&lt;/p&gt;
+&lt;p&gt;Then you just bind to that event. Here&#039;s an example for the node author field on the node add/edit form:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$(&#039;input[name=name]&#039;, context).bind(&#039;autocompleteSelect&#039;, function() {
+  // Value chosen in autocomplete field.
+  // Do whatever you need to do.
+  var chosen_value = $(this).val();
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;NOTE: After using this code for a few days I found an error. &lt;code&gt;Drupal.jsAC&lt;/code&gt; is not defined on all pages, so an error is thrown when trying to set values on the prototype of a non-existent object. I&#039;ve updated the code above to wrap it in a condition to check for &lt;code&gt;Drupal.jsAC&lt;/code&gt; before overriding it.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;One more update, from February 19, 2013:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;It turns out that the &lt;code&gt;select()&lt;/code&gt; function only runs when you click on an item in the autocomplete dropdown. If you use the arrow keys to select and item and hit enter to select it, the &lt;code&gt;hidePopup()&lt;/code&gt; function runs instead (by way of &lt;code&gt;onkeyup()&lt;/code&gt;), so you need to implement that one to. This is the core version, with only the &lt;code&gt;autocompleteSelect&lt;/code&gt; trigger added:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Drupal.jsAC.prototype.hidePopup = function (keycode) {
+  // Select item if the right key or mousebutton was pressed.
+  if (this.selected &amp;amp;&amp;amp; ((keycode &amp;amp;&amp;amp; keycode != 46 &amp;amp;&amp;amp; keycode != 8 &amp;amp;&amp;amp; keycode != 27) || !keycode)) {
+    this.input.value = $(this.selected).data(&#039;autocompleteValue&#039;);
+    // Custom: add an event trigger
+    $(this.input).trigger(&#039;autocompleteSelect&#039;);
+  }
+  // Hide popup.
+  var popup = this.popup;
+  if (popup) {
+    this.popup = null;
+    $(popup).fadeOut(&#039;fast&#039;, function () { $(popup).remove(); });
+  }
+  this.selected = false;
+  $(this.ariaLive).empty();
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 29 Jan 2013 18:49:41 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">60 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2013/01/trigger-javascript-event-when-autocomplete-field-changes#comments</comments>
+</item>
+<item>
+ <title>How to force an update of the summary on field sets (in vertical tabs)</title>
+ <link>http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Please excuse the long title: it took me a while to figure this one out, so I want to make sure that other people can find this when they need it.&lt;/p&gt;
+&lt;p&gt;On my current project, I&#039;m changing the node author field based on the value of a user reference field on the node type: when a content admin sets the node reference field, the node author field is changed to match that user reference field value. Since the author field is shown in a fieldset, I wanted the summary on that fieldset to update when this change was made. It took me a while to figure out how, but it&#039;s pretty simple:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Update the field summary if vertical tabs are in use
+var tab = $(&#039;fieldset.node-form-author&#039;, context).data(&#039;verticalTab&#039;);
+if (tab) {
+  tab.updateSummary();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 29 Jan 2013 18:45:22 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">59 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs#comments</comments>
+</item>
+<item>
+ <title>Github: Creating Pull Requests for Existing Issues</title>
+ <link>http://drupaldork.com/2012/06/github-creating-pull-requests-existing-issues</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Did a quick screencast with some coworkers today on the latest thing I love about Github. Last time, I covered &lt;a href=&quot;http://drupaldork.com/2012/04/intro-github-pull-requests&quot;&gt;how to create pull requests&lt;/a&gt;. This time, I explain how to create a pull request out of an existing issue. Since pull requests are basically just issues with commits attached, it&#039;s often undesirable to create a new pull request to address something reported in an existing issue, because you just wind up with two issues that address the same thing.&lt;/p&gt;
+&lt;p&gt;There isn&#039;t a way to do this through the Github interface, but the &lt;a href=&quot;https://github.com/defunkt/hub&quot;&gt;hub command line tool&lt;/a&gt; adds some special sauce for working with Github, and the thing I use it for most is opening pull requests for issues.&lt;/p&gt;
+&lt;p&gt;The quality is crummy, so turn up the quality to 480p.&lt;/p&gt;
+&lt;object width=&quot;640&quot; height=&quot;360&quot;&gt;&lt;param name=&quot;movie&quot; value=&quot;http://www.youtube.com/v/suS3lDn20HY?version=3&amp;amp;hl=en_US&quot; /&gt;&lt;param name=&quot;allowFullScreen&quot; value=&quot;true&quot; /&gt;&lt;param name=&quot;allowscriptaccess&quot; value=&quot;always&quot; /&gt;&lt;embed src=&quot;http://www.youtube.com/v/suS3lDn20HY?version=3&amp;amp;hl=en_US&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;640&quot; height=&quot;360&quot; allowscriptaccess=&quot;always&quot; allowfullscreen=&quot;true&quot;&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 05 Jun 2012 19:39:06 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">50 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/06/github-creating-pull-requests-existing-issues#comments</comments>
+</item>
+<item>
+ <title>Intro to Github Pull Requests</title>
+ <link>http://drupaldork.com/2012/04/intro-github-pull-requests</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;If your company is hosting code in &lt;a href=&quot;https://github.com/&quot;&gt;Github&lt;/a&gt;, I sure hope you aren&#039;t committing directly to &lt;code&gt;master&lt;/code&gt;. This quick screencast demonstrates how to use pull requests so that teammates can review code before it gets merged into the master branch.&lt;/p&gt;
+&lt;p&gt;Make sure you turn on HD so that the text is legible.&lt;/p&gt;
+&lt;iframe src=&quot;http://player.vimeo.com/video/41045197&quot; width=&quot;500&quot; height=&quot;313&quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Thu, 26 Apr 2012 00:43:41 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">48 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/04/intro-github-pull-requests#comments</comments>
+</item>
+<item>
+ <title>QuickPost Bookmarklet on Dreamhost VPS with Suhosin</title>
+ <link>http://drupaldork.com/2012/04/quickpost-bookmarklet-dreamhost-vps-suhosin</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;This is probably the third time I&#039;ve fixed this problem, so it seemed time to write down the solution.&lt;/p&gt;
+&lt;p&gt;On my personal sites, I make use of one my own modules, &lt;a href=&quot;http://drupal.org/project/quickpost_bookmarklet&quot;&gt;QuickPost Bookmarklet&lt;/a&gt;. The module geenrates a bookmarklet that allows you highlight text on a page and begin a new blog post on your own site from it.&lt;/p&gt;
+&lt;p&gt;My sites are hosted on a Dreamhost  VPS, and once in a while, this bookmarklet stops working on me: if I select a longer piece of text, it won&#039;t pre-fill the body text area on the node add form. The title value still works, but not the body, suggesting that the server was ignoring (rather than truncating) that query value if it&#039;s too long.&lt;/p&gt;
+&lt;p&gt;The problem lies with &lt;a href=&quot;http://www.hardened-php.net/suhosin/index.html&quot;&gt;Suhosin&lt;/a&gt;, which is enabled (I think?) by default. The offending setting is &lt;code&gt;suhosin.get.max_value_length&lt;/code&gt;, which keeps getting set back to 512. I&#039;m not exactly sure how it works, because I found that the values in the query string actually stopped working somewhere around 700 characters, but no matter.&lt;/p&gt;
+&lt;p&gt;The fix was just to add a line to my &lt;code&gt;php.ini&lt;/code&gt; file. On my VPS, this is located at &lt;code&gt;/etc/php53/php.ini&lt;/code&gt;.&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;suhosin.get.max_value_length = 10000
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Restart Apache, and you&#039;re good to go.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sat, 07 Apr 2012 17:00:52 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">45 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/04/quickpost-bookmarklet-dreamhost-vps-suhosin#comments</comments>
+</item>
+<item>
+ <title>D6: Garland Theme for Batch Processing</title>
+ <link>http://drupaldork.com/2012/03/d6-garland-theme-batch-processing</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;There&#039;s a &lt;a href=&quot;http://drupal.org/node/539022&quot;&gt;long-running bug in the Drupal issue queue&lt;/a&gt; about a bug that I had to work around this week: when using the &lt;a href=&quot;http://drupal.org/node/180528&quot;&gt;Batch API&lt;/a&gt;, your site theme will only be used for the first page. As the page reloads to show the progress of the job, the ugly, default Garland theme is used (well, that&#039;s not entirely true: it&#039;s actually Minnelli, but looks like Garland).&lt;/p&gt;
+&lt;p&gt;In most cases, this isn&#039;t a big deal: during a site install or when running update.php, it doesn&#039;t really matter what theme the admins see. In one client&#039;s case, though, we&#039;re using the Batch API to show progress of a multi-part donation that may take some time to process. In that case, you don&#039;t want regular site visitors seeing Minnelli: it&#039;s a jarring transition away from the site theme, and to anyone who isn&#039;t a seasoned Drupal user, it probably looks like something broke.&lt;/p&gt;
+&lt;p&gt;It took me a bit to find the solution to this problem. The issue I mentioned above is now being fixed for Drupal 8, but the menu system has changed enough that the patches posted there don&#039;t work with the older version of Drupal that I&#039;m working with. After some digging, I found the solution: you need to override your maintenance theme.&lt;/p&gt;
+&lt;ol&gt;&lt;li&gt;Override the &lt;code&gt;maintenance_theme&lt;/code&gt; variable in &lt;code&gt;settings.php&lt;/code&gt;. Any variable that&#039;s retrieved using &lt;a href=&quot;http://api.drupal.org/api/drupal/includes%21bootstrap.inc/function/variable_get/6&quot;&gt;&lt;code&gt;variable_get()&lt;/code&gt;&lt;/a&gt; can be completely overridden by setting it in the &lt;code&gt;$conf&lt;/code&gt;array. In this case, you just need to add one line to &lt;code&gt;settings.php&lt;/code&gt;:
+&lt;p&gt;    &lt;code&gt;$conf[&#039;maintenance_theme&#039;] = &#039;my_site_theme&#039;;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;  Naturally, you&#039;ll need to replace &lt;code&gt;my_site_theme&lt;/code&gt; with the name of your site theme.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;Copy &lt;code&gt;maintenance-page.tpl.php&lt;/code&gt; into your theme directory. Go into the &lt;code&gt;modules/system&lt;/code&gt; directory at the Drupal root, find &lt;code&gt;maintenance-page.tpl.php&lt;/code&gt;, and copy it into your theme directory—the one that matches the name you set for &lt;code&gt;$conf[&#039;maintenance_theme&#039;]&lt;/code&gt;, that is.&lt;/li&gt;
+&lt;/ol&gt;&lt;p&gt;Your site theme will now be used for every step in batch processing. It&#039;s important to also note that this theme will also be used if you actually do put the site in maintenance mode, since that&#039;s what you&#039;re overriding. Minnelli will still be used for update.php, though.&lt;/p&gt;
+&lt;p&gt;I&#039;m not entirely certain that the second step is necessary, since a quick test shows that the batch process still used the site theme even when I removed &lt;code&gt;maintenance-page.tpl.php&lt;/code&gt; from the theme directory. It may only be needed for actual maintenance mode, but the comments in &lt;code&gt;settings.php&lt;/code&gt; say to copy it, so I copied it.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Fri, 30 Mar 2012 23:25:51 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">42 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/03/d6-garland-theme-batch-processing#comments</comments>
+</item>
+<item>
+ <title>Local Settings Template</title>
+ <link>http://drupaldork.com/2012/01/local-settings-template</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;A couple months ago, I wrote about &lt;a href=&quot;/2011/11/local-settings-development-sites&quot;&gt;our strategy of using local settings files&lt;/a&gt; here at &lt;a href=&quot;http://www.jacksonriver.com/&quot;&gt;Jackson River&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I was setting up a new development site on my machine the other day, and realized that I&#039;ve been consulting that blog post a couple times a week to copy over bits of code that were missing from various dev sites. It seemed like a good idea to move it into a gist:&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;noscript&gt;
+&lt;div class=&quot;drupal-gist-file&quot;&gt;
+&lt;pre type=&quot;php&quot;&gt;&amp;lt;?php
+/**
+ * @file
+ * local.settings.php
+ * 
+ * This settings file is intended to contain settings specific to a local
+ * development environment, by overriding options set in settings.php.
+ * 
+ * Include this file from your regular settings.php by including this at the
+ * bottom:
+ * 
+ *   @include(&#039;local.settings.php&#039;);
+ * 
+ * Placing this at the very end of settings.php will allow you override all
+ * options that are set there. Prefixing it with the @ suppresses warnings if
+ * the local.settings.php file is missing, so you can commit this to your repo.
+ */
+
+// Toggle the use of memcache.
+$_use_memcache = FALSE;
+
+// Toggle the output of devel debugging/logging.
+$_use_devel = FALSE;
+
+// Path where all contrib modules can be found.
+$_contrib_path = &#039;sites/all/modules/contrib&#039;;
+
+// The name of the database. This will also be used as the memcache prefix.
+$_db_name = &#039;dbname&#039;;
+
+
+$db_url = &#039;mysqli://root:pass4Root!@localhost/&#039; . $_db_name;
+
+// Allow anyone to run update.php, so that you don&#039;t have to log in with uid=1
+// to do so
+$update_free_access = TRUE;
+
+// Set error reporting level to ignore notices and deprecated warnings. These
+// should be turned back on during development to clean up any code that
+// generates them.
+error_reporting(E_ALL &amp;amp; ~E_DEPRECATED);
+// Note that these options can also be moved into index.php, so that errors
+// that occur before settings.php is processed will also be reported.
+ini_set(&#039;display_errors&#039;, TRUE);
+ini_set(&#039;display_startup_errors&#039;, TRUE);
+
+
+// Prep the $conf array.
+if (!is_array($conf)) {
+  $conf = array();
+}
+
+// Save email messages to the log instead of sending them out. This is to
+// prevent accidental email sends from a development site.
+// Make sure you adjust this value if the Devel module is located elsewhere
+$_smtp_library = $_contrib_path . &#039;/devel/devel.module&#039;;
+if (is_file($_smtp_library)) {
+  $conf[&#039;smtp_library&#039;] = $_smtp_library;
+}
+
+// Disable Secure Pages and Secure Site module functionality
+$conf[&#039;securepages_enable&#039;] = 0;
+$conf[&#039;securesite_enabled&#039;] = 0;
+
+// Use a test payment gateway to prevent real transactions
+$conf[&#039;uc_payment_credit_gateway&#039;] = &#039;test_gateway&#039;;
+
+// Lower the search indexing per cron run to prevent long cron runs
+$conf[&#039;search_cron_limit&#039;] = &#039;10&#039;;
+
+// Disable preprocessing of CSS and JS.
+$conf[&#039;preprocess_css&#039;] = 0;
+$conf[&#039;preprocess_js&#039;] = 0;
+
+// Use environment indicator, if available.
+$conf[&#039;environment_indicator_enabled&#039;] = TRUE;
+$conf[&#039;environment_indicator_text&#039;] = &#039;LOCAL DEVELOPMENT&#039;;
+$conf[&#039;environment_indicator_color&#039;] = &#039;dark-red&#039;;
+
+// Use memcache if available &amp;amp; enabled.
+$_memcache_inc = $_contrib_path . &#039;/memcache/memcache.inc&#039;;
+if ($_use_memcache &amp;amp;&amp;amp; is_file($_memcache_inc)) {
+  // Configure memcache locally
+  $conf[&#039;memcache_servers&#039;] = array(
+    &#039;localhost:11211&#039; =&amp;gt; &#039;default&#039;,
+  );
+  $conf[&#039;memcache_bins&#039;] = array(
+    &#039;cache&#039; =&amp;gt; &#039;default&#039;,
+  );
+  $conf[&#039;memcache_key_prefix&#039;] = $_db_name;
+  $conf[&#039;cache_inc&#039;] = $_memcache_inc;
+}
+else {
+  // Revert to Drupal core caching in case settings.php
+  // is configured to use Memcache.
+  $conf[&#039;cache_inc&#039;] = &#039;includes/cache.inc&#039;;
+}
+
+// Devel settings
+if ($_use_devel) {
+  $conf[&#039;dev_query&#039;] = 1;
+  $conf[&#039;devel_query_display&#039;] = 1;
+  $conf[&#039;devel_execution&#039;] = 5;
+  $conf[&#039;devel_store_queries&#039;] = 0;
+  $conf[&#039;devel_store_random&#039;] = 1;
+  $conf[&#039;devel_xhprof_enabled&#039;] = 0;
+  $conf[&#039;devel_xhprof_directory&#039;] =  &quot;/var/www/xhprof&quot;;
+  $conf[&#039;devel_xhprof_url&#039;] =  &quot;http://debianvm/xhprof/xhprof_html&quot;;
+  $conf[&#039;devel_redirect_page&#039;] = 0;
+  $conf[&#039;devel_query_sort&#039;] = &quot;0&quot;;
+}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;script src=&quot;http://gist.github.com/1633790.js&quot;&gt;&lt;/script&gt;&lt;p&gt;And, since I use TextExpander as much as I can, I also made a snippet to grab the contents of this gist.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;noscript&gt;
+&lt;div class=&quot;drupal-gist-file&quot;&gt;
+&lt;pre type=&quot;php&quot;&gt;#!/usr/bin/php
+&amp;lt;?php
+// Make sure to set the Content dropdown to Shell Script in TextExpander
+print file_get_contents(&#039;https://raw.github.com/gist/1633790/local.settings.php&#039;);&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;script src=&quot;http://gist.github.com/1658632.js&quot;&gt;&lt;/script&gt;&lt;p&gt;In order for this to work, make sure you set the Content dropdown above the snippet content to use Shell Script, like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://www.drupaldork.com/sites/default/files/screenshots/localsettingssnippet.png&quot; alt=&quot;TextExpander Shell Script selection&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Now when I type &quot;llocalsett&quot;, I get a mostly-ready &lt;code&gt;local.settings.php&lt;/code&gt; to start with!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 22 Jan 2012 20:22:09 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">37 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/01/local-settings-template#comments</comments>
+</item>
+<item>
+ <title>Mimicking the WordPress &quot;Press This&quot; Bookmarklet in Drupal 7</title>
+ <link>http://drupaldork.com/2011/08/mimicking-wordpress-press-bookmarklet-drupal-7</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;&lt;strong&gt;Updated January 6, 2012:&lt;/strong&gt; Since writing this post, I have wrapped this functionality up into the &lt;a href=&quot;http://drupal.org/project/quickpost_bookmarklet&quot;&gt;QuickPost Bookmarklet&lt;/a&gt; module for Drupal 7.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;There was only one thing I missed after switching from WordPress to Drupal: the &quot;Press This&quot; bookmarklet that&#039;s available on every WordPress site. I find that I post a lot less without it, just because it made it so simple to make a quick blog post about someting I had seen online: highlight some text, click the bookmarklet, add some comments, and post.&lt;/p&gt;
+&lt;p&gt;I&#039;ve finally got around to replicating this in Drupal 7, using the &lt;a href=&quot;http://drupal.org/project/prepopulate&quot;&gt;Prepopulate module&lt;/a&gt;, and I&#039;m posting this so that others can make use of it. I&#039;ll start with the most basic version, then show you how I customized mine, and explain some gotchas to watch out for.&lt;/p&gt;
+&lt;h2&gt;What does it do?&lt;/h2&gt;
+&lt;p&gt;A bookmarklet is a bookmark in your browser&#039;s bookmark bar that has a &lt;code&gt;javascript:&lt;/code&gt; URL instead of a regular one. When you click on the bookmarklet described in this post, a new window is opened to the admin page to create a new blog post on your site. The title of the post will be pre-filled with the title of the page you were viewing. If you select text on the page, this will be used for the body of your new post. Both of these can be changed, of course: they are just used as a starter so that you can quickly write a blog post about the page or article you were reading.&lt;/p&gt;
+&lt;h2&gt;The Basics&lt;/h2&gt;
+&lt;p&gt;First off, install the &lt;a href=&quot;http://drupal.org/project/prepopulate&quot;&gt;Prepopulate module&lt;/a&gt; on your site. This post is about Drupal 7 - I&#039;m using the 7.x-dev version and it&#039;s working well enough for my purposes.&lt;/p&gt;
+&lt;p&gt;In order to use the methods offered below, you&#039;ll need to create a bookmark and replace the URL with one of the codes below. If you&#039;re just skimming the text here and not reading the explanations, you&#039;ll probably run into problems because there are things you need to change (but then again, you probably won&#039;t read this sentence either).&lt;/p&gt;
+&lt;h2&gt;The Prepopulate version&lt;/h2&gt;
+&lt;p&gt;There&#039;s a section on bookmarklets in the &lt;code&gt;USAGE.txt&lt;/code&gt; file that&#039;s included in the Prepopulate module. The module author offers this code:&lt;/p&gt;
+&lt;p&gt;&lt;code style=&quot;display:block&quot;&gt;javascript:u=document.location.href;t=document.title;s=window.getSelection();void(window.open(%22http://example.com/node/add/content-web-link?edit[title]=%22+escape(t)+&#039;&amp;amp;edit[body_field][body]=&#039;+escape(s)+&#039;&amp;amp;edit[field_url][0][value]=&#039;+escape(u),&#039;_blank&#039;,&#039;width=1024,height=500,status=yes,resizable=yes,scrollbars=yes&#039;));&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;To use this for your own site&lt;/strong&gt;: you&#039;ll need to replace &lt;code&gt;example.com&lt;/code&gt; with your own domain. You may also need to change &lt;code&gt;node/add/content-web-link&lt;/code&gt;, replacing &lt;code&gt;content-web-link&lt;/code&gt; with the name of your blog post content type.&lt;/p&gt;
+&lt;p&gt;I found that this version did not work for me: the name used for the body field (&lt;code&gt;edit[body_field][body]&lt;/code&gt;) was not working on my site. I&#039;m not sure, but this might be because I upgraded from Drupal 6. I had to use &lt;code&gt;edit[body][und][0][value]&lt;/code&gt; instead, as you&#039;ll see below. If you use this version, you may need to make the same change.&lt;/p&gt;
+&lt;h2&gt;My version&lt;/h2&gt;
+&lt;p&gt;This is the URL I used for my Quick Post bookmarklet:&lt;/p&gt;
+&lt;p&gt;&lt;code style=&quot;display:block&quot;&gt;javascript: var siteURL=&#039;www.drupaldork.com&#039;, nodeType=&#039;post&#039;, d=document, w=window, e=w.getSelection, k=d.getSelection, x=d.selection, s=(e?e():(k)?k():(x?x.createRange().text:0)), l=d.location, e=encodeURIComponent, url=&#039;http://&#039;+siteURL+&#039;/node/add/&#039;+nodeType+&#039;?edit[title]=&#039;+e(d.title); if(s) { s=&#039;&amp;lt;blockquote&amp;gt;&#039;+s+&#039;&amp;lt;/blockquote&amp;gt;&#039;; s+=&#039;\n\nfrom &amp;lt;a href=&quot;&#039;+l+&#039;&quot;&amp;gt;&#039;+d.title+&#039;&amp;lt;/a&amp;gt;&#039;; url+=&#039;&amp;amp;edit[body][und][0][value]=&#039;+e(s);} a=function(){if(!w.open(url,&#039;quickpost&#039;,&#039;toolbar=0,resizable=1,scrollbars=1,status=1,width=1024,height=570&#039;)) l.href=url;}; if (/Firefox/.test(navigator.userAgent)) setTimeout(a, 0); else a();void(0)&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;I actually took the code that WordPress uses for the Press This bookmarklet and re-purposed it for use with the Prepopulate module, then made some tweaks of my own:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Put the site URL and node type in variables at the very beginning, so that they&#039;re easier to change.&lt;/li&gt;
+&lt;li&gt;If any text on the page is selected, put it in a blockquote, and put a link back to the page at the bottom.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;As noted in the previous section, the default name for the body field in Prepopulate, &lt;code&gt;edit[body_field][body]&lt;/code&gt;, did not work on my site, and I had to use &lt;code&gt;edit[body][und][0][value]&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;To use this for your own site&lt;/strong&gt;: Update the values of the &lt;code&gt;siteURL&lt;/code&gt; and &lt;code&gt;nodeType&lt;/code&gt; variables. You may also need to replace &lt;code&gt;edit[body][und][0][value]&lt;/code&gt; with &lt;code&gt;edit[body_field][body]&lt;/code&gt;. You can check this by selecting text on a page before clicking the bookmarklet: if the selected text does NOT appear in the body field, you probably need to use the other version.&lt;/p&gt;
+&lt;h2&gt;Expanded Javascript&lt;/h2&gt;
+&lt;p&gt;If you want to make some of your own customizations, here&#039;s the expanded version of the Javascript. Just make your changes, then remove all the comments and line breaks to make a minimized version that can be used for your bookmarklet.&lt;/p&gt;
+&lt;p&gt;&lt;code style=&quot;display:block&quot;&gt;javascript:&lt;br /&gt;
+var siteURL=&#039;www.drupaldork.com&#039;,&lt;br /&gt;
+nodeType=&#039;post&#039;,&lt;br /&gt;
+d=document,&lt;br /&gt;
+w=window,&lt;br /&gt;
+e=w.getSelection,&lt;br /&gt;
+k=d.getSelection,&lt;br /&gt;
+x=d.selection,&lt;br /&gt;
+s=(e?e():(k)?k():(x?x.createRange().text:0)),&lt;br /&gt;
+l=d.location,&lt;br /&gt;
+// All text from the page needs to be encoded in the URL&lt;br /&gt;
+e=encodeURIComponent,&lt;br /&gt;
+url=&#039;http://&#039;+siteURL+&#039;/node/add/&#039;+nodeType+&#039;?edit[title]=&#039;+e(d.title);&lt;br /&gt;
+// If text was selected on the page, wrap it in a blockquote and add it to the URL&lt;br /&gt;
+if(s) {&lt;br /&gt;
+    s=&#039;&amp;lt;blockquote&amp;gt;&#039;+s+&#039;&amp;lt;/blockquote&amp;gt;&#039;;&lt;br /&gt;
+    s+=&#039;\n\nfrom &amp;lt;a href=&quot;&#039;+l+&#039;&quot;&amp;gt;&#039;+d.title+&#039;&amp;lt;/a&amp;gt;&#039;;&lt;br /&gt;
+    url+=&#039;&amp;amp;edit[body][und][0][value]=&#039;+e(s);&lt;br /&gt;
+}&lt;br /&gt;
+a=function(){&lt;br /&gt;
+    if(!w.open(url,&#039;quickpost&#039;,&#039;toolbar=0,resizable=1,scrollbars=1,status=1,width=1024,height=570&#039;))&lt;br /&gt;
+        l.href=url;&lt;br /&gt;
+};&lt;br /&gt;
+if (/Firefox/.test(navigator.userAgent))&lt;br /&gt;
+    setTimeout(a, 0);&lt;br /&gt;
+else&lt;br /&gt;
+    a();void(0)&lt;br /&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 21 Aug 2011 22:39:18 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">29 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/08/mimicking-wordpress-press-bookmarklet-drupal-7#comments</comments>
+</item>
+<item>
+ <title>How I Manage My Generic Drupal Dev Sites</title>
+ <link>http://drupaldork.com/2011/07/how-i-manage-my-generic-drupal-dev-sites</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;On my machine, I have two local sites I use for developing and testing modules and patches: &lt;code&gt;http://d6.local&lt;/code&gt; and &lt;code&gt;http://d7.local&lt;/code&gt;. After manually wiping and re-creating these sites several times in between some tests, I realized I was doing it wrong and wrote bash scripts to do it for me.&lt;/p&gt;
+&lt;p&gt;Now, I have templates for each of these sites. Whenever I want to start with a fresh dev site with some basic modules installed (like &lt;a href=&quot;http://drupal.org/project/admin_menu&quot;&gt;Admin Menu&lt;/a&gt;, &lt;a href=&quot;http://drupal.org/project/adminrole&quot;&gt;Admin Role&lt;/a&gt;, and &lt;a href=&quot;http://drupal.org/project/devel&quot;&gt;Devel&lt;/a&gt;), I run a quick bash script that drops and re-creates the database, imports a SQL file, and replaces the entire webroot directory with the contents of a tarball. I did have to manually setup the site, create my admin user, and enable the modules when I first set all this up. Now, I can easily update that template when I need to - for example, when there&#039;s a new versions of the Drupal core released.&lt;/p&gt;
+&lt;p&gt;Here&#039;s my setup:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;The webroot for the each version of Drupal are in &lt;code&gt;~/Sites/&lt;/code&gt;. I&#039;ve got &lt;code&gt;~/Sites/d6.local&lt;/code&gt; and &lt;code&gt;~/Sites/d7.local&lt;/code&gt;, specifically.&lt;/li&gt;
+&lt;li&gt;My two bash scripts, &lt;code&gt;deploy&lt;/code&gt; and &lt;code&gt;recreate&lt;/code&gt;, both live in &lt;code&gt;~/src/templates&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Alse in &lt;code&gt;~/src/templates&lt;/code&gt;, I have a sub-directory for each version of Drupal: &lt;code&gt;d6&lt;/code&gt; and &lt;code&gt;d7&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Within those version-specific sub-dirs are &lt;code&gt;db.sql&lt;/code&gt; and &lt;code&gt;files.tar&lt;/code&gt;, which are used as the template.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;When it&#039;s time to refresh my dev site, I go into &lt;code&gt;~/src/templates&lt;/code&gt; and run &lt;code&gt;deploy&lt;/code&gt; with the version I want to refresh, like so: &lt;code&gt;./deploy 6&lt;/code&gt;. Running this script will execute this process:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Drop and re-create the database. This is to make sure that I don&#039;t wind up with stray tables left behind by modules I had been working on before.&lt;/li&gt;
+&lt;li&gt;Import &lt;code&gt;db.sql&lt;/code&gt; from the subdirectory for the version specific (in this case, &lt;code&gt;d6&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Remove the webroot directory (in this case, &lt;code&gt;~/Sites/d6.local&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Re-create the webroot directory by expanding &lt;code&gt;files.tar&lt;/code&gt;, also found in the version-specific subdirectory.&lt;/li&gt;
+&lt;li&gt;Use Drush to clear all the caches, just to be on the safe side.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Now I&#039;ve got a fresh dev site at &lt;code&gt;http://d6.local&lt;/code&gt;. As I mentioned, I created the admin user and enabled some modules when I first setup the site, so after deploying from the template the site is ready to go.&lt;/p&gt;
+&lt;p&gt;As of tonight, I can also re-create these templates from the database and file structure. My &lt;code&gt;recreate&lt;/code&gt; bash script is similar to &lt;code&gt;deploy&lt;/code&gt;, but in reverse: it will take a snapshot of the site that&#039;s currenly running at &lt;code&gt;http://d6.local&lt;/code&gt; and save that as the template for future deploys. Running &lt;code&gt;./recreate 6&lt;/code&gt; will execute this process:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Move the existing &lt;code&gt;files.tar&lt;/code&gt; and &lt;code&gt;db.sql&lt;/code&gt; into a backup directory, just in case.&lt;/li&gt;
+&lt;li&gt;Use Drush to clear all the caches.&lt;/li&gt;
+&lt;li&gt;Dump the database to &lt;code&gt;db.sql&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Tar up the webroot directory into &lt;code&gt;files.tar&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;When new versions of the core or contrib modules come out, I just update my local copy of the site and run the &lt;code&gt;recreate&lt;/code&gt; script.&lt;/p&gt;
+&lt;p&gt;It&#039;s a pretty handy setup, and would be easy for other people to repurpose. If you want to use these scripts (the code is below), you may need to adjust the code to fit your own setup because of assumptions I made. These were the assumptions I worked with (using Drupal 6 as the version for these examples):&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Webroot is &lt;code&gt;~/Sites/d6.local&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Templates are stored in &lt;code&gt;~/src/templates/d6&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Database is named &lt;code&gt;dev_d6&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Drush alias is named &lt;code&gt;@d6.local&lt;/code&gt;, just like the webroot subdirectory.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;You&#039;ll also need to modify the code to set the MySQL username and password for each line that runs MySQL.&lt;/p&gt;
+&lt;p&gt;And now for the code:&lt;/p&gt;
+&lt;h3&gt;deploy&lt;/h3&gt;
+&lt;p&gt;&lt;/p&gt;&lt;noscript&gt;&lt;br /&gt;&lt;div class=&quot;drupal-gist-file&quot;&gt;
+&lt;pre type=&quot;&quot;&gt;#!/bin/bash
+if [ -z &quot;$1&quot; ]; then
+	echo &quot;Usage: ./deploy drupal_version, for example: ./deploy 6&quot;
+else
+	versionname=d$1
+	deploydir=~/src/templates/$versionname
+	sitesdir=$versionname.local
+	sitesfullpath=~/Sites/$sitesdir
+	dbname=dev_$versionname
+	
+	if [ -d &quot;$deploydir&quot; ]; then
+		echo &quot;Re-deploying from site template&quot;
+		echo &quot;STICK AROUND - there&#039;s a sudo call in here so we need your password&quot;
+		
+		echo &quot;Re-create the DB, so no stray tables are left behind&quot;
+		mysql -uuser -ppass -e &quot;DROP DATABASE $dbname&quot;
+		mysql -user -ppass -e &quot;CREATE DATABASE $dbname&quot;
+		
+		echo &quot;Import DB&quot;
+		mysql -uuser -ppass $dbname &amp;lt; $deploydir/db.sql
+		
+		echo &quot;Untar files&quot;
+		cd ~/Sites
+		sudo rm -rf $sitesdir
+		tar xfz $deploydir/files.tar
+		
+		echo &quot;Clear caches&quot;
+		drush @$sitesdir cache-clear all
+	else
+		echo &quot;The deploy directory can&#039;t be found: $deploydir&quot;
+	fi
+fi&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;script src=&quot;http://gist.github.com/1059789.js&quot;&gt;&lt;/script&gt;&lt;h3&gt;recreate&lt;/h3&gt;
+&lt;p&gt;&lt;/p&gt;&lt;noscript&gt;&lt;br /&gt;&lt;div class=&quot;drupal-gist-file&quot;&gt;
+&lt;pre type=&quot;&quot;&gt;#!/bin/bash
+if [ -z &quot;$1&quot; ]; then
+	echo &quot;Usage: ./recreate drupal_version, for example: ./recreate 6&quot;
+else
+	# Prep a bunch of vars
+	versionname=d$1
+	deploydir=~/src/templates/$versionname
+	sitesdir=$versionname.local
+	sitesfullpath=~/Sites/$sitesdir
+	dbname=dev_$versionname
+	backupdir=$deploydir/backup
+	timestamp=`date +%Y.%m.%d-%H.%M`
+	
+	# Only continue if the given version number corresponds to a site directory
+	if [ -d &quot;$sitesfullpath&quot; ]; then
+		echo &quot;Re-creating template files&quot;
+		
+		echo &quot;Backup previous save&quot;
+		# Make sure the backup directory exists
+		if [ ! -d &quot;$backupdir&quot; ]; then
+			mkdir $backupdir
+		fi
+		mv $deploydir/db.sql $backupdir/db-$timestamp.sql
+		mv $deploydir/files.tar $backupdir/files-$timestamp.tar
+		
+		echo &quot;Clear caches&quot;
+		drush @$sitesdir cache-clear all
+		
+		echo &quot;Dump DB&quot;
+		# Dump DB
+		mysqldump --opt -uuser -ppass $dbname &amp;gt; $deploydir/db.sql
+		
+		echo &quot;Tar files&quot;
+		# Change into Sites dir and re-tar the dir
+		cd ~/Sites
+		tar -pczf $deploydir/files.tar $sitesdir/
+		
+		echo &quot;All done!&quot;
+	else
+		echo &quot;The sites directory can&#039;t be found: $sitesfullpath&quot;
+	fi
+fi&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;script src=&quot;http://gist.github.com/1059791.js&quot;&gt;&lt;/script&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sat, 02 Jul 2011 06:33:37 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">23 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/07/how-i-manage-my-generic-drupal-dev-sites#comments</comments>
+</item>
+<item>
+ <title>Drush with Homebrew &amp; MAMP Pro</title>
+ <link>http://drupaldork.com/2011/01/drush-homebrew-mamp-pro</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Sometime over the past few weeks, &lt;a href=&quot;http://drupal.org/project/drush&quot;&gt;Drush&lt;/a&gt; stopped working for me. I could run &lt;code&gt;drush st&lt;/code&gt; just fine, but anything that actually touched the database (like &lt;code&gt;drush cc&lt;/code&gt; or &lt;code&gt;drush up&lt;/code&gt;) gave me the dreaded &quot;Drush was not able to start (bootstrap) the Drupal database&quot; error. And since I&#039;m always tweaking and changing settings on my system, I had no idea what I had done to break it.&lt;/p&gt;
+&lt;p&gt;My first thought was that I had killed it with &lt;a href=&quot;http://mxcl.github.com/homebrew/&quot;&gt;Homebrew&lt;/a&gt;. I recently nuked my manual install of Drush so I could use Homebrew to update it every now and then. Once you install Homebrew, you can have Drush installed and configured really easily: brew install drush The same command will update it, too. But that wasn&#039;t the problem.&lt;/p&gt;
+&lt;p&gt;I&#039;m also using &lt;a href=&quot;http://www.mamp.info/&quot;&gt;MAMP Pro&lt;/a&gt; for local development, so that was the next culprit. I&#039;m really not sure what happened - or for that matter, why I was able to run MAMP at all - but the php binary was no longer executable (or maybe, never had been?). This didn&#039;t seem at all like it would be the problem: after all, Drush was executing, and claimed to have a problem accessing the database. Still, changing the permissions on that binary did the trick:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+sudo chmod a+x /Applications/MAMP/bin/php5.2/bin/php
+sudo chmod a+x /Applications/MAMP/bin/php5.3/bin/php
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Since I sometimes have to switch between PHP 5.2 and 5.3 for testing, I made sure to hit both versions.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 12 Jan 2011 13:57:01 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">11 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/01/drush-homebrew-mamp-pro#comments</comments>
+</item>
+</channel>
+</rss>

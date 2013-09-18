@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Drupal Planet</title>
+ <link>http://drupaldork.com/drupal-planet</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Trigger a javascript event when an autocomplete field changes</title>
+ <link>http://drupaldork.com/2013/01/trigger-javascript-event-when-autocomplete-field-changes</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Related to my &lt;a href=&quot;http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs&quot;&gt;fieldset summary problem&lt;/a&gt;: autocomplete fields do not trigger the &lt;code&gt;change&lt;/code&gt; event in Javascript, for some reason. I wound up stealing part of a patch I found somewhere (I would link to it if I could find it in my browser history) in order to override the autocomplete prototype function and trigger a new &lt;code&gt;autocompleteSelect&lt;/code&gt; event when the user chooses an item in an autocomplete field. Just drop this function into a Javascript file in your module or theme:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(function ($) {
+/**
+ * Puts the currently highlighted suggestion into the autocomplete field.
+ * Overridden from misc/autocomplete.js to add an event trigger on autocomplete
+ */
+if (Drupal.jsAC) {
+  Drupal.jsAC.prototype.select = function (node) {
+    this.input.value = $(node).data(&#039;autocompleteValue&#039;);
+    // Custom: add an event trigger
+    $(this.input).trigger(&#039;autocompleteSelect&#039;, [node]);
+  };
+}
+})(jQuery);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note that this goes inside the &lt;code&gt;(function ($) {})(jQuery);&lt;/code&gt; block that appears in most Drupal Javascript files. If you&#039;re pasting into an existing file that already has them, you can omit the first and last line, and paste the function in between them.&lt;/p&gt;
+&lt;p&gt;Then you just bind to that event. Here&#039;s an example for the node author field on the node add/edit form:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$(&#039;input[name=name]&#039;, context).bind(&#039;autocompleteSelect&#039;, function() {
+  // Value chosen in autocomplete field.
+  // Do whatever you need to do.
+  var chosen_value = $(this).val();
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;NOTE: After using this code for a few days I found an error. &lt;code&gt;Drupal.jsAC&lt;/code&gt; is not defined on all pages, so an error is thrown when trying to set values on the prototype of a non-existent object. I&#039;ve updated the code above to wrap it in a condition to check for &lt;code&gt;Drupal.jsAC&lt;/code&gt; before overriding it.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;One more update, from February 19, 2013:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;It turns out that the &lt;code&gt;select()&lt;/code&gt; function only runs when you click on an item in the autocomplete dropdown. If you use the arrow keys to select and item and hit enter to select it, the &lt;code&gt;hidePopup()&lt;/code&gt; function runs instead (by way of &lt;code&gt;onkeyup()&lt;/code&gt;), so you need to implement that one to. This is the core version, with only the &lt;code&gt;autocompleteSelect&lt;/code&gt; trigger added:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Drupal.jsAC.prototype.hidePopup = function (keycode) {
+  // Select item if the right key or mousebutton was pressed.
+  if (this.selected &amp;amp;&amp;amp; ((keycode &amp;amp;&amp;amp; keycode != 46 &amp;amp;&amp;amp; keycode != 8 &amp;amp;&amp;amp; keycode != 27) || !keycode)) {
+    this.input.value = $(this.selected).data(&#039;autocompleteValue&#039;);
+    // Custom: add an event trigger
+    $(this.input).trigger(&#039;autocompleteSelect&#039;);
+  }
+  // Hide popup.
+  var popup = this.popup;
+  if (popup) {
+    this.popup = null;
+    $(popup).fadeOut(&#039;fast&#039;, function () { $(popup).remove(); });
+  }
+  this.selected = false;
+  $(this.ariaLive).empty();
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 29 Jan 2013 18:49:41 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">60 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2013/01/trigger-javascript-event-when-autocomplete-field-changes#comments</comments>
+</item>
+<item>
+ <title>How to force an update of the summary on field sets (in vertical tabs)</title>
+ <link>http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Please excuse the long title: it took me a while to figure this one out, so I want to make sure that other people can find this when they need it.&lt;/p&gt;
+&lt;p&gt;On my current project, I&#039;m changing the node author field based on the value of a user reference field on the node type: when a content admin sets the node reference field, the node author field is changed to match that user reference field value. Since the author field is shown in a fieldset, I wanted the summary on that fieldset to update when this change was made. It took me a while to figure out how, but it&#039;s pretty simple:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Update the field summary if vertical tabs are in use
+var tab = $(&#039;fieldset.node-form-author&#039;, context).data(&#039;verticalTab&#039;);
+if (tab) {
+  tab.updateSummary();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 29 Jan 2013 18:45:22 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">59 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs#comments</comments>
+</item>
+<item>
+ <title>The Drupal Ladder</title>
+ <link>http://drupaldork.com/2012/09/drupal-ladder</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I mentioned the Drupal Ladder initiative in my &lt;a href=&quot;http://drupaldork.com/2012/09/drupalcon-munich&quot;&gt;post about DrupalCon Munich&lt;/a&gt;, but didn&#039;t really talk about what it is. I expect that most of my non-client-work Drupal time for the forseeable future will be focused on the Ladder, so a bit of explanation is probably in order.&lt;/p&gt;
+&lt;p&gt;The Goal of the Drupal Ladder is to have 1% of the Drupal Community contributing to core by 2014. That&#039;s the short version. A very low percentage of users on drupal.org have contributed to core, and we&#039;d like to increase that percentage so that more people are helping maintain the system that we all use on a daily basis.&lt;/p&gt;
+&lt;p&gt;This goal is being pursued primarily through two differend kinds of events: learn sprints and issue sprints at local meetup groups. During learn sprints, attendees work through a lesson on the &lt;a href=&quot;http://drupalladder.org/ladder/ee503327-50be-1904-8d04-9499098cad64&quot;&gt;Drupal core contribution ladder&lt;/a&gt;. During issue sprints, attendees pair up and work to make some progress on a &lt;a href=&quot;http://drupal.org/project/issues/drupal?categories=All&quot;&gt;Drupal core issue&lt;/a&gt;. There&#039;s more to the initiative than that, but this is the important part, &quot;where the rubber meets the road,&quot; if you will.&lt;/p&gt;
+&lt;p&gt;Over the past few weeks, a &lt;a href=&quot;http://drupalladder.org/content/steering-group&quot;&gt;steering committee&lt;/a&gt; has been assembled to lead the effort and divvy up the work a bit. Before this, there really wasn&#039;t much headway being made on issues. There are a few parts that make up the DrupalLadder.org site: the &lt;a href=&quot;http://drupal.org/project/lessons&quot;&gt;Lessons module&lt;/a&gt; defines the lesson content type and surrounding functionality, the &lt;a href=&quot;http://drupal.org/project/ladder&quot;&gt;Lesson Ladder module&lt;/a&gt; organizes those lessons into sequential ladder rungs, and the &lt;a href=&quot;http://drupal.org/project/drupalladder&quot;&gt;Drupal Ladder install profile&lt;/a&gt; contains the lesson content that appears on DrupalLadder.org. The use of this install profile is two-fold: right now, it runs DrupalLadder.org, but soon it will also include sample modules and intentional bugs so that those who are working through the lessons can do so on a local dev site running the install profile. They will be able to use that site itself to make changes, create and apply patches, and so on.&lt;/p&gt;
+&lt;p&gt;With the formation of the steering committee, I am now the new issue sprint…guy? Leader? As the new Issue Sprint Whatever-I-Am, my focus will be on making it easy for people to start or continue running issue sprints with their local community. To begin with, I&#039;ve freshened up our &lt;a href=&quot;http://drupalladder.org/learn-sprints&quot;&gt;how-to for sprint leads&lt;/a&gt;, but I&#039;ve got a lot more to do.&lt;/p&gt;
+&lt;p&gt;The core mentoring folks have graciously allowed us to make use of a new &lt;a href=&quot;http://ladder.drupalofficehours.org/&quot;&gt;task-tracking tool that they&#039;ve developed&lt;/a&gt; to make it easier to keep track of who is doing what during the core mentoring hours in IRC. I&#039;m going to work with them to fix some bugs in the system, and get it ready to be rolled into an install profile. This way, we will be able to setup our own task tracking site so that I won&#039;t need to bug &lt;a href=&quot;http://drupal.org/user/65776&quot;&gt;xjm&lt;/a&gt; each time a new sprint leader needs the user role that will allow them to do their thing, and things like that. All user groups who are hosting issue sprints can track their issues in one place, and ensure that sprinters don&#039;t wind up working on the same thing (thus duplicating effort).&lt;/p&gt;
+&lt;p&gt;I&#039;m also going to try to talk to more sprint leaders and find out what is and is not working for them, and determine what I can be doing to iron out the rough patches. At this point, I don&#039;t really have any idea what this might entail. What works well in our group here in DC may not work well for a group in Oklahoma, for example, so I&#039;m going to start from the lessons we&#039;ve learned along the way but remain open to feedback from others.&lt;/p&gt;
+&lt;p&gt;I&#039;m really excited to have more people getting involved in organizing the Ladder initative, and especially so now that we&#039;ve broken the parts of the initiative into separate responsibilities. With different people focusing on different parts, I think we&#039;ll make a lot more progress than we have in taking care of the tasks in our issue queues, and the renewal of interest in the initiative will help get a few more sprints off the ground!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 05 Sep 2012 00:35:39 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">56 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/09/drupal-ladder#comments</comments>
+</item>
+<item>
+ <title>DrupalCon Munich</title>
+ <link>http://drupaldork.com/2012/09/drupalcon-munich</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;DrupalCon Munich took place last week—well, last-last week, I guess—and it was pretty rad. I just got home a couple days ago, myself. My wife Erin and I figured that as long as I was in Germany already, we may as well make a trip of it, so she flew out on Friday (the sprint day of the con) and we spent the weekend in Munich, then flew up to Berlin for the following week. The whole trip was a blast, but we&#039;re talking about DrupalCon here.&lt;/p&gt;
+&lt;p&gt;If I&#039;m being honest, the first couple days of the conference were largely lost on me. I was more jet-lagged than I thought, and I think a little bit culture-shocked by failing to understand just about everything that was being said around me. I took a year of German in college (eight years ago now), but that did remarkably little for my ability to communicate with people there.&lt;/p&gt;
+&lt;p&gt;Once my sleep cycle evened out and I got my legs under me, I had a great time. I wound up spending a lot of time talking with the newly-former &lt;a href=&quot;http://drupalladder.org/content/steering-group&quot;&gt;Drupal Ladder Steering Committee&lt;/a&gt; about what we were doing and how, which was exactly the refresher I needed for that project. The Drupal Ladder has been my primary focus in the contrib world for a couple months, but I hadn&#039;t been very enthusiastic about it of late. Doling out responsibilities and making some decisions during DrupalCon made me feel a lot better about where we&#039;re going and how we&#039;re going to get there, so the week was worth it just for that.&lt;/p&gt;
+&lt;p&gt;I also really enjoyed the &quot;Get Involved with Core Sprint&quot; on Friday. This was a sprint led primarily by the &lt;a href=&quot;http://drupal.org/core-office-hours&quot;&gt;core mentoring crew&lt;/a&gt; (meaning &lt;a href=&quot;http://drupal.org/user/65776&quot;&gt;xjm&lt;/a&gt; and &lt;a href=&quot;http://drupal.org/user/241634&quot;&gt;tim.plunkett&lt;/a&gt; this time around), and it went swimmingly. &lt;a href=&quot;http://drupal.org/user/258568&quot;&gt;Cathy&lt;/a&gt; and I hosted a BOF on Thursday afternoon to help new sprinters get setup with a local Drupal 8 site, and it wound up being remarkably effective: a bunch of first-time sprinters arrived Friday morning all setup and ready to contribute! Fellow Lullabots &lt;a href=&quot;http://www.lullabot.com/about/team/addison-berry&quot;&gt;Addi&lt;/a&gt; and &lt;a href=&quot;http://www.lullabot.com/about/team/joe-shindelar&quot;&gt;Joe&lt;/a&gt; led a workshop in the morning to get people more completely setup: local dev site, git, how to use IRC and the issue queue, etc. Between the BOF and the workshop, the entire group was firing on all cylinders by noon.&lt;/p&gt;
+&lt;p&gt;A ton of issues were worked on, and it seemed like everyone knew what they were doing: I kept wandering the room, looking for people that needed help, but no one did! Instead, I spent most of my time looking for more issues that people could work on because the group was chugging through them so quickly.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;Talking about the Ladder and helping out at the sprint were definitely the highlights of my DrupalCon. I only attended a few sessions, including the two I spoke at (&lt;a href=&quot;http://munich2012.drupal.org/program/sessions/drupal-ladder-resources-and-activities-meetups-help-members-learn-and-contribute&quot;&gt;Drupal Ladder&lt;/a&gt; and &lt;a href=&quot;http://munich2012.drupal.org/program/sessions/beer-or-not-beer-making-meetups-work&quot;&gt;Making Meetups Work&lt;/a&gt;), and didn&#039;t even make it to any core conversations, but it was a very productive week. Now I need to go back and &lt;a href=&quot;http://blip.tv/drupalcon&quot;&gt;watch the videos&lt;/a&gt; for a bunch of sessions I missed!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 04 Sep 2012 23:42:26 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">55 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/09/drupalcon-munich#comments</comments>
+</item>
+<item>
+ <title>It&#039;s almost time for Munich!</title>
+ <link>http://drupaldork.com/2012/08/its-almost-time-munich</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Holy crap, can you believe that DrupalCon Munich is just two weeks away? This summer has been flying by!&lt;/p&gt;
+&lt;p&gt;I, for one, am equal parts excited and apprehensive. DrupalCons are always exciting: I get to see friends I&#039;ve made over the last couple years, and always meet a ton of new people. But, at the same time, I&#039;m a little bit worried about two things: finding my way around, and being on a panel.&lt;/p&gt;
+&lt;p&gt;I really shouldn&#039;t be nervous about the panel. I&#039;ll be speaking with &lt;a href=&quot;http://drupal.org/user/298852&quot;&gt;Karyn Cassio&lt;/a&gt;, &lt;a href=&quot;http://drupal.org/user/65088&quot;&gt;Addi Berry&lt;/a&gt;, and &lt;a href=&quot;http://drupal.org/user/72810&quot;&gt;Paul Johnson&lt;/a&gt; about &lt;a href=&quot;http://munich2012.drupal.org/program/sessions/beer-or-not-beer-making-meetups-work&quot;&gt;making local meetups work&lt;/a&gt;, in the last session slot on Wednesday. All three of them are easy to talk to, and we&#039;ve got a ton of information and ideas to share.&lt;/p&gt;
+&lt;p&gt;Getting around should be…ok. I did take a year of German in college, so I know some basics, but not enough to understand the answer to any question that I might manage to ask. I know that a lot of people speak English, and I&#039;m banking on that more than anything else. This afternoon, I finally took a close look at the (very intimidating) &lt;a href=&quot;http://www.mvv-muenchen.de/fileadmin/media/Dateien/plaene_en/pdf/netz_2012_en.pdf&quot;&gt;map of the train network&lt;/a&gt;, and the part I need to navigate will be pretty straightforward. The map looked way more confusing when I just gave it a once-over before, because the station names are hard to differentiate when you don&#039;t know what most of them mean.&lt;/p&gt;
+&lt;p&gt;Getting from the airport to the Westin Grand will be fine, but at the end of the week, I need to make my way closer to the middle of the city to meet my wife at the hotel whe&#039;re we&#039;ll be spending that weekend—and she needs to find her way there from the airport, without even the cursory understanding of German that I&#039;ve got. Without cell phones, it will be hard to get in touch to coordinate or warn about delays. I&#039;ve been trying to figure out the situation with cell phones in Germany, and I think we might be best served by a couple cheap pre-paid voice-only units, instead of trying to get an actual data plan on our iPhones.&lt;/p&gt;
+&lt;p&gt;So yes: it&#039;s all very exciting and just a little bit terrifying, but I can&#039;t wait to see everyone in Munich!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Mon, 06 Aug 2012 01:00:51 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">54 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/08/its-almost-time-munich#comments</comments>
+</item>
+<item>
+ <title>Video: Drupal is Stupid (But I Love It Anyway)</title>
+ <link>http://drupaldork.com/2012/07/video-drupal-stupid-i-love-it-anyway</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;This past weekend was the second CapitalCamp here in DC, and I wound up doing a session on Friday morning. I was one of the organizers of the event, but submitted two sessions early on (mostly to start filling up the Proposed Sessions list). When it became clear that we had a ton of great session proposals (and I was going to have my hands full all weekend), I withdrew my proposals.&lt;/p&gt;
+&lt;p&gt;But, a speaker had to cancel his session a few days before the camp, and since I had previously done this talk at the DC PHP user group back in November, I was asked if I could fill the slot by doing it again. I think it worked out well: I&#039;ve been asked by a lot of people who couldn&#039;t make it back in November if there was a video available, but at the time, I didn&#039;t really know how to use Keynote and failed to record it. This open timeslot gave me a chance to record a video, and to update some of the content of the talk.&lt;/p&gt;
+&lt;p&gt;In any case, I think it went pretty well. The audio peters out near the end: the Q&amp;amp;A became more of a discussion, which was great at the time but didn&#039;t get picked up by the mic.&lt;/p&gt;
+&lt;iframe src=&quot;http://player.vimeo.com/video/46554274&quot; width=&quot;500&quot; height=&quot;375&quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 29 Jul 2012 14:18:24 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">53 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/07/video-drupal-stupid-i-love-it-anyway#comments</comments>
+</item>
+<item>
+ <title>Github: Creating Pull Requests for Existing Issues</title>
+ <link>http://drupaldork.com/2012/06/github-creating-pull-requests-existing-issues</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Did a quick screencast with some coworkers today on the latest thing I love about Github. Last time, I covered &lt;a href=&quot;http://drupaldork.com/2012/04/intro-github-pull-requests&quot;&gt;how to create pull requests&lt;/a&gt;. This time, I explain how to create a pull request out of an existing issue. Since pull requests are basically just issues with commits attached, it&#039;s often undesirable to create a new pull request to address something reported in an existing issue, because you just wind up with two issues that address the same thing.&lt;/p&gt;
+&lt;p&gt;There isn&#039;t a way to do this through the Github interface, but the &lt;a href=&quot;https://github.com/defunkt/hub&quot;&gt;hub command line tool&lt;/a&gt; adds some special sauce for working with Github, and the thing I use it for most is opening pull requests for issues.&lt;/p&gt;
+&lt;p&gt;The quality is crummy, so turn up the quality to 480p.&lt;/p&gt;
+&lt;object width=&quot;640&quot; height=&quot;360&quot;&gt;&lt;param name=&quot;movie&quot; value=&quot;http://www.youtube.com/v/suS3lDn20HY?version=3&amp;amp;hl=en_US&quot; /&gt;&lt;param name=&quot;allowFullScreen&quot; value=&quot;true&quot; /&gt;&lt;param name=&quot;allowscriptaccess&quot; value=&quot;always&quot; /&gt;&lt;embed src=&quot;http://www.youtube.com/v/suS3lDn20HY?version=3&amp;amp;hl=en_US&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;640&quot; height=&quot;360&quot; allowscriptaccess=&quot;always&quot; allowfullscreen=&quot;true&quot;&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 05 Jun 2012 19:39:06 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">50 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/06/github-creating-pull-requests-existing-issues#comments</comments>
+</item>
+<item>
+ <title>Let&#039;s Talk About Sex</title>
+ <link>http://drupaldork.com/2012/05/lets-talk-about-sex</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;As it often is, sexism in the tech industry was the topic of a lot of back-and-forth on Twitter this past week. It started with &lt;a href=&quot;https://twitter.com/populist/status/205016245936979968&quot;&gt;the revelation&lt;/a&gt;&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; that a modeling agency in Denver &lt;a href=&quot;http://www.modelbuzz.tv/2012/03/14/denver-modeling-agency-finds-success-at-drupalcon/&quot;&gt;had been contracted to staff &quot;booth babes&quot;&lt;/a&gt; in the DrupalCon exhibit hall back in March, and continued (as it so often does) with debate over what behavior is appropriate at professional-ish industry events like DrupalCon.&lt;/p&gt;
+&lt;p&gt;The issue of &quot;booth babes&quot;&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; is the one that got under my skin the most, so let&#039;s talk about that. First, allow me outline my basic position on the issue:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;I have no problem with sex. Sex can be a natural, zesty enterprise, but that doesn&#039;t mean it has a place at professional events.&lt;/li&gt;
+&lt;li&gt;I believe that the mere presence of &quot;booth babes&quot; is actively detrimental to the gender equality of any event or the industry in which it takes place.&lt;/li&gt;
+&lt;li&gt;I do not think a dress code for booth staff or event attendees is appropriate, nor am I convinced (yet) that this is a problem that should be addressed by an official code of conduct or exhibitor agreement or anything like that.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;The problem with booth babes is simple: hiring sexy ladies to stand at a booth and attract men to it results in those men assuming that beautiful women in the booths are only there to attract them.&lt;/p&gt;
+&lt;p&gt;That&#039;s it. It&#039;s not some puritanical view of sex, as was suggested to me, nor a problem with sexiness, as was suggested to others.&lt;/p&gt;
+&lt;p&gt;I don&#039;t know why this is so hard to get one&#039;s head around. Booth babes are there only to sexually arouse men&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; and draw them into the booth. They cannot answer questions about the product or provide deep information about it.&lt;/p&gt;
+&lt;p&gt;Their knowledge of the company or product is not the problem, though; the problem is that everyone comes to assume that the sexy ladies in the booths are just that: sexy ladies who don&#039;t know anything about the product. Women who are actually active in the community and industry (and who already have a hard enough time being taken seriously in said) are then brushed aside by those who assume that they&#039;re just there as eye candy.&lt;/p&gt;
+&lt;p&gt;This fact was driven home for me when I was talking to a guy at DrupalCamp Maryland a few months ago. The topic came up, and he proudly announced that when he&#039;s interested in a company in an exhibit hall, he&#039;ll walk straight past any women to the nerdy-looking dude at the back of the booth, figuring that he&#039;s the guy who actually knows what he&#039;s talking about.&lt;/p&gt;
+&lt;p&gt;He could not have made my point better for me, but I still had to slowly spell it out for him: this exactly problem. The women you walk past may well be the lead developer(s) on the product, but you assume they&#039;re just there as eye candy because of the fact that booth babes are around.&lt;/p&gt;
+&lt;p&gt;This is why some of the conversation on Twitter this week infuriated me so. It&#039;s not about any puritanical view of sex. It&#039;s not about being uncomfortable with sexiness. It&#039;s entirely about further marginalizing women in an industry where gender equality is a long-standing issue that needs to be addressed. There&#039;s no way that this is hard to comprehend, nor did anyone actually answer to this point on Twitter, so I can only assume that they would rather pretend that it&#039;s not a real issue.&lt;/p&gt;
+&lt;p&gt;The closest thing I got to a real response on this was the assertion that the person I was talking to had sexy guys at his booth, and I was being sexist for assuming that &quot;booth babes&quot; had to mean women.&lt;/p&gt;
+&lt;p&gt;Seriously, dude?&lt;/p&gt;
+&lt;p&gt;This point—and the long conversation that followed the next day, about what constitutes appropriate behavior among people who are attracted to others at tech events—points to an incredible blind spot that plagues members of our community who refuse to see this as a problem:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;There is not gender equality in our world right now.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You can argue that it&#039;s sexist to assume that &quot;booth babes&quot; refers to women. You can argue from the position that men and women should be treated equally, and that women can hit on men just as men can hit on women, and there&#039;s no difference between the two. I can understand why one would take this position, from a logical standpoint, but it simply has no bearing on reality. Behaving as if we have achieved gender equality—and thus, that these issues do not exist—does nothing to rectify those existing inequalities. We can&#039;t just pretend that treating everyone equally will eventually make it so; it&#039;s going to take more than that.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;As I noted earlier, I don&#039;t believe that an official code of conduct is the best way to address these problems: tech events should have one in place, but it will take more than that to make a real difference, and there are issues that cannot be adequately addressed by rules and regulations. For example, I was also told I was being sexist for proposing that women at these events should be held to a dress code, to prevent the kind of outfits that booth babes might wear. To be clear, I never proposed nor inferred this, but it indicates the problem with addressing this by official means: should there be a dress code in place? Should exhibit hall staff be limited to full-time employees of each company exhibiting? How can you regulate stuff like that?&lt;/p&gt;
+&lt;p&gt;I maintain that peer pressure is going to be a much more effective solution. We need to make it clear that we will not do business with the kind of company that thinks women are only good for attracting horny geeks to their booth. We need to call out colleagues who behave inappropriately, who make sexist jokes or harass other attendees or staff at these events. We need to explain—again and again and with small words when necessary—why &quot;booth babes&quot; and &quot;booth dudes&quot; are inherently unequal.&lt;/p&gt;
+&lt;p&gt;We&#039;d all like to believe that gender inequality is a thing of the past, but people are so willing to demonstrate, time after time, that we aren&#039;t there yet.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;Further reading:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;http://shkspr.mobi/blog/index.php/2012/03/dear-technology-world-please-stop-trying-to-give-me-an-erection/&quot;&gt;Dear Technology World – Please Stop Trying To Give Me An Erection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://notrichyet.wordpress.com/2012/03/23/whats-the-big-deal/&quot;&gt;What’s the big deal?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.tommorris.org/post/19778985050/newsflash-sexism-in-geek-communities-demeans-everybody&quot;&gt;Newsflash: sexism in geek communities demeans everybody&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.rarlindseysmash.com/index.php?n=1313531468&quot;&gt;The Elephant in the Computer Lab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr /&gt;&lt;ol&gt;&lt;li id=&quot;fn:1&quot;&gt;
+&lt;p&gt;It&#039;s worth noting that the modeling agency blogged about this months ago, but it only got any attention (as far as I know) when someone discovered the blog post last week. &lt;a href=&quot;#fnref:1&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn:2&quot;&gt;
+&lt;p&gt;Do I need to keep putting &quot;booth babes&quot; in quotes? I feel like I should just because it is such an air-quotey term, but we all know what I&#039;m talking about. &lt;a href=&quot;#fnref:2&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn:3&quot;&gt;
+&lt;p&gt;Well, straight men and lesbians, but we know what the target demographic is. &lt;a href=&quot;#fnref:3&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Mon, 28 May 2012 20:59:54 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">49 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/05/lets-talk-about-sex#comments</comments>
+</item>
+<item>
+ <title>Intro to Github Pull Requests</title>
+ <link>http://drupaldork.com/2012/04/intro-github-pull-requests</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;If your company is hosting code in &lt;a href=&quot;https://github.com/&quot;&gt;Github&lt;/a&gt;, I sure hope you aren&#039;t committing directly to &lt;code&gt;master&lt;/code&gt;. This quick screencast demonstrates how to use pull requests so that teammates can review code before it gets merged into the master branch.&lt;/p&gt;
+&lt;p&gt;Make sure you turn on HD so that the text is legible.&lt;/p&gt;
+&lt;iframe src=&quot;http://player.vimeo.com/video/41045197&quot; width=&quot;500&quot; height=&quot;313&quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Thu, 26 Apr 2012 00:43:41 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">48 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/04/intro-github-pull-requests#comments</comments>
+</item>
+<item>
+ <title>Module Release Announcement: Node Subpages 7.x-2.0-beta1</title>
+ <link>http://drupaldork.com/module_release/node_subpages/7.x-2.0-beta1</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I&#039;ve been on a bit of a &lt;a href=&quot;http://drupal.org/project/ctools&quot;&gt;CTools&lt;/a&gt; kick lately, and my latest experiment was &lt;a href=&quot;http://drupal.org/project/node_subpages&quot;&gt;Node Subpages&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Node Subpages allows site admins to configure per-content-type subpages that display the contents of a view or a field on the node. The project page has a more complete use case and example links.&lt;/p&gt;
+&lt;p&gt;I just posted the first 7.x-2.x release, which replaces the subpage content handling with CTools plugins. Previously, only Fields and Views could be used as the content of subpages, and they were the two hard-coded options. They&#039;re still the only two options, but the configuration and content for the subpages are provided by plugins. Any module can define additional plugins, though I still need to document how these plugins can be added and what they need to define. Next up, I might add Panels as subpage content, if I can figure out how to pass the node as a context.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://drupal.org/project/webform_ab&quot;&gt;Webform A/B Testing&lt;/a&gt; was the first module that I switched to use plugins, and that one actually went more smoothly. I started working on this update to Node Subpages at the airport when I was leaving &lt;a href=&quot;http://denver2012.drupal.org/&quot;&gt;Denver&lt;/a&gt; a month ago, but it gave me such grief that I sidelined it for a few weeks. Now, I think it&#039;s in pretty good shape but would love to get feedback from other people. I&#039;m the only one who has tried it, so it really needs more testing before I can do a full 7.x-2.0 release. I&#039;d also love feedback on the way I implemented the plugins: I found a few examples for building CTools plugins, and some with differing advice, so I&#039;d be very interested to hear from others who have built modules to make use of plugins.&lt;/p&gt;
+&lt;p&gt;In any case, the next task for this project will be making the configuration exportable. If a content type is exported into a &lt;a href=&quot;http://drupal.org/project/features&quot;&gt;Features&lt;/a&gt; module, it would make sense that the subpage configuration would be included, but that&#039;s not the case right now. My plan is to use the &lt;a href=&quot;http://drupal.org/project/ctex&quot;&gt;CTools Export UI Template&lt;/a&gt; example module as a starting point.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 22 Apr 2012 21:10:01 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">47 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/module_release/node_subpages/7.x-2.0-beta1#comments</comments>
+</item>
+</channel>
+</rss>

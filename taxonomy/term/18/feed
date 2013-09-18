@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Git</title>
+ <link>http://drupaldork.com/vocabulary1/git</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Github: Creating Pull Requests for Existing Issues</title>
+ <link>http://drupaldork.com/2012/06/github-creating-pull-requests-existing-issues</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Did a quick screencast with some coworkers today on the latest thing I love about Github. Last time, I covered &lt;a href=&quot;http://drupaldork.com/2012/04/intro-github-pull-requests&quot;&gt;how to create pull requests&lt;/a&gt;. This time, I explain how to create a pull request out of an existing issue. Since pull requests are basically just issues with commits attached, it&#039;s often undesirable to create a new pull request to address something reported in an existing issue, because you just wind up with two issues that address the same thing.&lt;/p&gt;
+&lt;p&gt;There isn&#039;t a way to do this through the Github interface, but the &lt;a href=&quot;https://github.com/defunkt/hub&quot;&gt;hub command line tool&lt;/a&gt; adds some special sauce for working with Github, and the thing I use it for most is opening pull requests for issues.&lt;/p&gt;
+&lt;p&gt;The quality is crummy, so turn up the quality to 480p.&lt;/p&gt;
+&lt;object width=&quot;640&quot; height=&quot;360&quot;&gt;&lt;param name=&quot;movie&quot; value=&quot;http://www.youtube.com/v/suS3lDn20HY?version=3&amp;amp;hl=en_US&quot; /&gt;&lt;param name=&quot;allowFullScreen&quot; value=&quot;true&quot; /&gt;&lt;param name=&quot;allowscriptaccess&quot; value=&quot;always&quot; /&gt;&lt;embed src=&quot;http://www.youtube.com/v/suS3lDn20HY?version=3&amp;amp;hl=en_US&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;640&quot; height=&quot;360&quot; allowscriptaccess=&quot;always&quot; allowfullscreen=&quot;true&quot;&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 05 Jun 2012 19:39:06 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">50 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/06/github-creating-pull-requests-existing-issues#comments</comments>
+</item>
+<item>
+ <title>Intro to Github Pull Requests</title>
+ <link>http://drupaldork.com/2012/04/intro-github-pull-requests</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;If your company is hosting code in &lt;a href=&quot;https://github.com/&quot;&gt;Github&lt;/a&gt;, I sure hope you aren&#039;t committing directly to &lt;code&gt;master&lt;/code&gt;. This quick screencast demonstrates how to use pull requests so that teammates can review code before it gets merged into the master branch.&lt;/p&gt;
+&lt;p&gt;Make sure you turn on HD so that the text is legible.&lt;/p&gt;
+&lt;iframe src=&quot;http://player.vimeo.com/video/41045197&quot; width=&quot;500&quot; height=&quot;313&quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Thu, 26 Apr 2012 00:43:41 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">48 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/04/intro-github-pull-requests#comments</comments>
+</item>
+<item>
+ <title>Insanely Useful Tips for Git on the Command Line</title>
+ <link>http://drupaldork.com/2011/05/insanely-useful-tips-git-command-line</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I&#039;ve been meaning to write something up about these for a while, because they have made my development flow so much better.&lt;/p&gt;
+&lt;h2&gt;Tab completion&lt;/h2&gt;
+&lt;p&gt;Arguably, the best thing about git is lightweight branches. But, I had been resisting using them, because it was a pain in the neck to keep track of them and re-type or copy-pasta the name for every checkout or merge. I rely heavily on tab completion in the command line, because I know I&#039;ll mistype things otherwise, and spend way too much time trying to figure out why something is broke later on - for example, after mistyping the target of a symlink.&lt;/p&gt;
+&lt;p&gt;As it turns out, git ships with a script to handle tab completion: you just need to find and enable it.&lt;/p&gt;
+&lt;p&gt;Since I use &lt;a href=&quot;http://mxcl.github.com/homebrew/&quot;&gt;Homebrew&lt;/a&gt; to install and update packages (Mac users: you should too), my git executable is in &lt;code&gt;/usr/local/Cellar/git/1.7.3.4/bin&lt;/code&gt;. You need to find &lt;code&gt;git-completion.bash&lt;/code&gt;. In my case, it&#039;s in a sibling directory: &lt;code&gt;/usr/local/Cellar/git/1.7.3.4/etc/bash_completion.d/git-completion.bash&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Once you find it, include it in your &lt;code&gt;.bash_profile&lt;/code&gt;, replacing the path specified here with the location you found:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&lt;br /&gt;
+# Use git auto-completion&lt;br /&gt;
+source /usr/local/Cellar/git/1.7.3.4/etc/bash_completion.d/git-completion.bash&lt;br /&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Tab completion works for git commands (reset, status, commit, etc) as well as branch names.&lt;/p&gt;
+&lt;h2&gt;Branch name in prompt&lt;/h2&gt;
+&lt;p&gt;This one would not have even occurred to me, but I came across it in &lt;a href=&quot;http://www.lullabot.com/articles/git-best-practices-history-viewing-tips-and-displaying-branch-context#comment-8557&quot;&gt;a comment on a Lullabot blog post about git&lt;/a&gt;. You can show the current branch in the prompt when in a git repo directory, like this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;brockbookpro:multi_smtp (6.x-1.x) $&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Again, modify your &lt;code&gt;.bash_profile&lt;/code&gt; to add this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&lt;br /&gt;
+function parse_git_branch {&lt;br /&gt;
+  git branch --no-color 2&amp;gt; /dev/null | sed -e &#039;/^[^*]/d&#039; -e &#039;s/* \(.*\)/(\1) /&#039;&lt;br /&gt;
+}&lt;br /&gt;
+export PS1=&quot;\h:\W \$(parse_git_branch)\$ &quot;&lt;br /&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;If you&#039;re working on a project with a lot of branches, this will make life easier.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Fri, 13 May 2011 00:52:07 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">21 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/05/insanely-useful-tips-git-command-line#comments</comments>
+</item>
+</channel>
+</rss>

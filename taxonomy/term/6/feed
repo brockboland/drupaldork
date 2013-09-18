@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - lullabot</title>
+ <link>http://drupaldork.com/category/tags/lullabot</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Lullabot Module Development Deep Dive Week</title>
+ <link>http://drupaldork.com/content/lullabot-module-development-deep-dive-week</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;(Originally posted on &lt;a href=&quot;http://www.brockboland.com/2010/07/lullabot-module-development-deep-dive-week&quot;&gt;BrockBoland.com&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;I spent the second half of this past week at the Hotel Palomar for the advanced portion of the &lt;a href=&quot;http://www.lullabot.com/events/workshops/drupal-module-development-deep-dive-week-washington-dc-2010-07-12&quot;&gt;Lullabot Drupal Module Development Deep Dive Week&lt;/a&gt;. I&#039;m still on a little bit of a nerd high: it was an interesting, invigorating, and exciting three days that left me wanting to jump right into the issue queue and start fixing stuff, testing patches, and writing modules. I can only imagine how I&#039;d feel after a full Drupalcon. I wish I could also go to the &lt;a href=&quot;http://www.lullabot.com/events/workshops/drupal-theming-portland-or-2010&quot;&gt;theming deep dive week in Portland&lt;/a&gt;, and I would definitely recommend it to any Drupal developer who can make it: the Lullabots are great. Since I started coming down with the plague sometime Thursday, I haven&#039;t done much but lay around and drink tea since leaving the hotel last night. I still need to organize all my notes and review the presentations, and then there&#039;s a long list of links to articles and modules I want to review. Over the three days I was there, we covered:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Views integration &lt;/li&gt;
+&lt;li&gt;AHAH in Forms API &lt;/li&gt;
+&lt;li&gt;CCK integration &lt;/li&gt;
+&lt;li&gt;Securing your code &lt;/li&gt;
+&lt;li&gt;Using alter hooks &lt;/li&gt;
+&lt;li&gt;Defining your own hooks &lt;/li&gt;
+&lt;li&gt;Keeping content/configuration (&quot;contentfiguration&quot; in &lt;a href=&quot;http://www.lullabot.com/about/team/jeff-eaton&quot;&gt;Eaton&lt;/a&gt;-speak) in code (and thus, in source control) &lt;/li&gt;
+&lt;li&gt;Using Drush &lt;/li&gt;
+&lt;li&gt;Features module &lt;/li&gt;
+&lt;li&gt;Writing tests with Simpletest &lt;/li&gt;
+&lt;li&gt;Changes in Drupal 7 &lt;/li&gt;
+&lt;li&gt;How to contribue code&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;A few of these areas really caught my interest, like unit testing and contributing code back. I&#039;m hoping I can make some time to experiment in the coming weeks, and intend to write about it here when I do (I don&#039;t have many readers, I know, but I find myself referring back to posts on here all the time when I&#039;m trying to remember how I did something before).&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 18 Jul 2010 01:02:04 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">5 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/content/lullabot-module-development-deep-dive-week#comments</comments>
+</item>
+</channel>
+</rss>

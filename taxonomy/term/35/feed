@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - sexism</title>
+ <link>http://drupaldork.com/vocabulary_2/sexism</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Let&#039;s Talk About Sex</title>
+ <link>http://drupaldork.com/2012/05/lets-talk-about-sex</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;As it often is, sexism in the tech industry was the topic of a lot of back-and-forth on Twitter this past week. It started with &lt;a href=&quot;https://twitter.com/populist/status/205016245936979968&quot;&gt;the revelation&lt;/a&gt;&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; that a modeling agency in Denver &lt;a href=&quot;http://www.modelbuzz.tv/2012/03/14/denver-modeling-agency-finds-success-at-drupalcon/&quot;&gt;had been contracted to staff &quot;booth babes&quot;&lt;/a&gt; in the DrupalCon exhibit hall back in March, and continued (as it so often does) with debate over what behavior is appropriate at professional-ish industry events like DrupalCon.&lt;/p&gt;
+&lt;p&gt;The issue of &quot;booth babes&quot;&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; is the one that got under my skin the most, so let&#039;s talk about that. First, allow me outline my basic position on the issue:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;I have no problem with sex. Sex can be a natural, zesty enterprise, but that doesn&#039;t mean it has a place at professional events.&lt;/li&gt;
+&lt;li&gt;I believe that the mere presence of &quot;booth babes&quot; is actively detrimental to the gender equality of any event or the industry in which it takes place.&lt;/li&gt;
+&lt;li&gt;I do not think a dress code for booth staff or event attendees is appropriate, nor am I convinced (yet) that this is a problem that should be addressed by an official code of conduct or exhibitor agreement or anything like that.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;The problem with booth babes is simple: hiring sexy ladies to stand at a booth and attract men to it results in those men assuming that beautiful women in the booths are only there to attract them.&lt;/p&gt;
+&lt;p&gt;That&#039;s it. It&#039;s not some puritanical view of sex, as was suggested to me, nor a problem with sexiness, as was suggested to others.&lt;/p&gt;
+&lt;p&gt;I don&#039;t know why this is so hard to get one&#039;s head around. Booth babes are there only to sexually arouse men&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; and draw them into the booth. They cannot answer questions about the product or provide deep information about it.&lt;/p&gt;
+&lt;p&gt;Their knowledge of the company or product is not the problem, though; the problem is that everyone comes to assume that the sexy ladies in the booths are just that: sexy ladies who don&#039;t know anything about the product. Women who are actually active in the community and industry (and who already have a hard enough time being taken seriously in said) are then brushed aside by those who assume that they&#039;re just there as eye candy.&lt;/p&gt;
+&lt;p&gt;This fact was driven home for me when I was talking to a guy at DrupalCamp Maryland a few months ago. The topic came up, and he proudly announced that when he&#039;s interested in a company in an exhibit hall, he&#039;ll walk straight past any women to the nerdy-looking dude at the back of the booth, figuring that he&#039;s the guy who actually knows what he&#039;s talking about.&lt;/p&gt;
+&lt;p&gt;He could not have made my point better for me, but I still had to slowly spell it out for him: this exactly problem. The women you walk past may well be the lead developer(s) on the product, but you assume they&#039;re just there as eye candy because of the fact that booth babes are around.&lt;/p&gt;
+&lt;p&gt;This is why some of the conversation on Twitter this week infuriated me so. It&#039;s not about any puritanical view of sex. It&#039;s not about being uncomfortable with sexiness. It&#039;s entirely about further marginalizing women in an industry where gender equality is a long-standing issue that needs to be addressed. There&#039;s no way that this is hard to comprehend, nor did anyone actually answer to this point on Twitter, so I can only assume that they would rather pretend that it&#039;s not a real issue.&lt;/p&gt;
+&lt;p&gt;The closest thing I got to a real response on this was the assertion that the person I was talking to had sexy guys at his booth, and I was being sexist for assuming that &quot;booth babes&quot; had to mean women.&lt;/p&gt;
+&lt;p&gt;Seriously, dude?&lt;/p&gt;
+&lt;p&gt;This point—and the long conversation that followed the next day, about what constitutes appropriate behavior among people who are attracted to others at tech events—points to an incredible blind spot that plagues members of our community who refuse to see this as a problem:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;There is not gender equality in our world right now.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You can argue that it&#039;s sexist to assume that &quot;booth babes&quot; refers to women. You can argue from the position that men and women should be treated equally, and that women can hit on men just as men can hit on women, and there&#039;s no difference between the two. I can understand why one would take this position, from a logical standpoint, but it simply has no bearing on reality. Behaving as if we have achieved gender equality—and thus, that these issues do not exist—does nothing to rectify those existing inequalities. We can&#039;t just pretend that treating everyone equally will eventually make it so; it&#039;s going to take more than that.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;As I noted earlier, I don&#039;t believe that an official code of conduct is the best way to address these problems: tech events should have one in place, but it will take more than that to make a real difference, and there are issues that cannot be adequately addressed by rules and regulations. For example, I was also told I was being sexist for proposing that women at these events should be held to a dress code, to prevent the kind of outfits that booth babes might wear. To be clear, I never proposed nor inferred this, but it indicates the problem with addressing this by official means: should there be a dress code in place? Should exhibit hall staff be limited to full-time employees of each company exhibiting? How can you regulate stuff like that?&lt;/p&gt;
+&lt;p&gt;I maintain that peer pressure is going to be a much more effective solution. We need to make it clear that we will not do business with the kind of company that thinks women are only good for attracting horny geeks to their booth. We need to call out colleagues who behave inappropriately, who make sexist jokes or harass other attendees or staff at these events. We need to explain—again and again and with small words when necessary—why &quot;booth babes&quot; and &quot;booth dudes&quot; are inherently unequal.&lt;/p&gt;
+&lt;p&gt;We&#039;d all like to believe that gender inequality is a thing of the past, but people are so willing to demonstrate, time after time, that we aren&#039;t there yet.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;Further reading:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;http://shkspr.mobi/blog/index.php/2012/03/dear-technology-world-please-stop-trying-to-give-me-an-erection/&quot;&gt;Dear Technology World – Please Stop Trying To Give Me An Erection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://notrichyet.wordpress.com/2012/03/23/whats-the-big-deal/&quot;&gt;What’s the big deal?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.tommorris.org/post/19778985050/newsflash-sexism-in-geek-communities-demeans-everybody&quot;&gt;Newsflash: sexism in geek communities demeans everybody&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.rarlindseysmash.com/index.php?n=1313531468&quot;&gt;The Elephant in the Computer Lab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr /&gt;&lt;ol&gt;&lt;li id=&quot;fn:1&quot;&gt;
+&lt;p&gt;It&#039;s worth noting that the modeling agency blogged about this months ago, but it only got any attention (as far as I know) when someone discovered the blog post last week. &lt;a href=&quot;#fnref:1&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn:2&quot;&gt;
+&lt;p&gt;Do I need to keep putting &quot;booth babes&quot; in quotes? I feel like I should just because it is such an air-quotey term, but we all know what I&#039;m talking about. &lt;a href=&quot;#fnref:2&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn:3&quot;&gt;
+&lt;p&gt;Well, straight men and lesbians, but we know what the target demographic is. &lt;a href=&quot;#fnref:3&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Mon, 28 May 2012 20:59:54 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">49 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/05/lets-talk-about-sex#comments</comments>
+</item>
+</channel>
+</rss>

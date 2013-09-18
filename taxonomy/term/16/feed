@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Tips &amp; Tricks</title>
+ <link>http://drupaldork.com/category/tips-tricks</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Responsive Design Test Bookmarklet</title>
+ <link>http://drupaldork.com/2012/02/responsive-design-test-bookmarklet</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Benjamin Keen &lt;a href=&quot;http://www.benjaminkeen.com/misc/bricss/&quot;&gt;has created a fantastic, customizable bookmarklet&lt;/a&gt; that, when clicked, will show the page you&#039;re viewing in multiple screen sizes. This makes it easy to check a responsive design in multiple screen sizes as a glance. Very handy, and very simple execution.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Fri, 17 Feb 2012 22:54:51 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">39 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/02/responsive-design-test-bookmarklet#comments</comments>
+</item>
+<item>
+ <title>Local Settings for Development Sites</title>
+ <link>http://drupaldork.com/2011/11/local-settings-development-sites</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Today I&#039;d like to share a technique that we use on every site at &lt;a href=&quot;http://www.jacksonriver.com/&quot;&gt;Jackson River&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;For most projects, we have multiple developers working on different aspects of the site, and each of us has our own local development setup and checkout of the git repository. The problem we ran into, as any Drupal shop will, is the site configuration details included in &lt;code&gt;settings.php&lt;/code&gt;, and the way that those need to differ on our various development, staging, and production sites.&lt;/p&gt;
+&lt;p&gt;On some early sites, we used a switch statement in &lt;code&gt;settings.php&lt;/code&gt; that would check the requested URL, and set variables like &lt;code&gt;$db_url&lt;/code&gt; depending on that. When a new developer joined the project, they would add a new condition to the settings for whatever URL they were using (we each had our own local naming scheme, whether it was jacksonriver.com, jacksonriver.local, jr.dev, jrdev.local, and so on).&lt;/p&gt;
+&lt;p&gt;This was a terrible solution, and we stopped using it a long time ago. Instead, on every site we build, the settings file ends with an include:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;@include(&#039;local.settings.php&#039;);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;The &lt;code&gt;@&lt;/code&gt; at the beginning of the line ensures that PHP will not throw an error if the file does exist (&lt;a href=&quot;http://php.net/manual/en/language.operators.errorcontrol.php&quot;&gt;details&lt;/a&gt;). This way, we can include it in the &lt;code&gt;settings.php&lt;/code&gt; file that&#039;s committed to git—and used on the server—without it causing any errors, despite the fact that no &lt;code&gt;local.settings.php&lt;/code&gt; file will be found on the production server.&lt;/p&gt;
+&lt;p&gt;Our git repositories are alwyas set to ignore the &lt;code&gt;local.settings.php&lt;/code&gt; file. That way, each of us has our own copy with our own database credentials and other settings, and no one accidentally commits it.&lt;/p&gt;
+&lt;p&gt;There are a few other settings that I always include in mine. This is what a typical &lt;code&gt;local.settings.php&lt;/code&gt; looks like on my machine:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$db_url = &#039;mysqli://root:rootpass@localhost/client_db_name&#039;;
+
+// Make sure I can always run update.php
+$update_free_access = true;
+
+// Some sites use memcache, which overrides the cache include file from the core
+// Since I don&#039;t have memcache running on my machine, I override it back to the
+// default, and test caching on the staging server
+$conf[&#039;cache_inc&#039;] = &#039;./includes/cache.inc&#039;;
+
+// Make sure I see all the errors I want to
+error_reporting(E_ALL &amp;amp; ~E_NOTICE &amp;amp; ~E_DEPRECATED);
+ini_set(&#039;display_errors&#039;, TRUE);
+ini_set(&#039;display_startup_errors&#039;, TRUE);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;I&#039;ve found this technique so handy that I regularly add the local settings include on freelance clients as well.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sat, 19 Nov 2011 17:44:17 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">33 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/11/local-settings-development-sites#comments</comments>
+</item>
+<item>
+ <title>Insanely Useful Tips for Git on the Command Line</title>
+ <link>http://drupaldork.com/2011/05/insanely-useful-tips-git-command-line</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I&#039;ve been meaning to write something up about these for a while, because they have made my development flow so much better.&lt;/p&gt;
+&lt;h2&gt;Tab completion&lt;/h2&gt;
+&lt;p&gt;Arguably, the best thing about git is lightweight branches. But, I had been resisting using them, because it was a pain in the neck to keep track of them and re-type or copy-pasta the name for every checkout or merge. I rely heavily on tab completion in the command line, because I know I&#039;ll mistype things otherwise, and spend way too much time trying to figure out why something is broke later on - for example, after mistyping the target of a symlink.&lt;/p&gt;
+&lt;p&gt;As it turns out, git ships with a script to handle tab completion: you just need to find and enable it.&lt;/p&gt;
+&lt;p&gt;Since I use &lt;a href=&quot;http://mxcl.github.com/homebrew/&quot;&gt;Homebrew&lt;/a&gt; to install and update packages (Mac users: you should too), my git executable is in &lt;code&gt;/usr/local/Cellar/git/1.7.3.4/bin&lt;/code&gt;. You need to find &lt;code&gt;git-completion.bash&lt;/code&gt;. In my case, it&#039;s in a sibling directory: &lt;code&gt;/usr/local/Cellar/git/1.7.3.4/etc/bash_completion.d/git-completion.bash&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;Once you find it, include it in your &lt;code&gt;.bash_profile&lt;/code&gt;, replacing the path specified here with the location you found:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&lt;br /&gt;
+# Use git auto-completion&lt;br /&gt;
+source /usr/local/Cellar/git/1.7.3.4/etc/bash_completion.d/git-completion.bash&lt;br /&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Tab completion works for git commands (reset, status, commit, etc) as well as branch names.&lt;/p&gt;
+&lt;h2&gt;Branch name in prompt&lt;/h2&gt;
+&lt;p&gt;This one would not have even occurred to me, but I came across it in &lt;a href=&quot;http://www.lullabot.com/articles/git-best-practices-history-viewing-tips-and-displaying-branch-context#comment-8557&quot;&gt;a comment on a Lullabot blog post about git&lt;/a&gt;. You can show the current branch in the prompt when in a git repo directory, like this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;brockbookpro:multi_smtp (6.x-1.x) $&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Again, modify your &lt;code&gt;.bash_profile&lt;/code&gt; to add this:&lt;/p&gt;
+&lt;p&gt;&lt;code&gt;&lt;br /&gt;
+function parse_git_branch {&lt;br /&gt;
+  git branch --no-color 2&amp;gt; /dev/null | sed -e &#039;/^[^*]/d&#039; -e &#039;s/* \(.*\)/(\1) /&#039;&lt;br /&gt;
+}&lt;br /&gt;
+export PS1=&quot;\h:\W \$(parse_git_branch)\$ &quot;&lt;br /&gt;&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;If you&#039;re working on a project with a lot of branches, this will make life easier.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Fri, 13 May 2011 00:52:07 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">21 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/05/insanely-useful-tips-git-command-line#comments</comments>
+</item>
+<item>
+ <title>Search Indexing: Published vs. Unpublished</title>
+ <link>http://drupaldork.com/2011/04/search-indexing-published-vs-unpublished</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;
+    This week, I&#039;ve learning a thing or two about Drupal search indexing. On the search settings page (&lt;code&gt;admin/settings/search&lt;/code&gt;) for a client&#039;s site, the percentage of the site that had been indexed remained really low, even after running cron a few times. The search functionality still seemed to be working though, so I knew something weird was going on.&lt;/p&gt;
+&lt;p&gt;
+    What I found was that the &lt;code&gt;search_dataset&lt;/code&gt; table had well over a million records in it, so indexing was definitely happening. After checking the code used to calculate the percentage shown in the admin, I found that it only checks published nodes when determining how much content has been indexed - but, the node module chooses from &lt;strong&gt;all&lt;/strong&gt; nodes when choosig a batch to index during a cron run. Since this site had about a thousand published nodes and over 100,000 unpublished nodes (the reason for that is a different story altogether), thousands of the unpublished nodes had been indexed, but not many of the published nodes had.&lt;/p&gt;
+&lt;p&gt;
+    Now, the reported percentage in the admin doesn&#039;t really matter that much. I would like for it to give the client accurate information, but it was more important that a user&#039;s search would return all available results. If there are published nodes that have not been indexed, then search results will not be accurate.&lt;/p&gt;
+&lt;p&gt;
+    My quick solution was to make sure that published nodes would be indexed during every cron run, instead of just indexing all willy-nilly. I implemented &lt;code&gt;hook_update_index()&lt;/code&gt; by replicating &lt;code&gt;node_update_index()&lt;/code&gt;, with an extra &lt;code&gt;WHERE&lt;/code&gt; condition to restrict it to published nodes:&lt;/p&gt;
+&lt;pre&gt;
+&lt;code&gt;function mymodule_update_index() {
+  $limit = (int)variable_get(&#039;search_cron_limit&#039;, 100);
+
+  // Store the maximum possible comments per thread (used for ranking by reply count)
+  variable_set(&#039;node_cron_comments_scale&#039;, 1.0 / max(1, db_result(db_query(&#039;SELECT MAX(comment_count) FROM {node_comment_statistics}&#039;))));
+  variable_set(&#039;node_cron_views_scale&#039;, 1.0 / max(1, db_result(db_query(&#039;SELECT MAX(totalcount) FROM {node_counter}&#039;))));
+
+  $sql = &quot;SELECT n.nid FROM {node} n 
+    LEFT JOIN {search_dataset} d ON d.type = &#039;node&#039; AND d.sid = n.nid 
+    WHERE (d.sid IS NULL OR d.reindex &amp;lt;&amp;gt; 0) AND n.status=1 
+    ORDER BY d.reindex ASC, n.nid ASC&quot;;
+  $result = db_query_range($sql, 0, $limit);
+
+  while ($node = db_fetch_object($result)) {
+    _node_index_node($node);
+  }
+}   
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;
+    With the indexing batch limit set to 100, the site will index up to 200 nodes per cron run: the node module does a hundred nodes without concern for status, and my module takes care of 100 that are published.&lt;/p&gt;
+&lt;p&gt;
+    &lt;em&gt;Note: the site in question is running Drupal 6.20. It looks like this was fixed in D7: the reported percentage accounts for all nodes.&lt;/em&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Fri, 22 Apr 2011 15:08:08 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">19 at http://drupaldork.com</guid>
+</item>
+<item>
+ <title>Display Suite in Drupal 7</title>
+ <link>http://drupaldork.com/2011/04/display-suite-drupal-7</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;
+    &lt;a href=&quot;http://drupal.org/project/ds&quot;&gt;Display Suite&lt;/a&gt; for Drupal 7 included a lot of updates. The big ones are the inclusion of the previously-separate &lt;a href=&quot;http://drupal.org/project/nd&quot;&gt;Node Displays&lt;/a&gt; and &lt;a href=&quot;http://drupal.org/project/vd&quot;&gt;Views Displays&lt;/a&gt; modules, and support for more region layouts (the D6 version had a single pre-defined layout).&lt;/p&gt;
+&lt;p&gt;
+    The feature that&#039;s making my life easy today, though, is a little thing: positioning the node post date separately from the node author. This was an option in D6 too, and I knew the module could still do it, but could not for the life of me figure out how. On the Manage Dislpay tab for my content type, my only options were the node body and taxonomy fields.&lt;/p&gt;
+&lt;p&gt;
+    So, for your reference and mine: Display Suite fields only become available once you choose a layout under &quot;Layout for [node type] in default&quot; on the Manage Display tab.&lt;/p&gt;
+&lt;p&gt;
+    I have a feeling I&#039;ll forget this step in the future, but hopefully I&#039;ll remember to look here for the solution!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 19 Apr 2011 01:18:42 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">18 at http://drupaldork.com</guid>
+</item>
+<item>
+ <title>Xdebug, var_dump, and nested arrays</title>
+ <link>http://drupaldork.com/2010/12/xdebug-vardump-and-nested-arrays</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;
+    Xdebug is a must-have for local development, giving you step-through debugging and nicely formatted error messages, among other things. One of the mixed blessings it brings is that it overrides &lt;code&gt;var_dump()&lt;/code&gt;. The display is a little nicer than the default, but it also cuts off at the third level of nested arrays or objects. This cuts the legs out from under Drupal developers: &lt;b&gt;everything&lt;/b&gt; in Drupal uses nested arrays, and if you&#039;re trying to debug a problem or figure out where some data is stored, chances are good that you&#039;ll need to go five or six levels deep into an array to find your answer. Thankfully, the Xdebug developers were kind enough to include a configuration settings for this: &lt;a href=&quot;http://www.xdebug.org/docs/all_settings#var_display_max_depth&quot;&gt;xdebug.var_display_max_depth&lt;/a&gt;. You can increase the depth limit by adding a line to your &lt;code&gt;php.ini&lt;/code&gt; file. I bumped the limit to 10 on my machine: &lt;code&gt;xdebug.var_display_max_depth = 10&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Thu, 23 Dec 2010 16:25:36 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">10 at http://drupaldork.com</guid>
+</item>
+</channel>
+</rss>

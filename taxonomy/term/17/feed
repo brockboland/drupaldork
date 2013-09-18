@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - DOPE</title>
+ <link>http://drupaldork.com/category/dope</link>
+ <description>Day of Personal Enrichment
+</description>
+ <language>en</language>
+<item>
+ <title>DOPE #2: Node Subpages</title>
+ <link>http://drupaldork.com/2012/01/dope-2-node-subpages</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Today was my second Day of Personal Enrichment at &lt;a href=&quot;http://www.jacksonriver.com/&quot;&gt;Jackson River&lt;/a&gt;. DOPE days are sort of like Google&#039;s 20% time, where employees are encouraged to work on projects that interest them. We don&#039;t have the luxury of doing it one day a week, but we do spend a solid day on these projects when we can fit it in the schedule. I wrote about &lt;a href=&quot;/2011/05/dope-1-simplenews-threaded-send&quot;&gt;the first one back in May, when I did some work on the Simplenews Threaded Send&lt;/a&gt; module.&lt;/p&gt;
+&lt;p&gt;This time around, I spent the day upgrading the &lt;a href=&quot;http://drupal.org/project/node_subpages&quot;&gt;Node Subpages&lt;/a&gt; module for Drupal 7. I originally wrote this module for a client, and this past weekend I released a 6.x version (&lt;a href=&quot;/module_release/node_subpages/6.x-1.0-beta1&quot;&gt;read the release announcement here&lt;/a&gt;). The short explanation is that this module allows admins to define subpages that should be available on every node of a given content type. These subpages can display either a text field from the node, or a View. This can be seen in action on &lt;a href=&quot;http://www.drugpolicy.org/issues/medical-marijuana&quot;&gt;the Drug Policy Alliance site&lt;/a&gt;: Issue nodes like that one have subpages such as Our Priorities, Resources, and Activist Toolkit. You can read more about the module functionality on &lt;a href=&quot;http://drupal.org/project/node_subpages&quot;&gt;the project page&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Thanks to the &lt;a href=&quot;http://drupal.org/project/coder&quot;&gt;Coder Upgrade&lt;/a&gt; module, I had the basic functionality upgraded pretty quickly. The rest of the day was spent adding features and fixing little things that needed cleaning up. It now allows you to re-order subpages once they are created and displays all values for fields that allow multiple values (it was originally developed to display only the first value, since that was all we needed at the time). The re-ordering turned out to be a real pain in the butt. The documentation for &lt;code&gt;&lt;a href=&quot;http://api.drupal.org/api/drupal/includes--common.inc/function/drupal_add_tabledrag/7&quot;&gt;drupal_add_tabledrag()&lt;/a&gt;&lt;/code&gt; wasn&#039;t real easy to follow, but I was able to figure it out by comparing my code to &lt;code&gt;&lt;a href=&quot;http://api.drupal.org/api/drupal/modules--filter--filter.admin.inc/function/theme_filter_admin_format_filter_order/7&quot;&gt;theme_filter_admin_format_filter_order()&lt;/a&gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://drupal.org/node/1396950&quot;&gt;7.x-1.0-alpha1&lt;/a&gt; is now available on the project page. It&#039;s in alpha for now only because this version has only been run on my local dev environment, and I&#039;d like to get a few more eyes on it before tagging a stable release. Give it a spin and let me know what you think!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sat, 07 Jan 2012 01:38:53 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">36 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/01/dope-2-node-subpages#comments</comments>
+</item>
+<item>
+ <title>DOPE #1: Simplenews Threaded Send</title>
+ <link>http://drupaldork.com/2011/05/dope-1-simplenews-threaded-send</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;&lt;strong&gt;tl;dr: I release &lt;a href=&quot;http://drupal.org/project/simplenews_threaded_send&quot;&gt;Simplenews Threaded Send&lt;/a&gt; this weekend.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;Let me start by saying that I love working for &lt;a href=&quot;http://www.jacksonriver.com/&quot;&gt;Jackson River&lt;/a&gt;. About a month ago, management anounced that we would be trying out a monthly Day of Personal Enrichment, not unlike Google&#039;s 20% time, but more realistic - who can afford to spend a day a week goofing around? We&#039;ve staggered them so that the whole company doesn&#039;t shut down for a day at a time, so my first DOPE was this past Friday and I wrapped up my project over the weekend.&lt;/p&gt;
+&lt;p&gt;First, a little back story. Last year, we rebuilt the site of a member of the US House of Representatives. One of their larger requirments was to implement a mass-mailer that could be used to send daily updates to other party members and constituents - several thousand emails per day, in total. They had several SMTP servers that had been sending these mailings for some time, so we were able to continue using them without worrying about getting blacklisted as spammers by mail services. We decided to use the &lt;a href=&quot;http://drupal.org/project/simplenews&quot;&gt;Simplenews&lt;/a&gt; and &lt;a href=&quot;http://drupal.org/project/smtp&quot;&gt;SMTP Authentication Support&lt;/a&gt; modules to meet this requirement, but had to work around a few limitations:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;
+		Simlpenews sends messags during cron, one message at a time.&lt;/li&gt;
+&lt;li&gt;
+		Drupal sets a semaphore variable during a cron run to ensure that only one cron process can be running at once.&lt;/li&gt;
+&lt;li&gt;
+		Simplenews relied on this assumption, and did nothing to mark the batch of messages that were in progress.&lt;/li&gt;
+&lt;li&gt;
+		A bug in &lt;a href=&quot;http://drupal.org/project/poormanscron&quot;&gt;Poormanscron&lt;/a&gt; exposed this problem in Simplenews: when two cron processes were allowed to run at once, &lt;a href=&quot;http://drupal.org/node/361071&quot;&gt;multiple copies of the messages were sent&lt;/a&gt;.&lt;/li&gt;
+&lt;li&gt;
+		The SMTP Authentication Support module only handled a single SMTP server.&lt;/li&gt;
+&lt;/ul&gt;&lt;h2&gt;
+	Customizations&lt;/h2&gt;
+&lt;p&gt;
+	To get around these limitations and assumptions, I did the following:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;
+		Wrote a Multi SMTP module that allows multiple servers to be configured. It sits on top of the existing SMTP module, and just sets variables used by that module to determine which server to send mail to.&lt;/li&gt;
+&lt;li&gt;
+		Wrote a Simplenews Threaded Send module that would start a new thread for each SMTP server. Each of these child processes would send a single batch of messages to one SMTP server.&lt;/li&gt;
+&lt;li&gt;
+		Made some modifications to the Simplenews module to set a flag on messages that were in the process of being sent, to prevent duplicates.&lt;/li&gt;
+&lt;li&gt;
+		Implemented other modules for some custom functionality: global unsubscribe, creating a user record for newsletter subscribers (Simplenews doesn&#039;t require a record in the users table), etc.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;
+	After ironing out the kinks, this solution has been working great for the client for several months. They&#039;ve been really happy, and after showing it off, told us that other offices in the House were interested in making use of it.&lt;/p&gt;
+&lt;h2&gt;
+	DOPE project, and how it works&lt;/h2&gt;
+&lt;p&gt;
+	Which brings us, finally, to my DOPE project: refactoring Simplenews Threaded Send for public release. Don&#039;t Hack Contrib is only one step below Don&#039;t Hack Core, so I wanted to find a way to wrap the changes I had made to Simplenews into my module so that it could be installed and used without any hacks, like requiring patches to Simplenews.&lt;/p&gt;
+&lt;p&gt;
+	I had started this process months ago on my own time, but was never able to make time to wrap it up, so it was the perfect project for a DOPE. I spent Friday and part of this weekend moving Simplenews customizations into Simplenews Threaded Send, ripping out the functionality specific to the client, and testing the hell out of it.&lt;/p&gt;
+&lt;p&gt;
+	At the core, this module is based on socket connections. A Thread class (written by a former co-worker) adds pseudo-threading by opening new connections to the server. For each SMTP server that&#039;s avaialable, the module will create a Thread object. When &lt;code&gt;start()&lt;/code&gt; is called on the object, it opens a socket connection back to the same server, to a URL defined by this module with a callback that will send a batch of email. The Thread object writes the request headers to the socket and then returns, so that the module can continue processing without waiting for the response (which takes several seconds, since the &quot;child&quot; process is sending a batch of email). This way, multiple threads can be processing in parallel…sort of.&lt;/p&gt;
+&lt;p&gt;
+	At half-second intervals, each thread is polled to see if the response has fully loaded. If it has, the Thread object is re-used to open another connection, until the whole message queue has been sent. This will work around slow SMTP servers: while the thread that&#039;s sending on the slow server waits for the batch to finish, the other threads may be able to send two or three batches. A slow server won&#039;t hold up the whole process.&lt;/p&gt;
+&lt;p&gt;
+	If an SMTP server fails to send, it will be marked as &quot;inactive&quot; for four hours. This was added to prevent the module from trying over and over to use a server that&#039;s not available: occasionally, an SMTP server would get overloaded, restarted by someone else, or otherwise become unavailable for a time, so we just gave it a cooling period before attempting to use it again. Any messages that had been &quot;claimed&quot; by the thread for that server will be freed up after an hour, so that another server can process them during a later cron run.&lt;/p&gt;
+&lt;h2&gt;
+	Updates and Cleanup&lt;/h2&gt;
+&lt;p&gt;
+	Cleaning this up for release required several changes:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;
+		Removed the cURL fallback method. Early on, we had some issues with SELinux on the server blocking socket connections, and had to use cURL to make the queries as a fallback method. But, I couldn&#039;t find a way to open a cURL connection and let processing continue without completing the response. I could open connections on multiple servers at one time, but had to wait for all of them to finish before sending another round of batches through. This meant that the faster servers would sit idle while a slow server was finishing its batch. Thankfully, the SELinux configuration was fixed, so this method was only in use for a little while. I didn&#039;t even want to include it in the released module, so I pulled it all out.&lt;/li&gt;
+&lt;li&gt;
+		Moved Simplenews customizations into Simplenews Threaded Send. This meant copying some functions from Simplenews into the module to be renamed and modified slightly. For example &lt;code&gt;simplenews_threaded_send_get_spool()&lt;/code&gt; is a copy of &lt;code&gt;simplenews_get_spool()&lt;/code&gt;, but it marks the messages that are in process to prevent two threads from processing the same batch.&lt;/li&gt;
+&lt;li&gt;
+		Replaced a hacky &lt;code&gt;$send_full_spool&lt;/code&gt; bool flag with a proper &lt;code&gt;$batch_size&lt;/code&gt; int argument. Before starting the full send process, the module will send one message on each SMTP server. This will cause unavailable servers to be marked as inactive for the next four hours, so that it won&#039;t waste time trying to process an entire batch against a server that&#039;s just timing out. This argument never really made sense, especially because it would cause the &lt;code&gt;simplenews_throttle&lt;/code&gt; variable to be set to 1 for one run, then re-set to what it was before - very hacky. The new &lt;code&gt;$batch_size&lt;/code&gt; argument gets passed down the processing stack, which makes it easier to override later on for other reasons.&lt;/li&gt;
+&lt;li&gt;
+		Implemented &lt;code&gt;hook_schema_alter()&lt;/code&gt; to handle new columns needed in &lt;code&gt;simplenews_mail_spool&lt;/code&gt; table. Previously, these changes were just made right in the Simplenews module.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;
+	While I was at it, I also updated the Multi SMTP module to give more helpful messages to admins, and to add a check for the necessary &lt;a href=&quot;http://phpmailer.worxware.com/&quot;&gt;PHPMailer&lt;/a&gt; library used by the SMTP Authentication Support module. These modules can be found here:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;
+		&lt;a href=&quot;http://drupal.org/project/simplenews_threaded_send&quot;&gt;Simplenews Threaded Send&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;
+		&lt;a href=&quot;http://drupal.org/project/multi_smtp&quot;&gt;Multi SMTP&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;h2&gt;
+	Release Plan&lt;/h2&gt;
+&lt;p&gt;
+	The version of Simplenews Threaded Send that&#039;s available on drupal.org right now is marked as 6.x-1.0-beta2. While the client has been using the module successfully for a number of months, so much refactoring was done that I would like for it to get some more testing in the wild before I make a point release.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 01 May 2011 17:39:58 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">20 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/05/dope-1-simplenews-threaded-send#comments</comments>
+</item>
+</channel>
+</rss>

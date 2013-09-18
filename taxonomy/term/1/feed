@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Drush</title>
+ <link>http://drupaldork.com/category/category/drush</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Drush with Homebrew &amp; MAMP Pro</title>
+ <link>http://drupaldork.com/2011/01/drush-homebrew-mamp-pro</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Sometime over the past few weeks, &lt;a href=&quot;http://drupal.org/project/drush&quot;&gt;Drush&lt;/a&gt; stopped working for me. I could run &lt;code&gt;drush st&lt;/code&gt; just fine, but anything that actually touched the database (like &lt;code&gt;drush cc&lt;/code&gt; or &lt;code&gt;drush up&lt;/code&gt;) gave me the dreaded &quot;Drush was not able to start (bootstrap) the Drupal database&quot; error. And since I&#039;m always tweaking and changing settings on my system, I had no idea what I had done to break it.&lt;/p&gt;
+&lt;p&gt;My first thought was that I had killed it with &lt;a href=&quot;http://mxcl.github.com/homebrew/&quot;&gt;Homebrew&lt;/a&gt;. I recently nuked my manual install of Drush so I could use Homebrew to update it every now and then. Once you install Homebrew, you can have Drush installed and configured really easily: brew install drush The same command will update it, too. But that wasn&#039;t the problem.&lt;/p&gt;
+&lt;p&gt;I&#039;m also using &lt;a href=&quot;http://www.mamp.info/&quot;&gt;MAMP Pro&lt;/a&gt; for local development, so that was the next culprit. I&#039;m really not sure what happened - or for that matter, why I was able to run MAMP at all - but the php binary was no longer executable (or maybe, never had been?). This didn&#039;t seem at all like it would be the problem: after all, Drush was executing, and claimed to have a problem accessing the database. Still, changing the permissions on that binary did the trick:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;
+sudo chmod a+x /Applications/MAMP/bin/php5.2/bin/php
+sudo chmod a+x /Applications/MAMP/bin/php5.3/bin/php
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Since I sometimes have to switch between PHP 5.2 and 5.3 for testing, I made sure to hit both versions.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 12 Jan 2011 13:57:01 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">11 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/01/drush-homebrew-mamp-pro#comments</comments>
+</item>
+<item>
+ <title>Updating Drupal Core with Drush</title>
+ <link>http://drupaldork.com/content/updating-drupal-core-drush</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;(Originally posted on &lt;a href=&quot;http://www.brockboland.com/2010/08/updating-drupal-core-drush&quot;&gt;BrockBoland.com&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;Sometimes I want to update the Drupal core without updating all the modules and themes I have installed. By default, &lt;code&gt;drush up&lt;/code&gt; will update everything, but that&#039;s not what I wanted to do today. This seems like the kind of thing that would be easy to find on Google, but no such luck. So, for the benefit of the next drush newb:&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;codeblock&quot;&gt;drush up drupal&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;Makes sense, right?&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Thu, 12 Aug 2010 14:01:32 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">2 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/content/updating-drupal-core-drush#comments</comments>
+</item>
+</channel>
+</rss>

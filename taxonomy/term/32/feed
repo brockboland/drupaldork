@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Drupal 7</title>
+ <link>http://drupaldork.com/drupal_version/drupal-7</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Trigger a javascript event when an autocomplete field changes</title>
+ <link>http://drupaldork.com/2013/01/trigger-javascript-event-when-autocomplete-field-changes</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Related to my &lt;a href=&quot;http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs&quot;&gt;fieldset summary problem&lt;/a&gt;: autocomplete fields do not trigger the &lt;code&gt;change&lt;/code&gt; event in Javascript, for some reason. I wound up stealing part of a patch I found somewhere (I would link to it if I could find it in my browser history) in order to override the autocomplete prototype function and trigger a new &lt;code&gt;autocompleteSelect&lt;/code&gt; event when the user chooses an item in an autocomplete field. Just drop this function into a Javascript file in your module or theme:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(function ($) {
+/**
+ * Puts the currently highlighted suggestion into the autocomplete field.
+ * Overridden from misc/autocomplete.js to add an event trigger on autocomplete
+ */
+if (Drupal.jsAC) {
+  Drupal.jsAC.prototype.select = function (node) {
+    this.input.value = $(node).data(&#039;autocompleteValue&#039;);
+    // Custom: add an event trigger
+    $(this.input).trigger(&#039;autocompleteSelect&#039;, [node]);
+  };
+}
+})(jQuery);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note that this goes inside the &lt;code&gt;(function ($) {})(jQuery);&lt;/code&gt; block that appears in most Drupal Javascript files. If you&#039;re pasting into an existing file that already has them, you can omit the first and last line, and paste the function in between them.&lt;/p&gt;
+&lt;p&gt;Then you just bind to that event. Here&#039;s an example for the node author field on the node add/edit form:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$(&#039;input[name=name]&#039;, context).bind(&#039;autocompleteSelect&#039;, function() {
+  // Value chosen in autocomplete field.
+  // Do whatever you need to do.
+  var chosen_value = $(this).val();
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;NOTE: After using this code for a few days I found an error. &lt;code&gt;Drupal.jsAC&lt;/code&gt; is not defined on all pages, so an error is thrown when trying to set values on the prototype of a non-existent object. I&#039;ve updated the code above to wrap it in a condition to check for &lt;code&gt;Drupal.jsAC&lt;/code&gt; before overriding it.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;One more update, from February 19, 2013:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;It turns out that the &lt;code&gt;select()&lt;/code&gt; function only runs when you click on an item in the autocomplete dropdown. If you use the arrow keys to select and item and hit enter to select it, the &lt;code&gt;hidePopup()&lt;/code&gt; function runs instead (by way of &lt;code&gt;onkeyup()&lt;/code&gt;), so you need to implement that one to. This is the core version, with only the &lt;code&gt;autocompleteSelect&lt;/code&gt; trigger added:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Drupal.jsAC.prototype.hidePopup = function (keycode) {
+  // Select item if the right key or mousebutton was pressed.
+  if (this.selected &amp;amp;&amp;amp; ((keycode &amp;amp;&amp;amp; keycode != 46 &amp;amp;&amp;amp; keycode != 8 &amp;amp;&amp;amp; keycode != 27) || !keycode)) {
+    this.input.value = $(this.selected).data(&#039;autocompleteValue&#039;);
+    // Custom: add an event trigger
+    $(this.input).trigger(&#039;autocompleteSelect&#039;);
+  }
+  // Hide popup.
+  var popup = this.popup;
+  if (popup) {
+    this.popup = null;
+    $(popup).fadeOut(&#039;fast&#039;, function () { $(popup).remove(); });
+  }
+  this.selected = false;
+  $(this.ariaLive).empty();
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 29 Jan 2013 18:49:41 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">60 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2013/01/trigger-javascript-event-when-autocomplete-field-changes#comments</comments>
+</item>
+<item>
+ <title>How to force an update of the summary on field sets (in vertical tabs)</title>
+ <link>http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Please excuse the long title: it took me a while to figure this one out, so I want to make sure that other people can find this when they need it.&lt;/p&gt;
+&lt;p&gt;On my current project, I&#039;m changing the node author field based on the value of a user reference field on the node type: when a content admin sets the node reference field, the node author field is changed to match that user reference field value. Since the author field is shown in a fieldset, I wanted the summary on that fieldset to update when this change was made. It took me a while to figure out how, but it&#039;s pretty simple:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Update the field summary if vertical tabs are in use
+var tab = $(&#039;fieldset.node-form-author&#039;, context).data(&#039;verticalTab&#039;);
+if (tab) {
+  tab.updateSummary();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 29 Jan 2013 18:45:22 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">59 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs#comments</comments>
+</item>
+<item>
+ <title>Module Release Announcement: Node Subpages 7.x-2.0-beta1</title>
+ <link>http://drupaldork.com/module_release/node_subpages/7.x-2.0-beta1</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I&#039;ve been on a bit of a &lt;a href=&quot;http://drupal.org/project/ctools&quot;&gt;CTools&lt;/a&gt; kick lately, and my latest experiment was &lt;a href=&quot;http://drupal.org/project/node_subpages&quot;&gt;Node Subpages&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Node Subpages allows site admins to configure per-content-type subpages that display the contents of a view or a field on the node. The project page has a more complete use case and example links.&lt;/p&gt;
+&lt;p&gt;I just posted the first 7.x-2.x release, which replaces the subpage content handling with CTools plugins. Previously, only Fields and Views could be used as the content of subpages, and they were the two hard-coded options. They&#039;re still the only two options, but the configuration and content for the subpages are provided by plugins. Any module can define additional plugins, though I still need to document how these plugins can be added and what they need to define. Next up, I might add Panels as subpage content, if I can figure out how to pass the node as a context.&lt;/p&gt;
+&lt;p&gt;&lt;a href=&quot;http://drupal.org/project/webform_ab&quot;&gt;Webform A/B Testing&lt;/a&gt; was the first module that I switched to use plugins, and that one actually went more smoothly. I started working on this update to Node Subpages at the airport when I was leaving &lt;a href=&quot;http://denver2012.drupal.org/&quot;&gt;Denver&lt;/a&gt; a month ago, but it gave me such grief that I sidelined it for a few weeks. Now, I think it&#039;s in pretty good shape but would love to get feedback from other people. I&#039;m the only one who has tried it, so it really needs more testing before I can do a full 7.x-2.0 release. I&#039;d also love feedback on the way I implemented the plugins: I found a few examples for building CTools plugins, and some with differing advice, so I&#039;d be very interested to hear from others who have built modules to make use of plugins.&lt;/p&gt;
+&lt;p&gt;In any case, the next task for this project will be making the configuration exportable. If a content type is exported into a &lt;a href=&quot;http://drupal.org/project/features&quot;&gt;Features&lt;/a&gt; module, it would make sense that the subpage configuration would be included, but that&#039;s not the case right now. My plan is to use the &lt;a href=&quot;http://drupal.org/project/ctex&quot;&gt;CTools Export UI Template&lt;/a&gt; example module as a starting point.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 22 Apr 2012 21:10:01 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">47 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/module_release/node_subpages/7.x-2.0-beta1#comments</comments>
+</item>
+</channel>
+</rss>

@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Session</title>
+ <link>http://drupaldork.com/vocabulary_1/session</link>
+ <description>Sessions, presentations, talks, panels, etc
+</description>
+ <language>en</language>
+<item>
+ <title>Video: Drupal is Stupid (But I Love It Anyway)</title>
+ <link>http://drupaldork.com/2012/07/video-drupal-stupid-i-love-it-anyway</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;This past weekend was the second CapitalCamp here in DC, and I wound up doing a session on Friday morning. I was one of the organizers of the event, but submitted two sessions early on (mostly to start filling up the Proposed Sessions list). When it became clear that we had a ton of great session proposals (and I was going to have my hands full all weekend), I withdrew my proposals.&lt;/p&gt;
+&lt;p&gt;But, a speaker had to cancel his session a few days before the camp, and since I had previously done this talk at the DC PHP user group back in November, I was asked if I could fill the slot by doing it again. I think it worked out well: I&#039;ve been asked by a lot of people who couldn&#039;t make it back in November if there was a video available, but at the time, I didn&#039;t really know how to use Keynote and failed to record it. This open timeslot gave me a chance to record a video, and to update some of the content of the talk.&lt;/p&gt;
+&lt;p&gt;In any case, I think it went pretty well. The audio peters out near the end: the Q&amp;amp;A became more of a discussion, which was great at the time but didn&#039;t get picked up by the mic.&lt;/p&gt;
+&lt;iframe src=&quot;http://player.vimeo.com/video/46554274&quot; width=&quot;500&quot; height=&quot;375&quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 29 Jul 2012 14:18:24 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">53 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/07/video-drupal-stupid-i-love-it-anyway#comments</comments>
+</item>
+</channel>
+</rss>

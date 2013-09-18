@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Community</title>
+ <link>http://drupaldork.com/vocabulary_1/community</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>The four stages of the Drupal developer life cycle, by Ben Clark</title>
+ <link>http://drupaldork.com/2012/11/four-stages-drupal-developer-life-cycle-ben-clark</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;The rest of this post has a different, decidedly-non-preachy voice, but this was my favorite part:&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;If you&#039;re a PHP genius, the world deserves to know; if you&#039;re barely competent, the world deserves to know that, too. If you won&#039;t stand by your work, then we don&#039;t want you in our community. Stop believing that you&#039;re the only one who will want that feature you&#039;re developing. Stop yourself from thinking that your implementation choices are without flaw.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;From &lt;a href=&quot;http://benclark.com/articles/the-four-stages-of-the-drupal-developer-life-cycle#fnref:2&quot;&gt;The four stages of the Drupal developer life cycle&lt;/a&gt;. I worked with Ben for a couple years at &lt;a href=&quot;http://jacksonriver.com/&quot;&gt;Jackson River&lt;/a&gt; and he&#039;s a hell of a guy.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 21 Nov 2012 02:32:15 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">58 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/11/four-stages-drupal-developer-life-cycle-ben-clark#comments</comments>
+</item>
+<item>
+ <title>DrupalCon Munich</title>
+ <link>http://drupaldork.com/2012/09/drupalcon-munich</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;DrupalCon Munich took place last week—well, last-last week, I guess—and it was pretty rad. I just got home a couple days ago, myself. My wife Erin and I figured that as long as I was in Germany already, we may as well make a trip of it, so she flew out on Friday (the sprint day of the con) and we spent the weekend in Munich, then flew up to Berlin for the following week. The whole trip was a blast, but we&#039;re talking about DrupalCon here.&lt;/p&gt;
+&lt;p&gt;If I&#039;m being honest, the first couple days of the conference were largely lost on me. I was more jet-lagged than I thought, and I think a little bit culture-shocked by failing to understand just about everything that was being said around me. I took a year of German in college (eight years ago now), but that did remarkably little for my ability to communicate with people there.&lt;/p&gt;
+&lt;p&gt;Once my sleep cycle evened out and I got my legs under me, I had a great time. I wound up spending a lot of time talking with the newly-former &lt;a href=&quot;http://drupalladder.org/content/steering-group&quot;&gt;Drupal Ladder Steering Committee&lt;/a&gt; about what we were doing and how, which was exactly the refresher I needed for that project. The Drupal Ladder has been my primary focus in the contrib world for a couple months, but I hadn&#039;t been very enthusiastic about it of late. Doling out responsibilities and making some decisions during DrupalCon made me feel a lot better about where we&#039;re going and how we&#039;re going to get there, so the week was worth it just for that.&lt;/p&gt;
+&lt;p&gt;I also really enjoyed the &quot;Get Involved with Core Sprint&quot; on Friday. This was a sprint led primarily by the &lt;a href=&quot;http://drupal.org/core-office-hours&quot;&gt;core mentoring crew&lt;/a&gt; (meaning &lt;a href=&quot;http://drupal.org/user/65776&quot;&gt;xjm&lt;/a&gt; and &lt;a href=&quot;http://drupal.org/user/241634&quot;&gt;tim.plunkett&lt;/a&gt; this time around), and it went swimmingly. &lt;a href=&quot;http://drupal.org/user/258568&quot;&gt;Cathy&lt;/a&gt; and I hosted a BOF on Thursday afternoon to help new sprinters get setup with a local Drupal 8 site, and it wound up being remarkably effective: a bunch of first-time sprinters arrived Friday morning all setup and ready to contribute! Fellow Lullabots &lt;a href=&quot;http://www.lullabot.com/about/team/addison-berry&quot;&gt;Addi&lt;/a&gt; and &lt;a href=&quot;http://www.lullabot.com/about/team/joe-shindelar&quot;&gt;Joe&lt;/a&gt; led a workshop in the morning to get people more completely setup: local dev site, git, how to use IRC and the issue queue, etc. Between the BOF and the workshop, the entire group was firing on all cylinders by noon.&lt;/p&gt;
+&lt;p&gt;A ton of issues were worked on, and it seemed like everyone knew what they were doing: I kept wandering the room, looking for people that needed help, but no one did! Instead, I spent most of my time looking for more issues that people could work on because the group was chugging through them so quickly.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;Talking about the Ladder and helping out at the sprint were definitely the highlights of my DrupalCon. I only attended a few sessions, including the two I spoke at (&lt;a href=&quot;http://munich2012.drupal.org/program/sessions/drupal-ladder-resources-and-activities-meetups-help-members-learn-and-contribute&quot;&gt;Drupal Ladder&lt;/a&gt; and &lt;a href=&quot;http://munich2012.drupal.org/program/sessions/beer-or-not-beer-making-meetups-work&quot;&gt;Making Meetups Work&lt;/a&gt;), and didn&#039;t even make it to any core conversations, but it was a very productive week. Now I need to go back and &lt;a href=&quot;http://blip.tv/drupalcon&quot;&gt;watch the videos&lt;/a&gt; for a bunch of sessions I missed!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 04 Sep 2012 23:42:26 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">55 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/09/drupalcon-munich#comments</comments>
+</item>
+<item>
+ <title>Speaking Gigs Coming Up</title>
+ <link>http://drupaldork.com/2012/06/speaking-gigs-coming</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I&#039;ve got an exciting couple of months ahead of me!&lt;/p&gt;
+&lt;p&gt;Next Friday, June 22, I&#039;ll be speaking at &lt;a href=&quot;http://www.drupaldelphia.com/&quot;&gt;Drupaldelphia&lt;/a&gt;: &lt;a href=&quot;http://www.drupaldelphia.com/sessions/module-doesnt-work-right-and-what-you-can-do-about-it&quot;&gt;This Module Doesn&#039;t Work Right (And What You Can Do About It)&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The last weekend of July will be the second &lt;a href=&quot;http://capitalcamp.org/&quot;&gt;CapitalCamp&lt;/a&gt; here in DC. Session selections are happening this week, so the chosen sessions will be announced soon.&lt;/p&gt;
+&lt;p&gt;In August, I&#039;ll be off to Germany for &lt;a href=&quot;http://munich2012.drupal.org/&quot;&gt;DrupalCon Munich&lt;/a&gt;. I&#039;ll be on a panel about organizing local meetups, along with &lt;a href=&quot;http://drupal.org/user/298852&quot;&gt;Karyn Cassio&lt;/a&gt;, &lt;a href=&quot;http://drupal.org/user/65088&quot;&gt;Addison Berry&lt;/a&gt;, and &lt;a href=&quot;http://drupal.org/user/72810&quot;&gt;Paul Johnson&lt;/a&gt;: &lt;a href=&quot;http://munich2012.drupal.org/program/sessions/beer-or-not-beer-making-meetups-work&quot;&gt;To Beer Or Not To Beer? Making meetups work.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It&#039;s going to be a nerdy summer!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 13 Jun 2012 14:47:35 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">51 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/06/speaking-gigs-coming#comments</comments>
+</item>
+<item>
+ <title>Let&#039;s Talk About Sex</title>
+ <link>http://drupaldork.com/2012/05/lets-talk-about-sex</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;As it often is, sexism in the tech industry was the topic of a lot of back-and-forth on Twitter this past week. It started with &lt;a href=&quot;https://twitter.com/populist/status/205016245936979968&quot;&gt;the revelation&lt;/a&gt;&lt;sup id=&quot;fnref:1&quot;&gt;&lt;a href=&quot;#fn:1&quot; rel=&quot;footnote&quot;&gt;1&lt;/a&gt;&lt;/sup&gt; that a modeling agency in Denver &lt;a href=&quot;http://www.modelbuzz.tv/2012/03/14/denver-modeling-agency-finds-success-at-drupalcon/&quot;&gt;had been contracted to staff &quot;booth babes&quot;&lt;/a&gt; in the DrupalCon exhibit hall back in March, and continued (as it so often does) with debate over what behavior is appropriate at professional-ish industry events like DrupalCon.&lt;/p&gt;
+&lt;p&gt;The issue of &quot;booth babes&quot;&lt;sup id=&quot;fnref:2&quot;&gt;&lt;a href=&quot;#fn:2&quot; rel=&quot;footnote&quot;&gt;2&lt;/a&gt;&lt;/sup&gt; is the one that got under my skin the most, so let&#039;s talk about that. First, allow me outline my basic position on the issue:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;I have no problem with sex. Sex can be a natural, zesty enterprise, but that doesn&#039;t mean it has a place at professional events.&lt;/li&gt;
+&lt;li&gt;I believe that the mere presence of &quot;booth babes&quot; is actively detrimental to the gender equality of any event or the industry in which it takes place.&lt;/li&gt;
+&lt;li&gt;I do not think a dress code for booth staff or event attendees is appropriate, nor am I convinced (yet) that this is a problem that should be addressed by an official code of conduct or exhibitor agreement or anything like that.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;The problem with booth babes is simple: hiring sexy ladies to stand at a booth and attract men to it results in those men assuming that beautiful women in the booths are only there to attract them.&lt;/p&gt;
+&lt;p&gt;That&#039;s it. It&#039;s not some puritanical view of sex, as was suggested to me, nor a problem with sexiness, as was suggested to others.&lt;/p&gt;
+&lt;p&gt;I don&#039;t know why this is so hard to get one&#039;s head around. Booth babes are there only to sexually arouse men&lt;sup id=&quot;fnref:3&quot;&gt;&lt;a href=&quot;#fn:3&quot; rel=&quot;footnote&quot;&gt;3&lt;/a&gt;&lt;/sup&gt; and draw them into the booth. They cannot answer questions about the product or provide deep information about it.&lt;/p&gt;
+&lt;p&gt;Their knowledge of the company or product is not the problem, though; the problem is that everyone comes to assume that the sexy ladies in the booths are just that: sexy ladies who don&#039;t know anything about the product. Women who are actually active in the community and industry (and who already have a hard enough time being taken seriously in said) are then brushed aside by those who assume that they&#039;re just there as eye candy.&lt;/p&gt;
+&lt;p&gt;This fact was driven home for me when I was talking to a guy at DrupalCamp Maryland a few months ago. The topic came up, and he proudly announced that when he&#039;s interested in a company in an exhibit hall, he&#039;ll walk straight past any women to the nerdy-looking dude at the back of the booth, figuring that he&#039;s the guy who actually knows what he&#039;s talking about.&lt;/p&gt;
+&lt;p&gt;He could not have made my point better for me, but I still had to slowly spell it out for him: this exactly problem. The women you walk past may well be the lead developer(s) on the product, but you assume they&#039;re just there as eye candy because of the fact that booth babes are around.&lt;/p&gt;
+&lt;p&gt;This is why some of the conversation on Twitter this week infuriated me so. It&#039;s not about any puritanical view of sex. It&#039;s not about being uncomfortable with sexiness. It&#039;s entirely about further marginalizing women in an industry where gender equality is a long-standing issue that needs to be addressed. There&#039;s no way that this is hard to comprehend, nor did anyone actually answer to this point on Twitter, so I can only assume that they would rather pretend that it&#039;s not a real issue.&lt;/p&gt;
+&lt;p&gt;The closest thing I got to a real response on this was the assertion that the person I was talking to had sexy guys at his booth, and I was being sexist for assuming that &quot;booth babes&quot; had to mean women.&lt;/p&gt;
+&lt;p&gt;Seriously, dude?&lt;/p&gt;
+&lt;p&gt;This point—and the long conversation that followed the next day, about what constitutes appropriate behavior among people who are attracted to others at tech events—points to an incredible blind spot that plagues members of our community who refuse to see this as a problem:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;There is not gender equality in our world right now.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;You can argue that it&#039;s sexist to assume that &quot;booth babes&quot; refers to women. You can argue from the position that men and women should be treated equally, and that women can hit on men just as men can hit on women, and there&#039;s no difference between the two. I can understand why one would take this position, from a logical standpoint, but it simply has no bearing on reality. Behaving as if we have achieved gender equality—and thus, that these issues do not exist—does nothing to rectify those existing inequalities. We can&#039;t just pretend that treating everyone equally will eventually make it so; it&#039;s going to take more than that.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;As I noted earlier, I don&#039;t believe that an official code of conduct is the best way to address these problems: tech events should have one in place, but it will take more than that to make a real difference, and there are issues that cannot be adequately addressed by rules and regulations. For example, I was also told I was being sexist for proposing that women at these events should be held to a dress code, to prevent the kind of outfits that booth babes might wear. To be clear, I never proposed nor inferred this, but it indicates the problem with addressing this by official means: should there be a dress code in place? Should exhibit hall staff be limited to full-time employees of each company exhibiting? How can you regulate stuff like that?&lt;/p&gt;
+&lt;p&gt;I maintain that peer pressure is going to be a much more effective solution. We need to make it clear that we will not do business with the kind of company that thinks women are only good for attracting horny geeks to their booth. We need to call out colleagues who behave inappropriately, who make sexist jokes or harass other attendees or staff at these events. We need to explain—again and again and with small words when necessary—why &quot;booth babes&quot; and &quot;booth dudes&quot; are inherently unequal.&lt;/p&gt;
+&lt;p&gt;We&#039;d all like to believe that gender inequality is a thing of the past, but people are so willing to demonstrate, time after time, that we aren&#039;t there yet.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;Further reading:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;http://shkspr.mobi/blog/index.php/2012/03/dear-technology-world-please-stop-trying-to-give-me-an-erection/&quot;&gt;Dear Technology World – Please Stop Trying To Give Me An Erection&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://notrichyet.wordpress.com/2012/03/23/whats-the-big-deal/&quot;&gt;What’s the big deal?&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://blog.tommorris.org/post/19778985050/newsflash-sexism-in-geek-communities-demeans-everybody&quot;&gt;Newsflash: sexism in geek communities demeans everybody&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://www.rarlindseysmash.com/index.php?n=1313531468&quot;&gt;The Elephant in the Computer Lab&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;div class=&quot;footnotes&quot;&gt;
+&lt;hr /&gt;&lt;ol&gt;&lt;li id=&quot;fn:1&quot;&gt;
+&lt;p&gt;It&#039;s worth noting that the modeling agency blogged about this months ago, but it only got any attention (as far as I know) when someone discovered the blog post last week. &lt;a href=&quot;#fnref:1&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn:2&quot;&gt;
+&lt;p&gt;Do I need to keep putting &quot;booth babes&quot; in quotes? I feel like I should just because it is such an air-quotey term, but we all know what I&#039;m talking about. &lt;a href=&quot;#fnref:2&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;li id=&quot;fn:3&quot;&gt;
+&lt;p&gt;Well, straight men and lesbians, but we know what the target demographic is. &lt;a href=&quot;#fnref:3&quot; rev=&quot;footnote&quot;&gt;↩&lt;/a&gt;&lt;/p&gt;
+&lt;/li&gt;
+&lt;/ol&gt;&lt;/div&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Mon, 28 May 2012 20:59:54 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">49 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/05/lets-talk-about-sex#comments</comments>
+</item>
+<item>
+ <title>Inexperienced Drupal Developer</title>
+ <link>http://drupaldork.com/2012/04/inexperienced-drupal-developer</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;From &lt;a href=&quot;http://groups.drupal.org/node/222299&quot;&gt;Inexperienced Drupal Developer&lt;/a&gt;:&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;I&#039;ve recently noticed there are a ton of local Drupal jobs looking for experienced developers, and also a ton of awesome, but inexperienced developers looking for jobs. This seems like a problem. If people can&#039;t get experience in jobs, they can&#039;t get jobs that need experience. I&#039;m hoping to help solve this problem by posting the job I&#039;ve never seen. &lt;strong&gt;I&#039;m seeking an inexperienced Drupal developer.&lt;/strong&gt;&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;This is a FANTASTIC idea. We all know that the Drupal world needs more developers: every shop in every town is hiring. Scott&#039;s approach is a great way to get someone started off, and I&#039;ll bet that he&#039;s received a torrent of email already.&lt;/p&gt;
+&lt;p&gt;The question is, &lt;strong&gt;how can we make this bigger?&lt;/strong&gt; It sounds like Scott is pretty much funding this little project himself, but surely there are Drupal shops around who would be willing to spend a little money to invest in future talent. Perhaps we could even convince a couple of smaller companies to chip in 20-25% of a normal salary, and jointly hire an inexperienced developer to work part-time on contrib modules that the companies would benefit from—that way, everybody gets something out of it.&lt;/p&gt;
+&lt;p&gt;If you work for or know of companies that might be interested in such a venture, send them a link to this job post and see if you can convince them to give it a try.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 04 Apr 2012 16:40:21 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">44 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/04/inexperienced-drupal-developer#comments</comments>
+</item>
+</channel>
+</rss>

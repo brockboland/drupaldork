@@ -1,0 +1,205 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork</title>
+ <link>http://drupaldork.com</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Trigger a javascript event when an autocomplete field changes</title>
+ <link>http://drupaldork.com/2013/01/trigger-javascript-event-when-autocomplete-field-changes</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Related to my &lt;a href=&quot;http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs&quot;&gt;fieldset summary problem&lt;/a&gt;: autocomplete fields do not trigger the &lt;code&gt;change&lt;/code&gt; event in Javascript, for some reason. I wound up stealing part of a patch I found somewhere (I would link to it if I could find it in my browser history) in order to override the autocomplete prototype function and trigger a new &lt;code&gt;autocompleteSelect&lt;/code&gt; event when the user chooses an item in an autocomplete field. Just drop this function into a Javascript file in your module or theme:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;(function ($) {
+/**
+ * Puts the currently highlighted suggestion into the autocomplete field.
+ * Overridden from misc/autocomplete.js to add an event trigger on autocomplete
+ */
+if (Drupal.jsAC) {
+  Drupal.jsAC.prototype.select = function (node) {
+    this.input.value = $(node).data(&#039;autocompleteValue&#039;);
+    // Custom: add an event trigger
+    $(this.input).trigger(&#039;autocompleteSelect&#039;, [node]);
+  };
+}
+})(jQuery);
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;Note that this goes inside the &lt;code&gt;(function ($) {})(jQuery);&lt;/code&gt; block that appears in most Drupal Javascript files. If you&#039;re pasting into an existing file that already has them, you can omit the first and last line, and paste the function in between them.&lt;/p&gt;
+&lt;p&gt;Then you just bind to that event. Here&#039;s an example for the node author field on the node add/edit form:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;$(&#039;input[name=name]&#039;, context).bind(&#039;autocompleteSelect&#039;, function() {
+  // Value chosen in autocomplete field.
+  // Do whatever you need to do.
+  var chosen_value = $(this).val();
+});
+&lt;/code&gt;&lt;/pre&gt;&lt;p&gt;&lt;strong&gt;NOTE: After using this code for a few days I found an error. &lt;code&gt;Drupal.jsAC&lt;/code&gt; is not defined on all pages, so an error is thrown when trying to set values on the prototype of a non-existent object. I&#039;ve updated the code above to wrap it in a condition to check for &lt;code&gt;Drupal.jsAC&lt;/code&gt; before overriding it.&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;One more update, from February 19, 2013:&lt;/strong&gt;&lt;/p&gt;
+&lt;p&gt;It turns out that the &lt;code&gt;select()&lt;/code&gt; function only runs when you click on an item in the autocomplete dropdown. If you use the arrow keys to select and item and hit enter to select it, the &lt;code&gt;hidePopup()&lt;/code&gt; function runs instead (by way of &lt;code&gt;onkeyup()&lt;/code&gt;), so you need to implement that one to. This is the core version, with only the &lt;code&gt;autocompleteSelect&lt;/code&gt; trigger added:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;Drupal.jsAC.prototype.hidePopup = function (keycode) {
+  // Select item if the right key or mousebutton was pressed.
+  if (this.selected &amp;amp;&amp;amp; ((keycode &amp;amp;&amp;amp; keycode != 46 &amp;amp;&amp;amp; keycode != 8 &amp;amp;&amp;amp; keycode != 27) || !keycode)) {
+    this.input.value = $(this.selected).data(&#039;autocompleteValue&#039;);
+    // Custom: add an event trigger
+    $(this.input).trigger(&#039;autocompleteSelect&#039;);
+  }
+  // Hide popup.
+  var popup = this.popup;
+  if (popup) {
+    this.popup = null;
+    $(popup).fadeOut(&#039;fast&#039;, function () { $(popup).remove(); });
+  }
+  this.selected = false;
+  $(this.ariaLive).empty();
+};
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 29 Jan 2013 18:49:41 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">60 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2013/01/trigger-javascript-event-when-autocomplete-field-changes#comments</comments>
+</item>
+<item>
+ <title>How to force an update of the summary on field sets (in vertical tabs)</title>
+ <link>http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Please excuse the long title: it took me a while to figure this one out, so I want to make sure that other people can find this when they need it.&lt;/p&gt;
+&lt;p&gt;On my current project, I&#039;m changing the node author field based on the value of a user reference field on the node type: when a content admin sets the node reference field, the node author field is changed to match that user reference field value. Since the author field is shown in a fieldset, I wanted the summary on that fieldset to update when this change was made. It took me a while to figure out how, but it&#039;s pretty simple:&lt;/p&gt;
+&lt;pre&gt;&lt;code&gt;// Update the field summary if vertical tabs are in use
+var tab = $(&#039;fieldset.node-form-author&#039;, context).data(&#039;verticalTab&#039;);
+if (tab) {
+  tab.updateSummary();
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 29 Jan 2013 18:45:22 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">59 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2013/01/how-force-update-summary-field-sets-vertical-tabs#comments</comments>
+</item>
+<item>
+ <title>The four stages of the Drupal developer life cycle, by Ben Clark</title>
+ <link>http://drupaldork.com/2012/11/four-stages-drupal-developer-life-cycle-ben-clark</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;The rest of this post has a different, decidedly-non-preachy voice, but this was my favorite part:&lt;/p&gt;
+&lt;blockquote&gt;&lt;p&gt;If you&#039;re a PHP genius, the world deserves to know; if you&#039;re barely competent, the world deserves to know that, too. If you won&#039;t stand by your work, then we don&#039;t want you in our community. Stop believing that you&#039;re the only one who will want that feature you&#039;re developing. Stop yourself from thinking that your implementation choices are without flaw.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;p&gt;From &lt;a href=&quot;http://benclark.com/articles/the-four-stages-of-the-drupal-developer-life-cycle#fnref:2&quot;&gt;The four stages of the Drupal developer life cycle&lt;/a&gt;. I worked with Ben for a couple years at &lt;a href=&quot;http://jacksonriver.com/&quot;&gt;Jackson River&lt;/a&gt; and he&#039;s a hell of a guy.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 21 Nov 2012 02:32:15 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">58 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/11/four-stages-drupal-developer-life-cycle-ben-clark#comments</comments>
+</item>
+<item>
+ <title>Back to Work on Joomla</title>
+ <link>http://drupaldork.com/2012/09/back-work-joomla</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Finally catching up on &lt;a href=&quot;http://5by5.tv/b2w&quot;&gt;Back to Work&lt;/a&gt;, in particular &lt;a href=&quot;http://5by5.tv/b2w/80&quot;&gt;Cascading Wave of Bad&lt;/a&gt;:&lt;/p&gt;
+&lt;p&gt;Merlin: …I&#039;m sure Joomla can be very, very pretty—have you ever used Joomla?&lt;br /&gt;
+Dan: No.&lt;br /&gt;
+Merlin: That control panel. Oh my God. The control panel—it looks like somebody dropped a thesaurus. It doesn&#039;t make a lick of sense to me.&lt;/p&gt;
+&lt;p&gt;Nothing but love or our open-source brothers and sisters in the Joomla world, but man…that control panel is exactly why I decided to go with Drupal.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 05 Sep 2012 20:54:05 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">57 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/09/back-work-joomla#comments</comments>
+</item>
+<item>
+ <title>The Drupal Ladder</title>
+ <link>http://drupaldork.com/2012/09/drupal-ladder</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I mentioned the Drupal Ladder initiative in my &lt;a href=&quot;http://drupaldork.com/2012/09/drupalcon-munich&quot;&gt;post about DrupalCon Munich&lt;/a&gt;, but didn&#039;t really talk about what it is. I expect that most of my non-client-work Drupal time for the forseeable future will be focused on the Ladder, so a bit of explanation is probably in order.&lt;/p&gt;
+&lt;p&gt;The Goal of the Drupal Ladder is to have 1% of the Drupal Community contributing to core by 2014. That&#039;s the short version. A very low percentage of users on drupal.org have contributed to core, and we&#039;d like to increase that percentage so that more people are helping maintain the system that we all use on a daily basis.&lt;/p&gt;
+&lt;p&gt;This goal is being pursued primarily through two differend kinds of events: learn sprints and issue sprints at local meetup groups. During learn sprints, attendees work through a lesson on the &lt;a href=&quot;http://drupalladder.org/ladder/ee503327-50be-1904-8d04-9499098cad64&quot;&gt;Drupal core contribution ladder&lt;/a&gt;. During issue sprints, attendees pair up and work to make some progress on a &lt;a href=&quot;http://drupal.org/project/issues/drupal?categories=All&quot;&gt;Drupal core issue&lt;/a&gt;. There&#039;s more to the initiative than that, but this is the important part, &quot;where the rubber meets the road,&quot; if you will.&lt;/p&gt;
+&lt;p&gt;Over the past few weeks, a &lt;a href=&quot;http://drupalladder.org/content/steering-group&quot;&gt;steering committee&lt;/a&gt; has been assembled to lead the effort and divvy up the work a bit. Before this, there really wasn&#039;t much headway being made on issues. There are a few parts that make up the DrupalLadder.org site: the &lt;a href=&quot;http://drupal.org/project/lessons&quot;&gt;Lessons module&lt;/a&gt; defines the lesson content type and surrounding functionality, the &lt;a href=&quot;http://drupal.org/project/ladder&quot;&gt;Lesson Ladder module&lt;/a&gt; organizes those lessons into sequential ladder rungs, and the &lt;a href=&quot;http://drupal.org/project/drupalladder&quot;&gt;Drupal Ladder install profile&lt;/a&gt; contains the lesson content that appears on DrupalLadder.org. The use of this install profile is two-fold: right now, it runs DrupalLadder.org, but soon it will also include sample modules and intentional bugs so that those who are working through the lessons can do so on a local dev site running the install profile. They will be able to use that site itself to make changes, create and apply patches, and so on.&lt;/p&gt;
+&lt;p&gt;With the formation of the steering committee, I am now the new issue sprint…guy? Leader? As the new Issue Sprint Whatever-I-Am, my focus will be on making it easy for people to start or continue running issue sprints with their local community. To begin with, I&#039;ve freshened up our &lt;a href=&quot;http://drupalladder.org/learn-sprints&quot;&gt;how-to for sprint leads&lt;/a&gt;, but I&#039;ve got a lot more to do.&lt;/p&gt;
+&lt;p&gt;The core mentoring folks have graciously allowed us to make use of a new &lt;a href=&quot;http://ladder.drupalofficehours.org/&quot;&gt;task-tracking tool that they&#039;ve developed&lt;/a&gt; to make it easier to keep track of who is doing what during the core mentoring hours in IRC. I&#039;m going to work with them to fix some bugs in the system, and get it ready to be rolled into an install profile. This way, we will be able to setup our own task tracking site so that I won&#039;t need to bug &lt;a href=&quot;http://drupal.org/user/65776&quot;&gt;xjm&lt;/a&gt; each time a new sprint leader needs the user role that will allow them to do their thing, and things like that. All user groups who are hosting issue sprints can track their issues in one place, and ensure that sprinters don&#039;t wind up working on the same thing (thus duplicating effort).&lt;/p&gt;
+&lt;p&gt;I&#039;m also going to try to talk to more sprint leaders and find out what is and is not working for them, and determine what I can be doing to iron out the rough patches. At this point, I don&#039;t really have any idea what this might entail. What works well in our group here in DC may not work well for a group in Oklahoma, for example, so I&#039;m going to start from the lessons we&#039;ve learned along the way but remain open to feedback from others.&lt;/p&gt;
+&lt;p&gt;I&#039;m really excited to have more people getting involved in organizing the Ladder initative, and especially so now that we&#039;ve broken the parts of the initiative into separate responsibilities. With different people focusing on different parts, I think we&#039;ll make a lot more progress than we have in taking care of the tasks in our issue queues, and the renewal of interest in the initiative will help get a few more sprints off the ground!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 05 Sep 2012 00:35:39 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">56 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/09/drupal-ladder#comments</comments>
+</item>
+<item>
+ <title>DrupalCon Munich</title>
+ <link>http://drupaldork.com/2012/09/drupalcon-munich</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;DrupalCon Munich took place last week—well, last-last week, I guess—and it was pretty rad. I just got home a couple days ago, myself. My wife Erin and I figured that as long as I was in Germany already, we may as well make a trip of it, so she flew out on Friday (the sprint day of the con) and we spent the weekend in Munich, then flew up to Berlin for the following week. The whole trip was a blast, but we&#039;re talking about DrupalCon here.&lt;/p&gt;
+&lt;p&gt;If I&#039;m being honest, the first couple days of the conference were largely lost on me. I was more jet-lagged than I thought, and I think a little bit culture-shocked by failing to understand just about everything that was being said around me. I took a year of German in college (eight years ago now), but that did remarkably little for my ability to communicate with people there.&lt;/p&gt;
+&lt;p&gt;Once my sleep cycle evened out and I got my legs under me, I had a great time. I wound up spending a lot of time talking with the newly-former &lt;a href=&quot;http://drupalladder.org/content/steering-group&quot;&gt;Drupal Ladder Steering Committee&lt;/a&gt; about what we were doing and how, which was exactly the refresher I needed for that project. The Drupal Ladder has been my primary focus in the contrib world for a couple months, but I hadn&#039;t been very enthusiastic about it of late. Doling out responsibilities and making some decisions during DrupalCon made me feel a lot better about where we&#039;re going and how we&#039;re going to get there, so the week was worth it just for that.&lt;/p&gt;
+&lt;p&gt;I also really enjoyed the &quot;Get Involved with Core Sprint&quot; on Friday. This was a sprint led primarily by the &lt;a href=&quot;http://drupal.org/core-office-hours&quot;&gt;core mentoring crew&lt;/a&gt; (meaning &lt;a href=&quot;http://drupal.org/user/65776&quot;&gt;xjm&lt;/a&gt; and &lt;a href=&quot;http://drupal.org/user/241634&quot;&gt;tim.plunkett&lt;/a&gt; this time around), and it went swimmingly. &lt;a href=&quot;http://drupal.org/user/258568&quot;&gt;Cathy&lt;/a&gt; and I hosted a BOF on Thursday afternoon to help new sprinters get setup with a local Drupal 8 site, and it wound up being remarkably effective: a bunch of first-time sprinters arrived Friday morning all setup and ready to contribute! Fellow Lullabots &lt;a href=&quot;http://www.lullabot.com/about/team/addison-berry&quot;&gt;Addi&lt;/a&gt; and &lt;a href=&quot;http://www.lullabot.com/about/team/joe-shindelar&quot;&gt;Joe&lt;/a&gt; led a workshop in the morning to get people more completely setup: local dev site, git, how to use IRC and the issue queue, etc. Between the BOF and the workshop, the entire group was firing on all cylinders by noon.&lt;/p&gt;
+&lt;p&gt;A ton of issues were worked on, and it seemed like everyone knew what they were doing: I kept wandering the room, looking for people that needed help, but no one did! Instead, I spent most of my time looking for more issues that people could work on because the group was chugging through them so quickly.&lt;/p&gt;
+&lt;hr /&gt;&lt;p&gt;Talking about the Ladder and helping out at the sprint were definitely the highlights of my DrupalCon. I only attended a few sessions, including the two I spoke at (&lt;a href=&quot;http://munich2012.drupal.org/program/sessions/drupal-ladder-resources-and-activities-meetups-help-members-learn-and-contribute&quot;&gt;Drupal Ladder&lt;/a&gt; and &lt;a href=&quot;http://munich2012.drupal.org/program/sessions/beer-or-not-beer-making-meetups-work&quot;&gt;Making Meetups Work&lt;/a&gt;), and didn&#039;t even make it to any core conversations, but it was a very productive week. Now I need to go back and &lt;a href=&quot;http://blip.tv/drupalcon&quot;&gt;watch the videos&lt;/a&gt; for a bunch of sessions I missed!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 04 Sep 2012 23:42:26 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">55 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/09/drupalcon-munich#comments</comments>
+</item>
+<item>
+ <title>It&#039;s almost time for Munich!</title>
+ <link>http://drupaldork.com/2012/08/its-almost-time-munich</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Holy crap, can you believe that DrupalCon Munich is just two weeks away? This summer has been flying by!&lt;/p&gt;
+&lt;p&gt;I, for one, am equal parts excited and apprehensive. DrupalCons are always exciting: I get to see friends I&#039;ve made over the last couple years, and always meet a ton of new people. But, at the same time, I&#039;m a little bit worried about two things: finding my way around, and being on a panel.&lt;/p&gt;
+&lt;p&gt;I really shouldn&#039;t be nervous about the panel. I&#039;ll be speaking with &lt;a href=&quot;http://drupal.org/user/298852&quot;&gt;Karyn Cassio&lt;/a&gt;, &lt;a href=&quot;http://drupal.org/user/65088&quot;&gt;Addi Berry&lt;/a&gt;, and &lt;a href=&quot;http://drupal.org/user/72810&quot;&gt;Paul Johnson&lt;/a&gt; about &lt;a href=&quot;http://munich2012.drupal.org/program/sessions/beer-or-not-beer-making-meetups-work&quot;&gt;making local meetups work&lt;/a&gt;, in the last session slot on Wednesday. All three of them are easy to talk to, and we&#039;ve got a ton of information and ideas to share.&lt;/p&gt;
+&lt;p&gt;Getting around should be…ok. I did take a year of German in college, so I know some basics, but not enough to understand the answer to any question that I might manage to ask. I know that a lot of people speak English, and I&#039;m banking on that more than anything else. This afternoon, I finally took a close look at the (very intimidating) &lt;a href=&quot;http://www.mvv-muenchen.de/fileadmin/media/Dateien/plaene_en/pdf/netz_2012_en.pdf&quot;&gt;map of the train network&lt;/a&gt;, and the part I need to navigate will be pretty straightforward. The map looked way more confusing when I just gave it a once-over before, because the station names are hard to differentiate when you don&#039;t know what most of them mean.&lt;/p&gt;
+&lt;p&gt;Getting from the airport to the Westin Grand will be fine, but at the end of the week, I need to make my way closer to the middle of the city to meet my wife at the hotel whe&#039;re we&#039;ll be spending that weekend—and she needs to find her way there from the airport, without even the cursory understanding of German that I&#039;ve got. Without cell phones, it will be hard to get in touch to coordinate or warn about delays. I&#039;ve been trying to figure out the situation with cell phones in Germany, and I think we might be best served by a couple cheap pre-paid voice-only units, instead of trying to get an actual data plan on our iPhones.&lt;/p&gt;
+&lt;p&gt;So yes: it&#039;s all very exciting and just a little bit terrifying, but I can&#039;t wait to see everyone in Munich!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Mon, 06 Aug 2012 01:00:51 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">54 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/08/its-almost-time-munich#comments</comments>
+</item>
+<item>
+ <title>Video: Drupal is Stupid (But I Love It Anyway)</title>
+ <link>http://drupaldork.com/2012/07/video-drupal-stupid-i-love-it-anyway</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;This past weekend was the second CapitalCamp here in DC, and I wound up doing a session on Friday morning. I was one of the organizers of the event, but submitted two sessions early on (mostly to start filling up the Proposed Sessions list). When it became clear that we had a ton of great session proposals (and I was going to have my hands full all weekend), I withdrew my proposals.&lt;/p&gt;
+&lt;p&gt;But, a speaker had to cancel his session a few days before the camp, and since I had previously done this talk at the DC PHP user group back in November, I was asked if I could fill the slot by doing it again. I think it worked out well: I&#039;ve been asked by a lot of people who couldn&#039;t make it back in November if there was a video available, but at the time, I didn&#039;t really know how to use Keynote and failed to record it. This open timeslot gave me a chance to record a video, and to update some of the content of the talk.&lt;/p&gt;
+&lt;p&gt;In any case, I think it went pretty well. The audio peters out near the end: the Q&amp;amp;A became more of a discussion, which was great at the time but didn&#039;t get picked up by the mic.&lt;/p&gt;
+&lt;iframe src=&quot;http://player.vimeo.com/video/46554274&quot; width=&quot;500&quot; height=&quot;375&quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 29 Jul 2012 14:18:24 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">53 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/07/video-drupal-stupid-i-love-it-anyway#comments</comments>
+</item>
+<item>
+ <title>Follow-up: This Module Doesn&#039;t Work Right (And What You Can Do About It)</title>
+ <link>http://drupaldork.com/2012/06/follow-module-doesnt-work-right-and-what-you-can-do-about-it</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I gave this talk at Drupaldelphia this past weekend, and finally got around to pulling together some resources for those interested. The video is below; it was recorded in Keynote, so it&#039;s just the slides and the audio is so-so.&lt;/p&gt;
+&lt;h2&gt;How-tos&lt;/h2&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;http://drupalladder.org/lesson/93887717-c398-2434-394c-cf10851b4f1c&quot;&gt;Apply a patch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupalladder.org/lesson/72a836e6-b408-a7a4-1923-8788761b2608&quot;&gt;Write a patch&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/node/73179&quot;&gt;How to write a good issue report&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/node/1155816&quot;&gt;How to format an issue summary&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;To checkout the &lt;code&gt;-dev&lt;/code&gt; branch of a module, follow &lt;a href=&quot;http://f.cl.ly/items/1T1U2X282u3F401r1o3f/Views%20%7C%20drupal.org.png&quot;&gt;the instructions on the &lt;strong&gt;Version control&lt;/strong&gt; tab&lt;/a&gt; on the project page. For example: &lt;a href=&quot;http://drupal.org/project/views/git-instructions&quot;&gt;Views version control info&lt;/a&gt;.&lt;/li&gt;
+&lt;/ul&gt;&lt;h2&gt;Misc&lt;/h2&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;http://drupal.org/core-office-hours&quot;&gt;Core mentoring hours&lt;/a&gt; are a great way to get more involved in Drupal development and get more comfortable working in the issue queues.&lt;/li&gt;
+&lt;li&gt;Don&#039;t forget to check &lt;a href=&quot;http://drupal.org/project/issues/user&quot;&gt;Your Issues&lt;/a&gt; to follow up on issues you&#039;re involved with.&lt;/li&gt;
+&lt;/ul&gt;&lt;h2&gt;Modules I mentioned&lt;/h2&gt;
+&lt;ul&gt;&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/views&quot;&gt;Views&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/token&quot;&gt;Token&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/ctools&quot;&gt;CTools&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/constant_contact&quot;&gt;Constant Contact&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/rickroll&quot;&gt;RickRoll&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/acs&quot;&gt;ACS Technologies&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/sharedblocks&quot;&gt;Shared Blocks&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/url_alias&quot;&gt;URL Alias&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/follow&quot;&gt;Follow&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/simplenews&quot;&gt;Simplenews&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/flag&quot;&gt;Flag&lt;/a&gt;&lt;/li&gt;
+&lt;li&gt;&lt;a href=&quot;http://drupal.org/project/google_adwords_remarketing&quot;&gt;Google Adwords Remarketing&lt;/a&gt;&lt;/li&gt;
+&lt;/ul&gt;&lt;iframe src=&quot;http://player.vimeo.com/video/44871426&quot; width=&quot;500&quot; height=&quot;375&quot; frameborder=&quot;0&quot; webkitallowfullscreen=&quot;&quot; mozallowfullscreen=&quot;&quot; allowfullscreen=&quot;&quot;&gt;&lt;/iframe&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Thu, 28 Jun 2012 13:56:49 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">52 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/06/follow-module-doesnt-work-right-and-what-you-can-do-about-it#comments</comments>
+</item>
+<item>
+ <title>Speaking Gigs Coming Up</title>
+ <link>http://drupaldork.com/2012/06/speaking-gigs-coming</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;I&#039;ve got an exciting couple of months ahead of me!&lt;/p&gt;
+&lt;p&gt;Next Friday, June 22, I&#039;ll be speaking at &lt;a href=&quot;http://www.drupaldelphia.com/&quot;&gt;Drupaldelphia&lt;/a&gt;: &lt;a href=&quot;http://www.drupaldelphia.com/sessions/module-doesnt-work-right-and-what-you-can-do-about-it&quot;&gt;This Module Doesn&#039;t Work Right (And What You Can Do About It)&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;The last weekend of July will be the second &lt;a href=&quot;http://capitalcamp.org/&quot;&gt;CapitalCamp&lt;/a&gt; here in DC. Session selections are happening this week, so the chosen sessions will be announced soon.&lt;/p&gt;
+&lt;p&gt;In August, I&#039;ll be off to Germany for &lt;a href=&quot;http://munich2012.drupal.org/&quot;&gt;DrupalCon Munich&lt;/a&gt;. I&#039;ll be on a panel about organizing local meetups, along with &lt;a href=&quot;http://drupal.org/user/298852&quot;&gt;Karyn Cassio&lt;/a&gt;, &lt;a href=&quot;http://drupal.org/user/65088&quot;&gt;Addison Berry&lt;/a&gt;, and &lt;a href=&quot;http://drupal.org/user/72810&quot;&gt;Paul Johnson&lt;/a&gt;: &lt;a href=&quot;http://munich2012.drupal.org/program/sessions/beer-or-not-beer-making-meetups-work&quot;&gt;To Beer Or Not To Beer? Making meetups work.&lt;/a&gt;&lt;/p&gt;
+&lt;p&gt;It&#039;s going to be a nerdy summer!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Wed, 13 Jun 2012 14:47:35 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">51 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/06/speaking-gigs-coming#comments</comments>
+</item>
+</channel>
+</rss>

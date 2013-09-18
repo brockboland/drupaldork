@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - github</title>
+ <link>http://drupaldork.com/vocabulary_2/github</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Github: Creating Pull Requests for Existing Issues</title>
+ <link>http://drupaldork.com/2012/06/github-creating-pull-requests-existing-issues</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Did a quick screencast with some coworkers today on the latest thing I love about Github. Last time, I covered &lt;a href=&quot;http://drupaldork.com/2012/04/intro-github-pull-requests&quot;&gt;how to create pull requests&lt;/a&gt;. This time, I explain how to create a pull request out of an existing issue. Since pull requests are basically just issues with commits attached, it&#039;s often undesirable to create a new pull request to address something reported in an existing issue, because you just wind up with two issues that address the same thing.&lt;/p&gt;
+&lt;p&gt;There isn&#039;t a way to do this through the Github interface, but the &lt;a href=&quot;https://github.com/defunkt/hub&quot;&gt;hub command line tool&lt;/a&gt; adds some special sauce for working with Github, and the thing I use it for most is opening pull requests for issues.&lt;/p&gt;
+&lt;p&gt;The quality is crummy, so turn up the quality to 480p.&lt;/p&gt;
+&lt;object width=&quot;640&quot; height=&quot;360&quot;&gt;&lt;param name=&quot;movie&quot; value=&quot;http://www.youtube.com/v/suS3lDn20HY?version=3&amp;amp;hl=en_US&quot; /&gt;&lt;param name=&quot;allowFullScreen&quot; value=&quot;true&quot; /&gt;&lt;param name=&quot;allowscriptaccess&quot; value=&quot;always&quot; /&gt;&lt;embed src=&quot;http://www.youtube.com/v/suS3lDn20HY?version=3&amp;amp;hl=en_US&quot; type=&quot;application/x-shockwave-flash&quot; width=&quot;640&quot; height=&quot;360&quot; allowscriptaccess=&quot;always&quot; allowfullscreen=&quot;true&quot;&gt;&lt;/embed&gt;&lt;/object&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 05 Jun 2012 19:39:06 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">50 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/06/github-creating-pull-requests-existing-issues#comments</comments>
+</item>
+</channel>
+</rss>

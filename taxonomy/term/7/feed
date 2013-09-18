@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Tools</title>
+ <link>http://drupaldork.com/category/category/tools</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Alfred Shortcuts for Drupal Developers</title>
+ <link>http://drupaldork.com/2012/02/alfred-shortcuts-drupal-developers</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;During the BarCamp-style afternoon session at &lt;a href=&quot;http://drupalcampmd.org/&quot;&gt;DrupalCamp MD&lt;/a&gt; last weekend, some people got talking about the tools they use on a daily basis, including one of my favorites: &lt;a href=&quot;http://www.alfredapp.com/&quot;&gt;Alfred&lt;/a&gt;, a launcher app that&#039;s comparable to &lt;a href=&quot;http://qsapp.com/&quot;&gt;Quicksilver&lt;/a&gt; or &lt;a href=&quot;http://www.obdev.at/products/launchbar/index.html&quot;&gt;LaunchBar&lt;/a&gt;. I have several Drupal-specific custom searches setup in Alfred, and I&#039;ve been meaning to write about them for the benefit of other Drupal devs on Macs.&lt;/p&gt;
+&lt;p&gt;To add custom searches, open the Alfred preferences and go to the Features tab, then select Custom Searches in the list at left. Click the plus icon at the bottom of the window to add a new one. You&#039;ll be asked to provide some info for the search, including the keyword to use—the command you&#039;ll type into the Alfred window—and the URL that the search should go to. You&#039;ll put &lt;code&gt;{query}&lt;/code&gt; in the URL where the search string should go.&lt;/p&gt;
+&lt;p&gt;So, for example, I have a Netflix search. The keyword is &#039;nf&#039;, and the search URL is &lt;code&gt;http://movies.netflix.com/WiSearch?v1={query}&lt;/code&gt;. If I hit Command+Space to open Alfred, and type &#039;nf the goonies&#039;, Alfred will launch &lt;a href=&quot;http://movies.netflix.com/WiSearch?v1=the goonies&quot;&gt;http://movies.netflix.com/WiSearch?v1=the goonies&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;These are the Drupal-related searches that I have configured in Alfred:&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;dmod&lt;/strong&gt;: Jump directly to the given Drupal module or theme. Example: &lt;code&gt;dmod views&lt;/code&gt;, &lt;code&gt;dmod omega&lt;/code&gt;&lt;br /&gt;
+Search URL: &lt;code&gt;http://drupal.org/project/{query}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;dmods&lt;/strong&gt;: Search Drupal modules. Example: &lt;code&gt;dmods feeds&lt;/code&gt;&lt;br /&gt;
+Search URL: &lt;code&gt;http://drupal.org/project/modules?text={query}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;dapi&lt;/strong&gt;: Search the API. If an exact function name is given, the d.o search will redirect to that API page. If not, it performs a regular search. This is limited to D6 since most of my current developement is still for 6. Example: &lt;code&gt;dapi hook_nodeapi&lt;/code&gt;, &lt;code&gt;dapi taxonomy_term_&lt;/code&gt;&lt;br /&gt;
+Search URL: &lt;code&gt;http://api.drupal.org/api/search/6/{query}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;d7&lt;/strong&gt;: Same as &lt;strong&gt;dapi&lt;/strong&gt; but for D7 only. Example: &lt;code&gt;d7 hook_block_view&lt;/code&gt;&lt;br /&gt;
+Search URL: &lt;code&gt;http://api.drupal.org/api/search/7/{query}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;capi&lt;/strong&gt;: Search the contrib module API available at &lt;a href=&quot;http://drupalcontrib.org/&quot;&gt;DrupalContrib.org&lt;/a&gt;. Like &lt;strong&gt;dapi&lt;/strong&gt;, this searches D6 by default. Example: &lt;code&gt;capi ctools_get_plugins&lt;/code&gt;&lt;br /&gt;
+Search URL: &lt;code&gt;http://drupalcontrib.org/api/search/6/{query}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;d.o&lt;/strong&gt;: This one isn&#039;t a search. It goes straight to my drupal.org dashboard, since I check it often for updates to issues I&#039;m following. You&#039;ll need to swap in your own d.o user ID.&lt;br /&gt;
+Search URL: &lt;code&gt;http://drupal.org/user/660472/dashboard&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;&lt;strong&gt;php&lt;/strong&gt;: Not Drupal-specific, but good to have on hand. This one searches the php.net function manual. Their search will redirect to the API page if a specific function name is provided, show manual pages for topics like arrays or XML, or do a sort-of search of function names if it&#039;s not an exact match. Example: &lt;code&gt;php array_rand&lt;/code&gt;, &lt;code&gt;php simplexml&lt;/code&gt;&lt;br /&gt;
+Search URL: &lt;code&gt;http://us.php.net/manual-lookup.php?pattern={query}&lt;/code&gt;&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Mon, 20 Feb 2012 01:14:25 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">40 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/02/alfred-shortcuts-drupal-developers#comments</comments>
+</item>
+<item>
+ <title>How I Manage My Generic Drupal Dev Sites</title>
+ <link>http://drupaldork.com/2011/07/how-i-manage-my-generic-drupal-dev-sites</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;On my machine, I have two local sites I use for developing and testing modules and patches: &lt;code&gt;http://d6.local&lt;/code&gt; and &lt;code&gt;http://d7.local&lt;/code&gt;. After manually wiping and re-creating these sites several times in between some tests, I realized I was doing it wrong and wrote bash scripts to do it for me.&lt;/p&gt;
+&lt;p&gt;Now, I have templates for each of these sites. Whenever I want to start with a fresh dev site with some basic modules installed (like &lt;a href=&quot;http://drupal.org/project/admin_menu&quot;&gt;Admin Menu&lt;/a&gt;, &lt;a href=&quot;http://drupal.org/project/adminrole&quot;&gt;Admin Role&lt;/a&gt;, and &lt;a href=&quot;http://drupal.org/project/devel&quot;&gt;Devel&lt;/a&gt;), I run a quick bash script that drops and re-creates the database, imports a SQL file, and replaces the entire webroot directory with the contents of a tarball. I did have to manually setup the site, create my admin user, and enable the modules when I first set all this up. Now, I can easily update that template when I need to - for example, when there&#039;s a new versions of the Drupal core released.&lt;/p&gt;
+&lt;p&gt;Here&#039;s my setup:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;The webroot for the each version of Drupal are in &lt;code&gt;~/Sites/&lt;/code&gt;. I&#039;ve got &lt;code&gt;~/Sites/d6.local&lt;/code&gt; and &lt;code&gt;~/Sites/d7.local&lt;/code&gt;, specifically.&lt;/li&gt;
+&lt;li&gt;My two bash scripts, &lt;code&gt;deploy&lt;/code&gt; and &lt;code&gt;recreate&lt;/code&gt;, both live in &lt;code&gt;~/src/templates&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Alse in &lt;code&gt;~/src/templates&lt;/code&gt;, I have a sub-directory for each version of Drupal: &lt;code&gt;d6&lt;/code&gt; and &lt;code&gt;d7&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Within those version-specific sub-dirs are &lt;code&gt;db.sql&lt;/code&gt; and &lt;code&gt;files.tar&lt;/code&gt;, which are used as the template.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;When it&#039;s time to refresh my dev site, I go into &lt;code&gt;~/src/templates&lt;/code&gt; and run &lt;code&gt;deploy&lt;/code&gt; with the version I want to refresh, like so: &lt;code&gt;./deploy 6&lt;/code&gt;. Running this script will execute this process:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Drop and re-create the database. This is to make sure that I don&#039;t wind up with stray tables left behind by modules I had been working on before.&lt;/li&gt;
+&lt;li&gt;Import &lt;code&gt;db.sql&lt;/code&gt; from the subdirectory for the version specific (in this case, &lt;code&gt;d6&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Remove the webroot directory (in this case, &lt;code&gt;~/Sites/d6.local&lt;/code&gt;).&lt;/li&gt;
+&lt;li&gt;Re-create the webroot directory by expanding &lt;code&gt;files.tar&lt;/code&gt;, also found in the version-specific subdirectory.&lt;/li&gt;
+&lt;li&gt;Use Drush to clear all the caches, just to be on the safe side.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;Now I&#039;ve got a fresh dev site at &lt;code&gt;http://d6.local&lt;/code&gt;. As I mentioned, I created the admin user and enabled some modules when I first setup the site, so after deploying from the template the site is ready to go.&lt;/p&gt;
+&lt;p&gt;As of tonight, I can also re-create these templates from the database and file structure. My &lt;code&gt;recreate&lt;/code&gt; bash script is similar to &lt;code&gt;deploy&lt;/code&gt;, but in reverse: it will take a snapshot of the site that&#039;s currenly running at &lt;code&gt;http://d6.local&lt;/code&gt; and save that as the template for future deploys. Running &lt;code&gt;./recreate 6&lt;/code&gt; will execute this process:&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Move the existing &lt;code&gt;files.tar&lt;/code&gt; and &lt;code&gt;db.sql&lt;/code&gt; into a backup directory, just in case.&lt;/li&gt;
+&lt;li&gt;Use Drush to clear all the caches.&lt;/li&gt;
+&lt;li&gt;Dump the database to &lt;code&gt;db.sql&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Tar up the webroot directory into &lt;code&gt;files.tar&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;When new versions of the core or contrib modules come out, I just update my local copy of the site and run the &lt;code&gt;recreate&lt;/code&gt; script.&lt;/p&gt;
+&lt;p&gt;It&#039;s a pretty handy setup, and would be easy for other people to repurpose. If you want to use these scripts (the code is below), you may need to adjust the code to fit your own setup because of assumptions I made. These were the assumptions I worked with (using Drupal 6 as the version for these examples):&lt;/p&gt;
+&lt;ul&gt;&lt;li&gt;Webroot is &lt;code&gt;~/Sites/d6.local&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Templates are stored in &lt;code&gt;~/src/templates/d6&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Database is named &lt;code&gt;dev_d6&lt;/code&gt;.&lt;/li&gt;
+&lt;li&gt;Drush alias is named &lt;code&gt;@d6.local&lt;/code&gt;, just like the webroot subdirectory.&lt;/li&gt;
+&lt;/ul&gt;&lt;p&gt;You&#039;ll also need to modify the code to set the MySQL username and password for each line that runs MySQL.&lt;/p&gt;
+&lt;p&gt;And now for the code:&lt;/p&gt;
+&lt;h3&gt;deploy&lt;/h3&gt;
+&lt;p&gt;&lt;/p&gt;&lt;noscript&gt;&lt;br /&gt;&lt;div class=&quot;drupal-gist-file&quot;&gt;
+&lt;pre type=&quot;&quot;&gt;#!/bin/bash
+if [ -z &quot;$1&quot; ]; then
+	echo &quot;Usage: ./deploy drupal_version, for example: ./deploy 6&quot;
+else
+	versionname=d$1
+	deploydir=~/src/templates/$versionname
+	sitesdir=$versionname.local
+	sitesfullpath=~/Sites/$sitesdir
+	dbname=dev_$versionname
+	
+	if [ -d &quot;$deploydir&quot; ]; then
+		echo &quot;Re-deploying from site template&quot;
+		echo &quot;STICK AROUND - there&#039;s a sudo call in here so we need your password&quot;
+		
+		echo &quot;Re-create the DB, so no stray tables are left behind&quot;
+		mysql -uuser -ppass -e &quot;DROP DATABASE $dbname&quot;
+		mysql -user -ppass -e &quot;CREATE DATABASE $dbname&quot;
+		
+		echo &quot;Import DB&quot;
+		mysql -uuser -ppass $dbname &amp;lt; $deploydir/db.sql
+		
+		echo &quot;Untar files&quot;
+		cd ~/Sites
+		sudo rm -rf $sitesdir
+		tar xfz $deploydir/files.tar
+		
+		echo &quot;Clear caches&quot;
+		drush @$sitesdir cache-clear all
+	else
+		echo &quot;The deploy directory can&#039;t be found: $deploydir&quot;
+	fi
+fi&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;script src=&quot;http://gist.github.com/1059789.js&quot;&gt;&lt;/script&gt;&lt;h3&gt;recreate&lt;/h3&gt;
+&lt;p&gt;&lt;/p&gt;&lt;noscript&gt;&lt;br /&gt;&lt;div class=&quot;drupal-gist-file&quot;&gt;
+&lt;pre type=&quot;&quot;&gt;#!/bin/bash
+if [ -z &quot;$1&quot; ]; then
+	echo &quot;Usage: ./recreate drupal_version, for example: ./recreate 6&quot;
+else
+	# Prep a bunch of vars
+	versionname=d$1
+	deploydir=~/src/templates/$versionname
+	sitesdir=$versionname.local
+	sitesfullpath=~/Sites/$sitesdir
+	dbname=dev_$versionname
+	backupdir=$deploydir/backup
+	timestamp=`date +%Y.%m.%d-%H.%M`
+	
+	# Only continue if the given version number corresponds to a site directory
+	if [ -d &quot;$sitesfullpath&quot; ]; then
+		echo &quot;Re-creating template files&quot;
+		
+		echo &quot;Backup previous save&quot;
+		# Make sure the backup directory exists
+		if [ ! -d &quot;$backupdir&quot; ]; then
+			mkdir $backupdir
+		fi
+		mv $deploydir/db.sql $backupdir/db-$timestamp.sql
+		mv $deploydir/files.tar $backupdir/files-$timestamp.tar
+		
+		echo &quot;Clear caches&quot;
+		drush @$sitesdir cache-clear all
+		
+		echo &quot;Dump DB&quot;
+		# Dump DB
+		mysqldump --opt -uuser -ppass $dbname &amp;gt; $deploydir/db.sql
+		
+		echo &quot;Tar files&quot;
+		# Change into Sites dir and re-tar the dir
+		cd ~/Sites
+		tar -pczf $deploydir/files.tar $sitesdir/
+		
+		echo &quot;All done!&quot;
+	else
+		echo &quot;The sites directory can&#039;t be found: $sitesfullpath&quot;
+	fi
+fi&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;script src=&quot;http://gist.github.com/1059791.js&quot;&gt;&lt;/script&gt;&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sat, 02 Jul 2011 06:33:37 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">23 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2011/07/how-i-manage-my-generic-drupal-dev-sites#comments</comments>
+</item>
+<item>
+ <title>Posting to Drupal with the Blog API Module and TextMate</title>
+ <link>http://drupaldork.com/content/posting-drupal-blog-api-module-and-textmate</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;(Originally posted on &lt;a href=&quot;http://www.brockboland.com/2010/06/posting-drupal-blog-api-module-and-textmate&quot;&gt;BrockBoland.com&lt;/a&gt;)&lt;/p&gt;
+&lt;p&gt;It is imperfect, but I finally &lt;a href=&quot;http://www.dhreutter.de/?q=blog/blogging-textmate-finally&quot;&gt;found someone who figured out how to get TextMate to talk to Drupal using the Blog API&lt;/a&gt;. In short, the blog setup needs to include the content type you are using for blog posts after a pound sign, such as: Blog Name &lt;a href=&quot;http://user@www.website.com/xmlrpc.php#blogpost&quot;&gt;http://user@www.website.com/xmlrpc.php#blogpost&lt;/a&gt; Unfortunately, it doesn&#039;t support taxonomies at all, so it&#039;s unlikely that I&#039;ll bother using it until I feel like putting more work into it.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 13 Jun 2010 19:58:19 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">6 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/content/posting-drupal-blog-api-module-and-textmate#comments</comments>
+</item>
+</channel>
+</rss>

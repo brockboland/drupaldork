@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0" xml:base="http://drupaldork.com"  xmlns:dc="http://purl.org/dc/elements/1.1/">
+<channel>
+ <title>Drupal Dork - Site Building</title>
+ <link>http://drupaldork.com/category/category/site-building</link>
+ <description></description>
+ <language>en</language>
+<item>
+ <title>Follow-up: Local Settings Template</title>
+ <link>http://drupaldork.com/2012/01/follow-local-settings-template</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;Quick follow-up on &lt;a href=&quot;/2012/01/local-settings-template&quot;&gt;my post about local settings file template&lt;/a&gt;: colleague &lt;a href=&quot;http://benclark.com/&quot;&gt;Ben Clark&lt;/a&gt; forked my gist and &lt;a href=&quot;https://gist.github.com/1665472&quot;&gt;added all sorts of good stuff&lt;/a&gt; that I hadn&#039;t considered. Thanks Ben!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Mon, 23 Jan 2012 21:27:39 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">38 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/01/follow-local-settings-template#comments</comments>
+</item>
+<item>
+ <title>Local Settings Template</title>
+ <link>http://drupaldork.com/2012/01/local-settings-template</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;A couple months ago, I wrote about &lt;a href=&quot;/2011/11/local-settings-development-sites&quot;&gt;our strategy of using local settings files&lt;/a&gt; here at &lt;a href=&quot;http://www.jacksonriver.com/&quot;&gt;Jackson River&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;I was setting up a new development site on my machine the other day, and realized that I&#039;ve been consulting that blog post a couple times a week to copy over bits of code that were missing from various dev sites. It seemed like a good idea to move it into a gist:&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;noscript&gt;
+&lt;div class=&quot;drupal-gist-file&quot;&gt;
+&lt;pre type=&quot;php&quot;&gt;&amp;lt;?php
+/**
+ * @file
+ * local.settings.php
+ * 
+ * This settings file is intended to contain settings specific to a local
+ * development environment, by overriding options set in settings.php.
+ * 
+ * Include this file from your regular settings.php by including this at the
+ * bottom:
+ * 
+ *   @include(&#039;local.settings.php&#039;);
+ * 
+ * Placing this at the very end of settings.php will allow you override all
+ * options that are set there. Prefixing it with the @ suppresses warnings if
+ * the local.settings.php file is missing, so you can commit this to your repo.
+ */
+
+// Toggle the use of memcache.
+$_use_memcache = FALSE;
+
+// Toggle the output of devel debugging/logging.
+$_use_devel = FALSE;
+
+// Path where all contrib modules can be found.
+$_contrib_path = &#039;sites/all/modules/contrib&#039;;
+
+// The name of the database. This will also be used as the memcache prefix.
+$_db_name = &#039;dbname&#039;;
+
+
+$db_url = &#039;mysqli://root:pass4Root!@localhost/&#039; . $_db_name;
+
+// Allow anyone to run update.php, so that you don&#039;t have to log in with uid=1
+// to do so
+$update_free_access = TRUE;
+
+// Set error reporting level to ignore notices and deprecated warnings. These
+// should be turned back on during development to clean up any code that
+// generates them.
+error_reporting(E_ALL &amp;amp; ~E_DEPRECATED);
+// Note that these options can also be moved into index.php, so that errors
+// that occur before settings.php is processed will also be reported.
+ini_set(&#039;display_errors&#039;, TRUE);
+ini_set(&#039;display_startup_errors&#039;, TRUE);
+
+
+// Prep the $conf array.
+if (!is_array($conf)) {
+  $conf = array();
+}
+
+// Save email messages to the log instead of sending them out. This is to
+// prevent accidental email sends from a development site.
+// Make sure you adjust this value if the Devel module is located elsewhere
+$_smtp_library = $_contrib_path . &#039;/devel/devel.module&#039;;
+if (is_file($_smtp_library)) {
+  $conf[&#039;smtp_library&#039;] = $_smtp_library;
+}
+
+// Disable Secure Pages and Secure Site module functionality
+$conf[&#039;securepages_enable&#039;] = 0;
+$conf[&#039;securesite_enabled&#039;] = 0;
+
+// Use a test payment gateway to prevent real transactions
+$conf[&#039;uc_payment_credit_gateway&#039;] = &#039;test_gateway&#039;;
+
+// Lower the search indexing per cron run to prevent long cron runs
+$conf[&#039;search_cron_limit&#039;] = &#039;10&#039;;
+
+// Disable preprocessing of CSS and JS.
+$conf[&#039;preprocess_css&#039;] = 0;
+$conf[&#039;preprocess_js&#039;] = 0;
+
+// Use environment indicator, if available.
+$conf[&#039;environment_indicator_enabled&#039;] = TRUE;
+$conf[&#039;environment_indicator_text&#039;] = &#039;LOCAL DEVELOPMENT&#039;;
+$conf[&#039;environment_indicator_color&#039;] = &#039;dark-red&#039;;
+
+// Use memcache if available &amp;amp; enabled.
+$_memcache_inc = $_contrib_path . &#039;/memcache/memcache.inc&#039;;
+if ($_use_memcache &amp;amp;&amp;amp; is_file($_memcache_inc)) {
+  // Configure memcache locally
+  $conf[&#039;memcache_servers&#039;] = array(
+    &#039;localhost:11211&#039; =&amp;gt; &#039;default&#039;,
+  );
+  $conf[&#039;memcache_bins&#039;] = array(
+    &#039;cache&#039; =&amp;gt; &#039;default&#039;,
+  );
+  $conf[&#039;memcache_key_prefix&#039;] = $_db_name;
+  $conf[&#039;cache_inc&#039;] = $_memcache_inc;
+}
+else {
+  // Revert to Drupal core caching in case settings.php
+  // is configured to use Memcache.
+  $conf[&#039;cache_inc&#039;] = &#039;includes/cache.inc&#039;;
+}
+
+// Devel settings
+if ($_use_devel) {
+  $conf[&#039;dev_query&#039;] = 1;
+  $conf[&#039;devel_query_display&#039;] = 1;
+  $conf[&#039;devel_execution&#039;] = 5;
+  $conf[&#039;devel_store_queries&#039;] = 0;
+  $conf[&#039;devel_store_random&#039;] = 1;
+  $conf[&#039;devel_xhprof_enabled&#039;] = 0;
+  $conf[&#039;devel_xhprof_directory&#039;] =  &quot;/var/www/xhprof&quot;;
+  $conf[&#039;devel_xhprof_url&#039;] =  &quot;http://debianvm/xhprof/xhprof_html&quot;;
+  $conf[&#039;devel_redirect_page&#039;] = 0;
+  $conf[&#039;devel_query_sort&#039;] = &quot;0&quot;;
+}
+&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;script src=&quot;http://gist.github.com/1633790.js&quot;&gt;&lt;/script&gt;&lt;p&gt;And, since I use TextExpander as much as I can, I also made a snippet to grab the contents of this gist.&lt;/p&gt;
+&lt;p&gt;&lt;/p&gt;&lt;noscript&gt;
+&lt;div class=&quot;drupal-gist-file&quot;&gt;
+&lt;pre type=&quot;php&quot;&gt;#!/usr/bin/php
+&amp;lt;?php
+// Make sure to set the Content dropdown to Shell Script in TextExpander
+print file_get_contents(&#039;https://raw.github.com/gist/1633790/local.settings.php&#039;);&lt;/pre&gt;&lt;/div&gt;
+&lt;p&gt;&lt;/p&gt;&lt;/noscript&gt;
+&lt;script src=&quot;http://gist.github.com/1658632.js&quot;&gt;&lt;/script&gt;&lt;p&gt;In order for this to work, make sure you set the Content dropdown above the snippet content to use Shell Script, like this:&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://www.drupaldork.com/sites/default/files/screenshots/localsettingssnippet.png&quot; alt=&quot;TextExpander Shell Script selection&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;Now when I type &quot;llocalsett&quot;, I get a mostly-ready &lt;code&gt;local.settings.php&lt;/code&gt; to start with!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Sun, 22 Jan 2012 20:22:09 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">37 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/2012/01/local-settings-template#comments</comments>
+</item>
+<item>
+ <title>Related Items</title>
+ <link>http://drupaldork.com/2010/12/related-items</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;When it comes to showing things like related news, or section highlights, I&#039;ve gotten so accustomed to using node reference fields or a View to list nodes tagged with the same terms. I forget that sometimes, the content administrators will be perfectly happy to build their own list in the node body with a WYSIWYG editor. On a current project, they want more fine-grained control over the list, and it saves me time as the site builder. Everybody wins!&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Fri, 17 Dec 2010 15:30:43 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">9 at http://drupaldork.com</guid>
+</item>
+<item>
+ <title>Coded vs. Configurable, and Too Many Options </title>
+ <link>http://drupaldork.com/content/coded-vs-configurable-and-too-many-options</link>
+ <description>&lt;div class=&quot;field field-name-body field-type-text-with-summary field-label-hidden&quot;&gt;&lt;div class=&quot;field-items&quot;&gt;&lt;div class=&quot;field-item even&quot; property=&quot;content:encoded&quot;&gt;&lt;p&gt;(Originally posted on &lt;a href=&quot;http://www.brockboland.com/2010/07/coded-vs-configurable-and-too-many-options&quot;&gt;BrockBoland.com&lt;/a&gt;.)&lt;/p&gt;
+&lt;p&gt;I have always felt that a site admin should have the option to disable or change functionality without having to hire a coder to do it for them. In my early days of web development, this meant I produced pages and pages of admin options. Instead of being highly customizable for the user, these apps were just highly confusing.&lt;/p&gt;
+&lt;p&gt;Now that I&#039;m building sites in Drupal, I&#039;m trying to find the balance again. I typically get some Photoshop files of a new site design with a description of the content types that are needed and any custom functionality that needs to be included. I build out the site, but someone else will take on the task of maintenance after that.  This means they will need to tweak things when changes are needed, so I try to make things available in the admin interface as much as I can. I avoid writing special cases into the theme&#039;s &lt;code&gt;template.php&lt;/code&gt; file or in custom modules, and prefer to use other methods like &lt;a href=&quot;http://drupal.org/project/nd&quot;&gt;Node Displays&lt;/a&gt; or &lt;a href=&quot;http://drupal.org/project/panels&quot;&gt;Panels&lt;/a&gt; to implement the layout within a node (and &lt;a href=&quot;http://drupal.org/project/context&quot;&gt;Context&lt;/a&gt; for the bigger picture, of course). This is the blessing and the curse of Drupal: for any requirement, there are plenty of solutions that might be the best one.&lt;/p&gt;
+&lt;p&gt;In the project I was working on today, one content type has a group of CCK fields that the client would like to display above the node title when viewing the node in its own page. Now, even though I said I avoid doing things in code if I can, I also didn&#039;t want to install Node Display or Panels just to address this particular condition, since I didn&#039;t need them anywhere else on the site.&lt;/p&gt;
+&lt;p&gt;My first instinct was to override &lt;code&gt;node.tpl.php&lt;/code&gt; for the content type, but that template file doesn&#039;t print the title when viewing the node on its own page. I could remove the &lt;code&gt;if (!$page)&lt;/code&gt; check in that template and let it print the title anyway, and code an exception into &lt;code&gt;page.tpl.php&lt;/code&gt; so that it won&#039;t print the page title if the page is of that node type, but that&#039;s kind of hacky - and again, doesn&#039;t offer any flexibility to the admin who will be managing this site once I hand it over after the initial build-out.&lt;/p&gt;
+&lt;p&gt;Ultimately, I went with the admin-unfriendly solution. In the Display Fields tab for the content type, I set that group to Exclude on the Full Node display. This prevents the group of fields from displaying on the page, but they will still be rendered and included in the node object. Then, in &lt;code&gt;template.php&lt;/code&gt;, I added a special condition to &lt;code&gt;template_preprocess_node()&lt;/code&gt; to add the rendered HTML to the &lt;code&gt;content-top&lt;/code&gt; region:&lt;/p&gt;
+&lt;p&gt;&lt;code class=&quot;codeblock&quot;&gt;if(is_object($vars[&#039;node&#039;])) {&lt;br /&gt;
+  if($vars[&#039;node&#039;]-&amp;gt;type == &#039;news_item&#039;) {&lt;br /&gt;
+    $vars[&#039;content_top&#039;] .= $vars[&#039;node&#039;]-&amp;gt;content[&#039;group_info_fields&#039;][&#039;#children&#039;];&lt;br /&gt;
+  }&lt;br /&gt;
+}&lt;/code&gt;&lt;/p&gt;
+&lt;p&gt;If you asked five other Drupal developers how they would handle this, you&#039;d probably get five different answers. It&#039;s nice to have the flexibility, but can also be a pain to figure out what&#039;s best for the situation. There&#039;s even a &lt;a href=&quot;http://groups.drupal.org/similar-module-review&quot;&gt;group on gdo&lt;/a&gt; for reviewing modules with similar functionality; for a great example of the too-many-options issue, see the post in that group about &lt;a href=&quot;http://groups.drupal.org/node/20384&quot;&gt;modules that do tabs and slideshows&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This case today was a good reminder that experience can&#039;t be beat. I can spend as much time as I want reading reviews and how-tos, but I need to actually use these different modules and become familiar with them so that I have the experience to draw on when facing a similar situation down the road.&lt;/p&gt;
+&lt;/div&gt;&lt;/div&gt;&lt;/div&gt;</description>
+ <pubDate>Tue, 20 Jul 2010 22:45:49 +0000</pubDate>
+ <dc:creator>Brock</dc:creator>
+ <guid isPermaLink="false">7 at http://drupaldork.com</guid>
+ <comments>http://drupaldork.com/content/coded-vs-configurable-and-too-many-options#comments</comments>
+</item>
+</channel>
+</rss>
