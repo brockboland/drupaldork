@@ -54,52 +54,52 @@ jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":
           <a href="index.html" title="Home" rel="home" id="logo">
         <img src="sites/all/themes/brocktik/logo.png" alt="Home" />
       </a>
-    
+
           <div id="name-and-slogan">
 
                               <h1 id="site-name">
               <a href="index.html" title="Home" rel="home"><span>Drupal Dork</span></a>
             </h1>
-                  
+
                   <div id="site-slogan">
             Drupal: pretty great.          </div>
-        
+
       </div> <!-- /#name-and-slogan -->
-    
+
           <div id="main-menu" class="navigation">
         <h2 class="element-invisible">Main menu</h2><ul id="main-menu-links" class="links clearfix"><li class="menu-534 first active"><a href="index.html" title="" class="active">Home</a></li>
 <li class="menu-533"><a href="about.html" title="About">About</a></li>
 <li class="menu-122"><a href="archive.html">Archive</a></li>
 <li class="menu-118 last"><a href="contact.html" title="">Contact</a></li>
 </ul>      </div> <!-- /#main-menu -->
-    
-    
+
+
   </div></div> <!-- /.section, /#header -->
 
-  
-  
+
+
   <div id="main-wrapper" class="clearfix"><div id="main" class="clearfix">
 
-    
-    
-    <div id="content" class="column instapaper_body"><div class="messages warning">DrupalDork.com was shut down on September 18, 2013. This is just a snapshot of the site as it appeared then.</div><div class="section">
+
+
+    <div id="content" class="column instapaper_body"><div class="messages warning">DrupalDork.com was shut down on September 18, 2013. This is just a snapshot of the site as it appeared then.<br>Interested in taking over DrupalDork.com? <a href="mailto:brock@brockboland.com">Get in touch</a>.</div><div class="section">
             <a id="main-content"></a>
                                 <div class="tabs">
                   </div>
                           <div class="region region-content">
     <div id="block-system-main" class="block block-system">
 
-    
+
   <div class="content">
     <div id="node-60" class="node node-post node-promoted node-teaser clearfix" about="/2013/01/trigger-javascript-event-when-autocomplete-field-changes" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2013/01/trigger-javascript-event-when-autocomplete-field-changes.html">Trigger a javascript event when an autocomplete field changes</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2013-01-29T13:49:41-05:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Tue 29 Jan 2013, 1:49 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>Related to my <a href="2013/01/how-force-update-summary-field-sets-vertical-tabs.html">fieldset summary problem</a>: autocomplete fields do not trigger the <code>change</code> event in Javascript, for some reason. I wound up stealing part of a patch I found somewhere (I would link to it if I could find it in my browser history) in order to override the autocomplete prototype function and trigger a new <code>autocompleteSelect</code> event when the user chooses an item in an autocomplete field. Just drop this function into a Javascript file in your module or theme:</p></div></div></div><div class="field field-name-taxonomy-vocabulary-1 field-type-taxonomy-term-reference field-label-above clearfix"><h3 class="field-label">Category: </h3><ul class="links"><li class="taxonomy-term-reference-0"><a href="category/how.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">How-To</a></li></ul></div>  </div>
 
@@ -107,18 +107,18 @@ jQuery.extend(Drupal.settings, {"basePath":"\/","pathPrefix":"","ajaxPageState":
       <ul class="links inline"><li class="node-readmore first"><a href="2013/01/trigger-javascript-event-when-autocomplete-field-changes.html" rel="tag" title="Trigger a javascript event when an autocomplete field changes">Read more<span class="element-invisible"> about Trigger a javascript event when an autocomplete field changes</span></a></li>
 <li class="comment-comments last"><a href="2013/01/trigger-javascript-event-when-autocomplete-field-changes.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="5" datatype="xsd:integer" rel="">5 comments</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-59" class="node node-post node-promoted node-teaser clearfix" about="/2013/01/how-force-update-summary-field-sets-vertical-tabs" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2013/01/how-force-update-summary-field-sets-vertical-tabs.html">How to force an update of the summary on field sets (in vertical tabs)</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2013-01-29T13:45:22-05:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Tue 29 Jan 2013, 1:45 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>Please excuse the long title: it took me a while to figure this one out, so I want to make sure that other people can find this when they need it.</p>
 <p>On my current project, I'm changing the node author field based on the value of a user reference field on the node type: when a content admin sets the node reference field, the node author field is changed to match that user reference field value. Since the author field is shown in a fieldset, I wanted the summary on that fieldset to update when this change was made. It took me a while to figure out how, but it's pretty simple:</p>
@@ -132,18 +132,18 @@ if (tab) {
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="2013/01/how-force-update-summary-field-sets-vertical-tabs.html" rel="tag" title="How to force an update of the summary on field sets (in vertical tabs)">Read more<span class="element-invisible"> about How to force an update of the summary on field sets (in vertical tabs)</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-58" class="node node-post node-promoted node-teaser clearfix" about="/2012/11/four-stages-drupal-developer-life-cycle-ben-clark" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/11/four-stages-drupal-developer-life-cycle-ben-clark.html">The four stages of the Drupal developer life cycle, by Ben Clark</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-11-20T21:32:15-05:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Tue 20 Nov 2012, 9:32 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>The rest of this post has a different, decidedly-non-preachy voice, but this was my favorite part:</p>
 <blockquote><p>If you're a PHP genius, the world deserves to know; if you're barely competent, the world deserves to know that, too. If you won't stand by your work, then we don't want you in our community. Stop believing that you're the only one who will want that feature you're developing. Stop yourself from thinking that your implementation choices are without flaw.</p></blockquote>
@@ -153,18 +153,18 @@ if (tab) {
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="2012/11/four-stages-drupal-developer-life-cycle-ben-clark.html" rel="tag" title="The four stages of the Drupal developer life cycle, by Ben Clark">Read more<span class="element-invisible"> about The four stages of the Drupal developer life cycle, by Ben Clark</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-57" class="node node-post node-promoted node-teaser clearfix" about="/2012/09/back-work-joomla" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/09/back-work-joomla.html">Back to Work on Joomla</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-09-05T16:54:05-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Wed 5 Sep 2012, 4:54 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>Finally catching up on <a href="http://5by5.tv/b2w">Back to Work</a>, in particular <a href="http://5by5.tv/b2w/80">Cascading Wave of Bad</a>:</p>
 <p>Merlin: …I'm sure Joomla can be very, very pretty—have you ever used Joomla?<br />
@@ -176,18 +176,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="2012/09/back-work-joomla.html" rel="tag" title="Back to Work on Joomla">Read more<span class="element-invisible"> about Back to Work on Joomla</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-56" class="node node-post node-promoted node-teaser clearfix" about="/2012/09/drupal-ladder" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/09/drupal-ladder.html">The Drupal Ladder</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-09-04T20:35:39-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Tue 4 Sep 2012, 8:35 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>I mentioned the Drupal Ladder initiative in my <a href="2012/09/drupalcon-munich.html">post about DrupalCon Munich</a>, but didn't really talk about what it is. I expect that most of my non-client-work Drupal time for the forseeable future will be focused on the Ladder, so a bit of explanation is probably in order.</p>
 <p>The Goal of the Drupal Ladder is to have 1% of the Drupal Community contributing to core by 2014. That's the short version. A very low percentage of users on drupal.org have contributed to core, and we'd like to increase that percentage so that more people are helping maintain the system that we all use on a daily basis.</p></div></div></div><div class="field field-name-taxonomy-vocabulary-1 field-type-taxonomy-term-reference field-label-above clearfix"><h3 class="field-label">Category: </h3><ul class="links"><li class="taxonomy-term-reference-0"><a href="vocabulary_1/drupal-ladder.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Drupal Ladder</a></li></ul></div>  </div>
@@ -195,18 +195,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="2012/09/drupal-ladder.html" rel="tag" title="The Drupal Ladder">Read more<span class="element-invisible"> about The Drupal Ladder</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-55" class="node node-post node-promoted node-teaser clearfix" about="/2012/09/drupalcon-munich" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/09/drupalcon-munich.html">DrupalCon Munich</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-09-04T19:42:26-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Tue 4 Sep 2012, 7:42 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>DrupalCon Munich took place last week—well, last-last week, I guess—and it was pretty rad. I just got home a couple days ago, myself. My wife Erin and I figured that as long as I was in Germany already, we may as well make a trip of it, so she flew out on Friday (the sprint day of the con) and we spent the weekend in Munich, then flew up to Berlin for the following week. The whole trip was a blast, but we're talking about DrupalCon here.</p>
 <p>If I'm being honest, the first couple days of the conference were largely lost on me. I was more jet-lagged than I thought, and I think a little bit culture-shocked by failing to understand just about everything that was being said around me. I took a year of German in college (eight years ago now), but that did remarkably little for my ability to communicate with people there.</p></div></div></div><div class="field field-name-taxonomy-vocabulary-1 field-type-taxonomy-term-reference field-label-above clearfix"><h3 class="field-label">Category: </h3><ul class="links"><li class="taxonomy-term-reference-0"><a href="vocabulary_1/community.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Community</a></li><li class="taxonomy-term-reference-1"><a href="vocabulary_1/drupal-ladder.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Drupal Ladder</a></li><li class="taxonomy-term-reference-2"><a href="category/category/events.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Events</a></li></ul></div>  </div>
@@ -214,18 +214,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="2012/09/drupalcon-munich.html" rel="tag" title="DrupalCon Munich">Read more<span class="element-invisible"> about DrupalCon Munich</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-54" class="node node-post node-promoted node-teaser clearfix" about="/2012/08/its-almost-time-munich" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/08/its-almost-time-munich.html">It&#039;s almost time for Munich!</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-08-05T21:00:51-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Sun 5 Aug 2012, 9:00 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>Holy crap, can you believe that DrupalCon Munich is just two weeks away? This summer has been flying by!</p>
 <p>I, for one, am equal parts excited and apprehensive. DrupalCons are always exciting: I get to see friends I've made over the last couple years, and always meet a ton of new people. But, at the same time, I'm a little bit worried about two things: finding my way around, and being on a panel.</p>
@@ -235,18 +235,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/08/its-almost-time-munich.html" rel="tag" title="It&#039;s almost time for Munich!">Read more<span class="element-invisible"> about It&#039;s almost time for Munich!</span></a></li>
 <li class="comment-comments last"><a href="2012/08/its-almost-time-munich.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="4" datatype="xsd:integer" rel="">4 comments</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-53" class="node node-post node-promoted node-teaser clearfix" about="/2012/07/video-drupal-stupid-i-love-it-anyway" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/07/video-drupal-stupid-i-love-it-anyway.html">Video: Drupal is Stupid (But I Love It Anyway)</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-07-29T10:18:24-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Sun 29 Jul 2012, 10:18 am</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>This past weekend was the second CapitalCamp here in DC, and I wound up doing a session on Friday morning. I was one of the organizers of the event, but submitted two sessions early on (mostly to start filling up the Proposed Sessions list). When it became clear that we had a ton of great session proposals (and I was going to have my hands full all weekend), I withdrew my proposals.</p>
 <p>But, a speaker had to cancel his session a few days before the camp, and since I had previously done this talk at the DC PHP user group back in November, I was asked if I could fill the slot by doing it again. I think it worked out well: I've been asked by a lot of people who couldn't make it back in November if there was a video available, but at the time, I didn't really know how to use Keynote and failed to record it. This open timeslot gave me a chance to record a video, and to update some of the content of the talk.</p>
@@ -256,18 +256,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/07/video-drupal-stupid-i-love-it-anyway.html" rel="tag" title="Video: Drupal is Stupid (But I Love It Anyway)">Read more<span class="element-invisible"> about Video: Drupal is Stupid (But I Love It Anyway)</span></a></li>
 <li class="comment-comments last"><a href="2012/07/video-drupal-stupid-i-love-it-anyway.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="1" datatype="xsd:integer" rel="">1 comment</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-52" class="node node-post node-promoted node-teaser clearfix" about="/2012/06/follow-module-doesnt-work-right-and-what-you-can-do-about-it" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/06/follow-module-doesnt-work-right-and-what-you-can-do-about-it.html">Follow-up: This Module Doesn&#039;t Work Right (And What You Can Do About It)</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-06-28T09:56:49-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Thu 28 Jun 2012, 9:56 am</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>I gave this talk at Drupaldelphia this past weekend, and finally got around to pulling together some resources for those interested. The video is below; it was recorded in Keynote, so it's just the slides and the audio is so-so.</p></div></div></div><div class="field field-name-taxonomy-vocabulary-1 field-type-taxonomy-term-reference field-label-above clearfix"><h3 class="field-label">Category: </h3><ul class="links"><li class="taxonomy-term-reference-0"><a href="category/category/events.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Events</a></li></ul></div>  </div>
 
@@ -275,18 +275,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/06/follow-module-doesnt-work-right-and-what-you-can-do-about-it.html" rel="tag" title="Follow-up: This Module Doesn&#039;t Work Right (And What You Can Do About It)">Read more<span class="element-invisible"> about Follow-up: This Module Doesn&#039;t Work Right (And What You Can Do About It)</span></a></li>
 <li class="comment-comments last"><a href="2012/06/follow-module-doesnt-work-right-and-what-you-can-do-about-it.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="1" datatype="xsd:integer" rel="">1 comment</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-51" class="node node-post node-promoted node-teaser clearfix" about="/2012/06/speaking-gigs-coming" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/06/speaking-gigs-coming.html">Speaking Gigs Coming Up</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-06-13T10:47:35-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Wed 13 Jun 2012, 10:47 am</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>I've got an exciting couple of months ahead of me!</p>
 <p>Next Friday, June 22, I'll be speaking at <a href="http://www.drupaldelphia.com/">Drupaldelphia</a>: <a href="http://www.drupaldelphia.com/sessions/module-doesnt-work-right-and-what-you-can-do-about-it">This Module Doesn't Work Right (And What You Can Do About It)</a>.</p>
@@ -298,18 +298,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="2012/06/speaking-gigs-coming.html" rel="tag" title="Speaking Gigs Coming Up">Read more<span class="element-invisible"> about Speaking Gigs Coming Up</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-50" class="node node-post node-promoted node-teaser clearfix" about="/2012/06/github-creating-pull-requests-existing-issues" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/06/github-creating-pull-requests-existing-issues.html">Github: Creating Pull Requests for Existing Issues</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-06-05T15:39:06-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Tue 5 Jun 2012, 3:39 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>Did a quick screencast with some coworkers today on the latest thing I love about Github. Last time, I covered <a href="2012/04/intro-github-pull-requests.html">how to create pull requests</a>. This time, I explain how to create a pull request out of an existing issue. Since pull requests are basically just issues with commits attached, it's often undesirable to create a new pull request to address something reported in an existing issue, because you just wind up with two issues that address the same thing.</p>
 <p>There isn't a way to do this through the Github interface, but the <a href="https://github.com/defunkt/hub">hub command line tool</a> adds some special sauce for working with Github, and the thing I use it for most is opening pull requests for issues.</p>
@@ -319,18 +319,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/06/github-creating-pull-requests-existing-issues.html" rel="tag" title="Github: Creating Pull Requests for Existing Issues">Read more<span class="element-invisible"> about Github: Creating Pull Requests for Existing Issues</span></a></li>
 <li class="comment-comments last"><a href="2012/06/github-creating-pull-requests-existing-issues.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="4" datatype="xsd:integer" rel="">4 comments</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-49" class="node node-post node-promoted node-teaser clearfix" about="/2012/05/lets-talk-about-sex" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/05/lets-talk-about-sex.html">Let&#039;s Talk About Sex</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-05-28T16:59:54-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Mon 28 May 2012, 4:59 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>As it often is, sexism in the tech industry was the topic of a lot of back-and-forth on Twitter this past week. It started with <a href="https://twitter.com/populist/status/205016245936979968">the revelation</a><sup id="fnref:1"><a href="index.html#fn:1" rel="footnote">1</a></sup> that a modeling agency in Denver <a href="http://www.modelbuzz.tv/2012/03/14/denver-modeling-agency-finds-success-at-drupalcon/">had been contracted to staff "booth babes"</a> in the DrupalCon exhibit hall back in March, and continued (as it so often does) with debate over what behavior is appropriate at professional-ish industry events like DrupalCon.</p>
 <p>The issue of "booth babes"<sup id="fnref:2"><a href="index.html#fn:2" rel="footnote">2</a></sup> is the one that got under my skin the most, so let's talk about that. First, allow me outline my basic position on the issue:</p></div></div></div><div class="field field-name-taxonomy-vocabulary-2 field-type-taxonomy-term-reference field-label-above clearfix"><h3 class="field-label">Tags: </h3><ul class="links"><li class="taxonomy-term-reference-0"><a href="tags/drupalcon.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">drupalcon</a></li><li class="taxonomy-term-reference-1"><a href="vocabulary_2/sexism.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">sexism</a></li></ul></div><div class="field field-name-taxonomy-vocabulary-1 field-type-taxonomy-term-reference field-label-above clearfix"><h3 class="field-label">Category: </h3><ul class="links"><li class="taxonomy-term-reference-0"><a href="vocabulary_1/community.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Community</a></li><li class="taxonomy-term-reference-1"><a href="category/category/events.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">Events</a></li></ul></div>  </div>
@@ -339,18 +339,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/05/lets-talk-about-sex.html" rel="tag" title="Let&#039;s Talk About Sex">Read more<span class="element-invisible"> about Let&#039;s Talk About Sex</span></a></li>
 <li class="comment-comments last"><a href="2012/05/lets-talk-about-sex.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="46" datatype="xsd:integer" rel="">46 comments</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-48" class="node node-post node-promoted node-teaser clearfix" about="/2012/04/intro-github-pull-requests" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/04/intro-github-pull-requests.html">Intro to Github Pull Requests</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-04-25T20:43:41-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Wed 25 Apr 2012, 8:43 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>If your company is hosting code in <a href="https://github.com/">Github</a>, I sure hope you aren't committing directly to <code>master</code>. This quick screencast demonstrates how to use pull requests so that teammates can review code before it gets merged into the master branch.</p>
 <p>Make sure you turn on HD so that the text is legible.</p>
@@ -360,18 +360,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/04/intro-github-pull-requests.html" rel="tag" title="Intro to Github Pull Requests">Read more<span class="element-invisible"> about Intro to Github Pull Requests</span></a></li>
 <li class="comment-comments last"><a href="2012/04/intro-github-pull-requests.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="4" datatype="xsd:integer" rel="">4 comments</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-47" class="node node-module-release-announcements node-promoted node-teaser clearfix" about="/module_release/node_subpages/7.x-2.0-beta1" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="module_release/node_subpages/7.x-2.0-beta1.html">Module Release Announcement: Node Subpages 7.x-2.0-beta1</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-04-22T17:10:01-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Sun 22 Apr 2012, 5:10 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-field-project-link field-type-link-field field-label-inline clearfix"><div class="field-label">Module Page:&nbsp;</div><div class="field-items"><div class="field-item even"><a href="http://drupal.org/project/node_subpages">http://drupal.org/project/node_subpages</a></div></div></div><div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>I've been on a bit of a <a href="http://drupal.org/project/ctools">CTools</a> kick lately, and my latest experiment was <a href="http://drupal.org/project/node_subpages">Node Subpages</a>.</p>
 <p>Node Subpages allows site admins to configure per-content-type subpages that display the contents of a view or a field on the node. The project page has a more complete use case and example links.</p></div></div></div>  </div>
@@ -379,18 +379,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="module_release/node_subpages/7.x-2.0-beta1.html" rel="tag" title="Module Release Announcement: Node Subpages 7.x-2.0-beta1">Read more<span class="element-invisible"> about Module Release Announcement: Node Subpages 7.x-2.0-beta1</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-46" class="node node-post node-promoted node-teaser clearfix" about="/2012/04/big-career-news" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/04/big-career-news.html">Big Career News</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-04-19T20:40:56-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Thu 19 Apr 2012, 8:40 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>Exciting but sad news:</p>
 <p>On Monday, I'm joining <a href="http://www.lullabot.com/">Lullabot</a> as a Drupal developer. Tomorrow is my last day at <a href="http://jacksonriver.com/">Jackson River</a>.</p>
@@ -401,18 +401,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/04/big-career-news.html" rel="tag" title="Big Career News">Read more<span class="element-invisible"> about Big Career News</span></a></li>
 <li class="comment-comments last"><a href="2012/04/big-career-news.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="4" datatype="xsd:integer" rel="">4 comments</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-45" class="node node-post node-promoted node-teaser clearfix" about="/2012/04/quickpost-bookmarklet-dreamhost-vps-suhosin" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/04/quickpost-bookmarklet-dreamhost-vps-suhosin.html">QuickPost Bookmarklet on Dreamhost VPS with Suhosin</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-04-07T13:00:52-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Sat 7 Apr 2012, 1:00 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>This is probably the third time I've fixed this problem, so it seemed time to write down the solution.</p>
 <p>On my personal sites, I make use of one my own modules, <a href="http://drupal.org/project/quickpost_bookmarklet">QuickPost Bookmarklet</a>. The module geenrates a bookmarklet that allows you highlight text on a page and begin a new blog post on your own site from it.</p>
@@ -422,18 +422,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="2012/04/quickpost-bookmarklet-dreamhost-vps-suhosin.html" rel="tag" title="QuickPost Bookmarklet on Dreamhost VPS with Suhosin">Read more<span class="element-invisible"> about QuickPost Bookmarklet on Dreamhost VPS with Suhosin</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-44" class="node node-post node-promoted node-teaser clearfix" about="/2012/04/inexperienced-drupal-developer" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/04/inexperienced-drupal-developer.html">Inexperienced Drupal Developer</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-04-04T12:40:21-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Wed 4 Apr 2012, 12:40 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>From <a href="http://groups.drupal.org/node/222299">Inexperienced Drupal Developer</a>:</p>
 <blockquote><p>I've recently noticed there are a ton of local Drupal jobs looking for experienced developers, and also a ton of awesome, but inexperienced developers looking for jobs. This seems like a problem. If people can't get experience in jobs, they can't get jobs that need experience. I'm hoping to help solve this problem by posting the job I've never seen. <strong>I'm seeking an inexperienced Drupal developer.</strong></p></blockquote>
@@ -443,18 +443,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/04/inexperienced-drupal-developer.html" rel="tag" title="Inexperienced Drupal Developer">Read more<span class="element-invisible"> about Inexperienced Drupal Developer</span></a></li>
 <li class="comment-comments last"><a href="2012/04/inexperienced-drupal-developer.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="10" datatype="xsd:integer" rel="">10 comments</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-43" class="node node-post node-promoted node-teaser clearfix" about="/2012/04/boston-initiative-dc" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/04/boston-initiative-dc.html">The Boston Initiative in DC</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-04-03T09:02:26-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Tue 3 Apr 2012, 9:02 am</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>Last night, a handful of us in DC got together to discuss bringing the Boston Initiative to DC. <a href="http://groups.drupal.org/node/221964">My notes are on the DC group</a>, with links to lots of additional info for those unfamiliar with the project.</p>
 <p>I expected a pretty quick planning meeting: how often can we do sprints, where can we hold them, who wants to help organize them, etc. Instead, we quickly got off on a tangent about the merits of LearnDrupal.org and concerns about the content, how it's structured, and whether it's just duplicating existing training materials.</p>
@@ -464,18 +464,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/04/boston-initiative-dc.html" rel="tag" title="The Boston Initiative in DC">Read more<span class="element-invisible"> about The Boston Initiative in DC</span></a></li>
 <li class="comment-comments last"><a href="2012/04/boston-initiative-dc.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="1" datatype="xsd:integer" rel="">1 comment</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-42" class="node node-post node-promoted node-teaser clearfix" about="/2012/03/d6-garland-theme-batch-processing" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/03/d6-garland-theme-batch-processing.html">D6: Garland Theme for Batch Processing</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-03-30T19:25:51-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Fri 30 Mar 2012, 7:25 pm</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>There's a <a href="http://drupal.org/node/539022">long-running bug in the Drupal issue queue</a> about a bug that I had to work around this week: when using the <a href="http://drupal.org/node/180528">Batch API</a>, your site theme will only be used for the first page. As the page reloads to show the progress of the job, the ugly, default Garland theme is used (well, that's not entirely true: it's actually Minnelli, but looks like Garland).</p>
 <p>In most cases, this isn't a big deal: during a site install or when running update.php, it doesn't really matter what theme the admins see. In one client's case, though, we're using the Batch API to show progress of a multi-part donation that may take some time to process. In that case, you don't want regular site visitors seeing Minnelli: it's a jarring transition away from the site theme, and to anyone who isn't a seasoned Drupal user, it probably looks like something broke.</p></div></div></div><div class="field field-name-taxonomy-vocabulary-1 field-type-taxonomy-term-reference field-label-above clearfix"><h3 class="field-label">Category: </h3><ul class="links"><li class="taxonomy-term-reference-0"><a href="category/how.html" typeof="skos:Concept" property="rdfs:label skos:prefLabel" datatype="">How-To</a></li></ul></div>  </div>
@@ -484,18 +484,18 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <ul class="links inline"><li class="node-readmore first"><a href="2012/03/d6-garland-theme-batch-processing.html" rel="tag" title="D6: Garland Theme for Batch Processing">Read more<span class="element-invisible"> about D6: Garland Theme for Batch Processing</span></a></li>
 <li class="comment-comments last"><a href="2012/03/d6-garland-theme-batch-processing.html#comments" title="Jump to the first comment of this posting." property="sioc:num_replies" content="4" datatype="xsd:integer" rel="">4 comments</a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <div id="node-41" class="node node-post node-promoted node-teaser clearfix" about="/2012/03/drupalcon-denver-recap" typeof="sioc:Item foaf:Document">
 
         <h2 property="dc:title" datatype="">
       <a href="2012/03/drupalcon-denver-recap.html">DrupalCon Denver Recap</a>
     </h2>
-    
+
       <div class="meta submitted">
             <span property="dc:date dc:created" content="2012-03-24T00:59:14-04:00" datatype="xsd:dateTime" rel="sioc:has_creator">Submitted by <span class="username" xml:lang="" about="/users/brock" typeof="sioc:UserAccount" property="foaf:name" datatype="">Brock</span> on Sat 24 Mar 2012, 12:59 am</span>    </div>
-  
+
   <div class="content clearfix">
     <div class="field field-name-body field-type-text-with-summary field-label-hidden"><div class="field-items"><div class="field-item even" property="content:encoded"><p>I don't even know where to begin. This is the best I've come up with:</p>
 <p><strong><a href="http://denver2012.drupal.org/">DrupalCon Denver</a> was a roaring success.</strong></p>
@@ -505,8 +505,8 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
       <div class="link-wrapper">
       <ul class="links inline"><li class="node-readmore first last"><a href="2012/03/drupalcon-denver-recap.html" rel="tag" title="DrupalCon Denver Recap">Read more<span class="element-invisible"> about DrupalCon Denver Recap</span></a></li>
 </ul>    </div>
-  
-  
+
+
 </div>
 <h2 class="element-invisible">Pages</h2><div class="item-list"><ul class="pager"><li class="pager-current first">1</li>
 <li class="pager-item"><a title="Go to page 2" href="index.html%3Fpage=1.html">2</a></li>
@@ -524,7 +524,7 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
     <div id="block-block-1" class="block block-block">
 
     <h2>My Main Site</h2>
-  
+
   <div class="content">
     <p><a href="http://brockboland.com/">BrockBoland.com</a></p>
   </div>
@@ -532,32 +532,32 @@ Merlin: That control panel. Oh my God. The control panel—it looks like somebod
 <div id="block-block-8" class="block block-block">
 
     <h2>Hi!</h2>
-  
+
   <div class="content">
     <p>I'm Brock Boland, and I like Drupal a little more than is socially acceptable.<br /></p><center><a href="about.html"><img src="sites/default/files/2012/05/smile-fence-150.jpg" width="150" height="150" alt="Bald Brock" title="Bald Brock" /></a></center>
   </div>
 </div>
   </div>
       </div></div> <!-- /.section, /#sidebar-second -->
-    
+
   </div></div> <!-- /#main, /#main-wrapper -->
 
-  
+
   <div id="footer-wrapper"><div class="section">
 
-    
+
           <div id="footer" class="clearfix">
           <div class="region region-footer">
     <div id="block-block-5" class="block block-block">
 
-    
+
   <div class="content">
     <p>Content © 2009 - 2012 Brock Boland. Powered by <a href="http://drupal.org/">Drupal</a> because it's great. <a href="http://www.drupal.org" target="_blank">Drupal</a> is a registered trademark of <a href="http://buytaert.net/" target="_blank">Dries Buytaert</a>. The <a href="http://drupal.org/druplicon" target="_blank">Druplicon image</a> is licensed under the <a href="http://drupal.org/licensing/faq" target="_blank">GPL License</a>.</p>
   </div>
 </div>
   </div>
       </div> <!-- /#footer -->
-    
+
   </div></div> <!-- /.section, /#footer-wrapper -->
 
 </div></div> <!-- /#page, /#page-wrapper -->
